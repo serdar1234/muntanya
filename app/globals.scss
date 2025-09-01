@@ -1,0 +1,66 @@
+:root {
+  --gap: 1rem;
+  --page-padding: 1.25rem;
+  --font-stack:
+    system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+}
+
+/* Ensure full-height layout */
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-stack);
+  background: #fff;
+  color: #111;
+}
+
+/* App Router's root element (body receives the app content) */
+main,
+#__next {
+  height: 100%;
+}
+
+/* Two-column layout: map on the left (50%), content on the right (50%) */
+.main-layout {
+  display: flex;
+  min-height: 100vh;
+  gap: var(--gap);
+}
+
+/* Map column: left half */
+.map-column {
+  width: 50%;
+  height: 100vh; /* ensure the leaflet container has explicit height */
+  box-sizing: border-box;
+}
+
+/* Content column: right half */
+.content-column {
+  width: 50%;
+  padding: var(--page-padding);
+  box-sizing: border-box;
+  overflow: auto;
+}
+
+/* Make sure the Leaflet container fills its parent */
+.map-column > div {
+  width: 100%;
+  height: 100%;
+}
+
+/* Small responsive tweak: stack on narrow screens */
+@media (max-width: 800px) {
+  .main-layout {
+    flex-direction: column;
+  }
+  .map-column,
+  .content-column {
+    width: 100%;
+    height: 50vh;
+  }
+  .map-column {
+    height: 50vh;
+  }
+}
