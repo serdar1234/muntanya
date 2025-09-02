@@ -2,57 +2,59 @@
 
 import { useEffect, useRef } from "react";
 import type * as Leaflet from "leaflet";
+// import type { Feature, Point } from "geojson";
+import styles from "./Map.module.scss";
 
 export default function Map() {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const mapRef = useRef<Leaflet.Map | null>(null);
 
   useEffect(() => {
-    if (!containerRef.current) return;
+    if (!containerRef.current || mapRef.current) return;
 
-    let isMounted = true;
+    let disposed = false;
 
     (async () => {
-      const L = (await import("leaflet")).default;
+      try {
+        const L = (await import("leaflet")).default;
 
-      L.Icon.Default.mergeOptions({
-        iconRetinaUrl: "/leaflet/marker-icon-2x.png",
-        iconUrl: "/leaflet/marker-icon.png",
-        shadowUrl: "/leaflet/marker-shadow.png",
-        iconSize: [40, 40],
-        shadowSize: [40, 40],
-        iconAnchor: [0, 38],
-        // shadowAnchor: [4, 62],
-        popupAnchor: [19, -38],
-      });
+        L.Icon.Default.mergeOptions({
+          iconUrl: "/leaflet/marker-icon.png",
+          shadowUrl: "/leaflet/marker-shadow.png",
+          iconSize: [32, 32],
+          shadowSize: [32, 32],
+        });
 
-      const map = L.map(containerRef.current!, {
-        center: [46.8523, -121.7603],
-        zoom: 10,
-        scrollWheelZoom: true,
-      });
-      mapRef.current = map;
+        if (disposed || !containerRef.current) return;
 
-      // L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-      L.tileLayer("https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png", {
-        attribution: "&copy; OpenStreetMap contributors",
-        maxZoom: 19,
-      }).addTo(map);
-      L.tileLayer("https://tile.waymarkedtrails.org/hiking/{z}/{x}/{y}.png", {
-        attribution: "&copy; OpenStreetMap contributors",
-        maxZoom: 19,
-      }).addTo(map);
+        const map = L.map(containerRef.current, {
+          center: [46.8523, -121.7603],
+          zoom: 10,
+          scrollWheelZoom: true,
+        });
+        mapRef.current = map;
 
-      L.marker([46.8522, -121.7575]).addTo(map).bindPopup("Mt. Rainier");
+        L.tileLayer("https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png", {
+          attribution:
+            "Map data: © OpenStreetMap contributors, tiles: © OpenTopoMap",
+          maxZoom: 19,
+        }).addTo(map);
+        // L.tileLayer("https://tile.waymarkedtrails.org/hiking/{z}/{x}/{y}.png", {
+        //   attribution:
+        //     "Overlay: © Waymarked Trails | Data: © OSM contributors",
+        //   maxZoom: 19,
+        // }).addTo(map);
 
-      if (!isMounted && mapRef.current) {
-        mapRef.current.remove();
-        mapRef.current = null;
+        L.marker([46.8523, -121.7603]).addTo(map).bindPopup("Mt. Rainier");
+
+        map.whenReady(() => map.invalidateSize());
+      } catch {
+        console.error("Failed to load Leaflet or initialize the map.");
       }
     })();
 
     return () => {
-      isMounted = false;
+      disposed = true;
       if (mapRef.current) {
         mapRef.current.remove();
         mapRef.current = null;
@@ -60,5 +62,5 @@ export default function Map() {
     };
   }, []);
 
-  return <div ref={containerRef} style={{ width: "100%", height: "100%" }} />;
+  return <div ref={containerRef} className={styles["map-container"]} />;
 }
