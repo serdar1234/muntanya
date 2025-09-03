@@ -28,18 +28,18 @@ export default function Map() {
         if (disposed || !containerRef.current) return;
 
         const map = L.map(containerRef.current, {
-          center: [46.8523, -121.7603],
+          center: [46.8523, -121.7605],
           zoom: 10,
           scrollWheelZoom: true,
         });
         map.zoomControl.setPosition("topright");
         mapRef.current = map;
 
-        // L.tileLayer("https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png", {
-        //   attribution:
-        //     "Map data: © OpenStreetMap contributors, tiles: © OpenTopoMap",
-        //   maxZoom: 19,
-        // }).addTo(map);
+        L.tileLayer("https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png", {
+          attribution:
+            "Map data: © OpenStreetMap contributors, tiles: © OpenTopoMap",
+          maxZoom: 19,
+        }).addTo(map);
         // L.tileLayer('https://{s}.tile.thunderforest.com/cycle/{z}/{x}/{y}{r}.png?apikey={apikey}', {
         //   attribution: '&copy; <a href="http://www.thunderforest.com/">Thunderforest</a>, &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
         //   apikey: '<your apikey>',
@@ -50,15 +50,16 @@ export default function Map() {
         //     "Overlay: © Waymarked Trails | Data: © OSM contributors",
         //   maxZoom: 19,
         // }).addTo(map);
-        L.tileLayer(
-          "https://tiles.stadiamaps.com/tiles/stamen_terrain/{z}/{x}/{y}{r}.png",
-          {
-            minZoom: 0,
-            maxZoom: 18,
-            attribution:
-              '&copy; <a href="https://www.stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://www.stamen.com/" target="_blank">Stamen Design</a> &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-          },
-        ).addTo(map); // 5+
+
+        // L.tileLayer(
+        //   "https://tiles.stadiamaps.com/tiles/stamen_terrain/{z}/{x}/{y}{r}.png",
+        //   {
+        //     minZoom: 0,
+        //     maxZoom: 18,
+        //     attribution:
+        //       '&copy; <a href="https://www.stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://www.stamen.com/" target="_blank">Stamen Design</a> &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        //   }
+        // ).addTo(map); // commercial license
 
         L.marker([46.8523, -121.7603]).addTo(map).bindPopup("Mt. Rainier");
         L.control
