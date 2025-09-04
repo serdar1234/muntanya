@@ -1,12 +1,9 @@
 "use client";
 
-import dynamic from "next/dynamic";
-
-import { ComponentType } from "react";
 import MarkerClusterGroup from "react-leaflet-markercluster";
-import styles from "./Map.module.scss";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import { DivIcon, divIcon, Icon, LatLngExpression, point } from "leaflet";
+import styles from "./Map.module.scss";
 
 const position: LatLngExpression = [46.8523, -121.7605];
 const leaf = "./leaflet/mount.jpg";
