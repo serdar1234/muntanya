@@ -10,7 +10,6 @@ import { LuMoon, LuSun } from "react-icons/lu";
 // export interface ColorModeProviderProps extends ThemeProviderProps {}
 
 export function ColorModeProvider(props: ThemeProviderProps) {
-  // export function ColorModeProvider(props: ColorModeProviderProps) {
   return (
     <ThemeProvider attribute="class" disableTransitionOnChange {...props} />
   );
@@ -51,7 +50,6 @@ export function ColorModeIcon() {
 
 export const ColorModeButton = React.forwardRef<
   HTMLButtonElement,
-  // ColorModeButtonProps
   Omit<IconButtonProps, "aria-label">
 >(function ColorModeButton(props, ref) {
   const { toggleColorMode } = useColorMode();

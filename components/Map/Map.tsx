@@ -4,9 +4,9 @@ import MarkerClusterGroup from "react-leaflet-markercluster";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import { DivIcon, divIcon, Icon, LatLngExpression, point } from "leaflet";
 import styles from "./Map.module.scss";
+import PopupContent from "../PopupContent/";
 
 const position: LatLngExpression = [46.8523, -121.7605];
-const leaf = "./leaflet/mount.jpg";
 
 const markers: { coords: LatLngExpression; text: string }[] = [
   {
@@ -54,9 +54,7 @@ function Map() {
           return (
             <Marker key={String(m.coords)} position={m.coords} icon={myIcon}>
               <Popup offset={[0, -10]}>
-                <h3>Mt.Rainier</h3>
-                <img src={leaf} alt="" style={{ float: "right" }} />
-                <p>{m.text}</p>
+                <PopupContent title="" description={m.text} />
               </Popup>
             </Marker>
           );
