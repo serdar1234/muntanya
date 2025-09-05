@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from "next";
-import "./globals.scss";
-import "leaflet/dist/leaflet.css";
 import { Provider } from "@/components/ui/provider";
+import "./globals.scss";
 
 export const viewport: Viewport = {
   width: "device-width",
