@@ -35,13 +35,13 @@ export default async function MountainPage({
 }: {
   params: { slug: MyMountains };
 }) {
-  const { slug } = params; // Получаем slug горы из URL
+  const { slug } = await params; // Получаем slug горы из URL
 
   // Получаем данные о горе, используя slug
   const mountain = await getMountainData(slug);
 
   if (!mountain) {
-    return <div>Гора не найдена.</div>;
+    return <div>La muntanya no va ser trobada</div>;
   }
 
   return (
