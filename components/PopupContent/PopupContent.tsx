@@ -1,4 +1,4 @@
-const leaf = "./leaflet/mount.jpg";
+const leaf = "/leaflet/mount.jpg";
 
 export default function PopupContent({
   title,

@@ -2,35 +2,20 @@
 
 import MarkerClusterGroup from "react-leaflet-markercluster";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
-import { DivIcon, divIcon, Icon, LatLngExpression, point } from "leaflet";
+import { DivIcon, divIcon, Icon, LatLngTuple, point } from "leaflet";
 import styles from "./Map.module.scss";
 import PopupContent from "../PopupContent/";
 
-const position: LatLngExpression = [46.8523, -121.7605];
-
-const markers: { coords: LatLngExpression; text: string }[] = [
-  {
-    coords: position,
-    text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident neque modi aut nostrum voluptatibus, quos illum aperiam reiciendis est nam pariatur?",
-  },
-  {
-    coords: [position[0], position[1] + 0.01],
-    text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident neque modi aut nostrum voluptatibus, quos illum aperiam reiciendis est nam pariatur?",
-  },
-  {
-    coords: [position[0] + 0.005, position[1] - 0.01],
-    text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident neque modi aut nostrum voluptatibus, quos illum aperiam reiciendis est nam pariatur?",
-  },
-];
+const position: LatLngTuple = [46.8523, -121.7605];
 
 const myIcon = new Icon({
   iconSize: [38, 38],
-  iconUrl: "./leaflet/marker-icon.png",
-  shadowUrl: "./leaflet/marker-shadow.png",
+  iconUrl: "/leaflet/marker-icon.png",
+  shadowUrl: "/leaflet/marker-shadow.png",
   shadowSize: [38, 38],
 });
 
-function Map() {
+export default function Map({ pos = position }: { pos?: LatLngTuple }) {
   const makeIcon = (cluster: { getChildCount: () => number }): DivIcon => {
     return divIcon({
       html: `<div class=${styles["cluster-icon"]}>${cluster.getChildCount()}</div>`,
@@ -38,9 +23,25 @@ function Map() {
       iconSize: point(33, 33, true),
     });
   };
+
+  const markers: { coords: LatLngTuple; text: string }[] = [
+    {
+      coords: pos,
+      text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident neque modi aut nostrum voluptatibus, quos illum aperiam reiciendis est nam pariatur?",
+    },
+    {
+      coords: [pos[0], pos[1] + 0.01],
+      text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident neque modi aut nostrum voluptatibus, quos illum aperiam reiciendis est nam pariatur?",
+    },
+    {
+      coords: [pos[0] + 0.005, pos[1] - 0.01],
+      text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident neque modi aut nostrum voluptatibus, quos illum aperiam reiciendis est nam pariatur?",
+    },
+  ];
+
   return (
     <MapContainer
-      center={position}
+      center={pos || position}
       zoom={13}
       scrollWheelZoom
       className={styles["map-container"]}
@@ -63,5 +64,3 @@ function Map() {
     </MapContainer>
   );
 }
-
-export default Map;
