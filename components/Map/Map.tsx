@@ -1,6 +1,5 @@
 "use client";
 
-import { useState, useEffect } from "react"; // Импортируем хуки
 import MarkerClusterGroup from "react-leaflet-markercluster";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import { DivIcon, divIcon, Icon, LatLngTuple, point } from "leaflet";
@@ -17,29 +16,7 @@ const myIcon = new Icon({
   shadowSize: [38, 38],
 });
 
-// Новый вспомогательный компонент для обновления позиции карты
-import { useMap } from "react-leaflet";
-import { useEffect as useClientEffect } from "react"; // используем псевдоним
-
-const MapUpdater = ({ pos }: { pos: LatLngTuple }) => {
-  const map = useMap();
-  useClientEffect(() => {
-    map.setView(pos, 13);
-  }, [pos, map]);
-  return null;
-};
-
 export default function Map({ pos = position }: { pos?: LatLngTuple }) {
-  const [isMounted, setIsMounted] = useState(false);
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []); // Пустой массив зависимостей означает, что этот код выполнится один раз, после первого рендера на клиенте
-
-  if (!isMounted) {
-    return null; // Не рендерим ничего на сервере и на первом рендере на клиенте
-  }
-
   const makeIcon = (cluster: { getChildCount: () => number }): DivIcon => {
     return divIcon({
       html: `<div class=${styles["cluster-icon"]}>${cluster.getChildCount()}</div>`,
@@ -74,7 +51,6 @@ export default function Map({ pos = position }: { pos?: LatLngTuple }) {
         attribution='&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      <MapUpdater pos={pos} />
       <MarkerClusterGroup chunkedLoading iconCreateFunction={makeIcon}>
         {markers.map((m) => {
           return (
