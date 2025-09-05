@@ -1,5 +1,6 @@
 import { Button, Menu, Portal } from "@chakra-ui/react";
 import styles from "./Menu.module.scss";
+import Link from "next/link";
 
 export default function MenuItem() {
   return (
@@ -7,15 +8,30 @@ export default function MenuItem() {
       <Menu.Root>
         <Menu.Trigger asChild>
           <Button variant="solid" size="sm">
-            Open
+            Menu
           </Button>
         </Menu.Trigger>
         <Portal>
           <Menu.Positioner>
             <Menu.Content>
-              <Menu.Item value="new-txt">New Text File</Menu.Item>
-              <Menu.Item value="new-file">New File...</Menu.Item>
-              <Menu.Item value="new-win">New Window</Menu.Item>
+              <Menu.Item value="Home">
+                <Link href="/" className={styles["menu-link"]}>
+                  Home
+                </Link>
+              </Menu.Item>
+              <Menu.Item value="Kilimanjaro">
+                <Link
+                  className={styles["menu-link"]}
+                  href="/mountains/kilimanjaro"
+                >
+                  Kilimanjaro
+                </Link>
+              </Menu.Item>
+              <Menu.Item value="Everest">
+                <Link href="/mountains/everest" className={styles["menu-link"]}>
+                  Everest
+                </Link>
+              </Menu.Item>
               <Menu.Item value="open-file">Open File...</Menu.Item>
               <Menu.Item value="export">Export</Menu.Item>
             </Menu.Content>

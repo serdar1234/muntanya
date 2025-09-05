@@ -3,19 +3,26 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { LuSearch } from "react-icons/lu";
-import { Box, Input, InputGroup } from "@chakra-ui/react";
+import { Box, IconButton, Group, Input, InputGroup } from "@chakra-ui/react";
 import styles from "./SearchInput.module.scss";
 
 export default function SearchInput() {
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState("");
 
-  const handleSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyDown = (
+    e: React.KeyboardEvent<HTMLInputElement | HTMLButtonElement>,
+  ) => {
     if (e.key === "Enter") {
       const mountainSlug = searchQuery.toLowerCase();
-      // Переходим на SEO-дружественный URL
       router.push(`/mountains/${mountainSlug}`);
     }
+  };
+
+  const handleButtonClick = () => {
+    const mountainSlug = searchQuery.toLowerCase();
+    if (mountainSlug === "") return;
+    router.push(`/mountains/${mountainSlug}`);
   };
 
   return (
@@ -25,15 +32,25 @@ export default function SearchInput() {
       justifyContent="center"
       className={styles["search-box"]}
     >
-      <InputGroup flex="1" startElement={<LuSearch />}>
-        <Input
-          type="text"
-          placeholder="Search mountain..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          onKeyDown={handleSearch}
-          className={styles["search-input"]}
-        />
+      <InputGroup flex="1">
+        <Group attached w="full" maxW="sm">
+          <Input
+            type="text"
+            placeholder="Search mountain..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            onKeyDown={handleKeyDown}
+            className={styles["search-input"]}
+          />
+          <IconButton
+            aria-label="Search"
+            type="button"
+            onKeyDown={handleKeyDown}
+            onClick={handleButtonClick}
+          >
+            <LuSearch />
+          </IconButton>
+        </Group>
       </InputGroup>
     </Box>
   );
