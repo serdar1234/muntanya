@@ -5,20 +5,37 @@ import SearchInput from "@/components/Search/SearchInput";
 import { LatLngTuple } from "leaflet";
 import { MainLayoutProps } from "@/shared/types";
 import DynamicMap from "@/components/Map/";
+import { useEffect, useState } from "react";
+import { getDefaultPosition } from "@/shared/api";
 // import styles from "./MainLayout.module.scss";
 
 export default function MainLayout({
   initialMountain = null,
 }: MainLayoutProps) {
-  const defaultPosition: LatLngTuple = [46.8523, -121.7605];
-  // Используем пропс напрямую, без useState
+  const [defaultPosition, setDefaultPosition] = useState<LatLngTuple | null>(
+    null,
+  );
+  useEffect(() => {
+    async function fetchDefaultPosition() {
+      try {
+        const position = await getDefaultPosition();
+        setDefaultPosition(position);
+        console.log("Default position:", position);
+      } catch (error) {
+        console.error("Could not find data about the mountain:", error);
+      }
+    }
+
+    fetchDefaultPosition();
+  }, []);
+
   const mapPosition = initialMountain?.coords ?? defaultPosition;
 
   return (
     <main className="main-layout">
       <div className="map-column">
         {/* Передаем координаты в компонент карты */}
-        <DynamicMap pos={mapPosition} />
+        {mapPosition && <DynamicMap pos={mapPosition} />}
       </div>
       <div className="wrapper">
         <SearchInput />
