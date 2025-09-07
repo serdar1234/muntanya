@@ -4,6 +4,7 @@ import {
   ApiResponse,
   MountainData,
   AutocompleteResponse,
+  Peak,
 } from "./types";
 
 export async function getMountainData(
@@ -19,7 +20,6 @@ export async function getMountainData(
     }
 
     const apiData: ApiResponse = await response.json();
-    console.log("apiData", apiData);
     const data: ApiPeak[] = apiData.data.peaks.sort(
       (a, b) => b.prominence - a.prominence
     );
@@ -41,6 +41,38 @@ export async function getMountainData(
     return mountainData;
   } catch (error) {
     console.error("Could not find data about the mountain:", error);
+    return null;
+  }
+}
+
+export async function getPeakById(id: string): Promise<MountainData | null> {
+  const url = `https://api.climepeak.com/api/v1/peaks/${id}`;
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      const url = `https://api.climepeak.com/api/v1/home/search?q=${id}`;
+      const res = getMountainData(url);
+      if (res === null) return null;
+      return res as unknown as MountainData;
+    }
+
+    const { data } = await response.json();
+    const mountain = data.peak;
+    if (!mountain) return null;
+
+    delete mountain["created_at"];
+    delete mountain["updated_at"];
+    const mountainData: MountainData = {
+      name: mountain.name,
+      coords: [
+        parseFloat(mountain.coordinates.lat),
+        parseFloat(mountain.coordinates.lng),
+      ],
+    };
+
+    return mountainData;
+  } catch (error) {
+    console.error("Could not find the mountain", error);
     return null;
   }
 }
@@ -73,7 +105,9 @@ export async function getDefaultPosition(): Promise<LatLngTuple> {
   }
 }
 
-export async function getAutocompleteSuggestions(query: string) {
+export async function getAutocompleteSuggestions(
+  query: string
+): Promise<Peak[]> {
   const url = `https://api.climepeak.com/api/v1/home/autocomplete?q=${query}`;
 
   try {

@@ -1,6 +1,6 @@
 import MainLayout from "@/components/MainLayout";
 import { notFound } from "next/navigation";
-import { getMountainData } from "@/shared/api";
+import { getPeakById } from "@/shared/api";
 
 export default async function MountainPage({
   params,
@@ -8,7 +8,7 @@ export default async function MountainPage({
   params: { slug: string };
 }) {
   const { slug } = await params;
-  const mountain = await getMountainData(slug);
+  const mountain = await getPeakById(slug);
 
   if (!mountain) {
     notFound();

@@ -7,7 +7,6 @@ import { MainLayoutProps } from "@/shared/types";
 import DynamicMap from "@/components/Map/";
 import { useEffect, useState } from "react";
 import { getDefaultPosition } from "@/shared/api";
-// import styles from "./MainLayout.module.scss";
 
 export default function MainLayout({
   initialMountain = null,
@@ -20,7 +19,6 @@ export default function MainLayout({
       try {
         const position = await getDefaultPosition();
         setDefaultPosition(position);
-        console.log("Default position:", position);
       } catch (error) {
         console.error("Could not find data about the mountain:", error);
       }
@@ -34,7 +32,6 @@ export default function MainLayout({
   return (
     <main className="main-layout">
       <div className="map-column">
-        {/* Передаем координаты в компонент карты */}
         {mapPosition && <DynamicMap pos={mapPosition} />}
       </div>
       <div className="wrapper">

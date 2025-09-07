@@ -3,28 +3,53 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { LuSearch } from "react-icons/lu";
+import { useAsync } from "react-use";
 import {
   Box,
   IconButton,
   Group,
-  Input,
   InputGroup,
   Spinner,
+  Combobox,
+  HStack,
+  Portal,
+  Span,
+  useListCollection,
 } from "@chakra-ui/react";
+import { Peak } from "@/shared/types";
 import styles from "./SearchInput.module.scss";
+import { getAutocompleteSuggestions } from "@/shared/api";
 
 export default function SearchInput() {
   const router = useRouter();
-  const [searchQuery, setSearchQuery] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const [inputValue, setInputValue] = useState("");
+
+  const { collection, set } = useListCollection<Peak>({
+    initialItems: [],
+    itemToString: (item) => item.name,
+    itemToValue: (item) => item.slug,
+  });
+
+  const state = useAsync(async () => {
+    if (inputValue.length < 3) {
+      return [];
+    }
+    const suggestions = await getAutocompleteSuggestions(inputValue);
+    set(suggestions);
+  }, [inputValue, set]);
+
+  const handleSelectSuggestion = (item: Peak) => {
+    router.push(`/mountains/${item.slug}`);
+    setInputValue("");
+  };
 
   const handleSearch = () => {
-    const mountainSlug = searchQuery.toLowerCase();
-    if (mountainSlug === "") return;
-
-    setIsLoading(true);
-
-    router.push(`/mountains/${mountainSlug}`);
+    const firstItem = collection.items[0];
+    if (firstItem) {
+      handleSelectSuggestion(firstItem);
+    } else {
+      router.push(`/mountains/${inputValue}`);
+    }
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -40,27 +65,64 @@ export default function SearchInput() {
       justifyContent="center"
       className={styles["search-box"]}
     >
-      <InputGroup flex="1">
-        <Group attached w="full" maxW="sm">
-          <Input
-            type="text"
-            placeholder="Search mountain..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            onKeyDown={handleKeyDown}
-            disabled={isLoading}
-            className={styles["search-input"]}
-          />
-          <IconButton
-            aria-label="Search"
-            type="button"
-            onClick={handleSearch}
-            disabled={isLoading}
-          >
-            {isLoading ? <Spinner size="sm" /> : <LuSearch />}
-          </IconButton>
-        </Group>
-      </InputGroup>
+      <Combobox.Root
+        width="100%"
+        collection={collection}
+        placeholder="Mountains"
+        onInputValueChange={(e) => setInputValue(e.inputValue)}
+        positioning={{ sameWidth: false, placement: "bottom-start" }}
+      >
+        <Combobox.Control>
+          <InputGroup flex="1">
+            <Group attached w="full" maxW="sm">
+              <Combobox.Input
+                placeholder="Search mountain..."
+                className={styles["search-input"]}
+                onKeyDown={handleKeyDown}
+                disabled={state.loading}
+              />
+              <IconButton
+                aria-label="Search"
+                type="button"
+                onClick={handleSearch}
+                disabled={state.loading}
+              >
+                {state.loading ? <Spinner size="sm" /> : <LuSearch />}
+              </IconButton>
+            </Group>
+          </InputGroup>
+        </Combobox.Control>
+
+        <Portal>
+          <Combobox.Positioner>
+            <Combobox.Content minW="sm">
+              {state.loading ? (
+                <HStack p="2">
+                  <Spinner size="xs" borderWidth="1px" />
+                  <Span>Loading...</Span>
+                </HStack>
+              ) : state.error ? (
+                <Span p="2" color="fg.error">
+                  Error fetching
+                </Span>
+              ) : (
+                collection.items?.map((peak) => (
+                  <Combobox.Item key={peak.slug} item={peak.slug}>
+                    <HStack justify="space-between" textStyle="sm">
+                      <Span fontWeight="medium" truncate>
+                        {peak.name}
+                      </Span>
+                      <Span color="fg.muted" truncate>
+                        {peak.country} / {peak.region}
+                      </Span>
+                    </HStack>
+                  </Combobox.Item>
+                ))
+              )}
+            </Combobox.Content>
+          </Combobox.Positioner>
+        </Portal>
+      </Combobox.Root>
     </Box>
   );
 }
