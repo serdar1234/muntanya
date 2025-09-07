@@ -25,3 +25,17 @@ export interface ApiResponse {
     peaks: ApiPeak[];
   };
 }
+
+export interface Peak {
+  name: string;
+  elevation: number;
+  slug: string;
+  country: string;
+  region: string;
+}
+
+export interface AutocompleteResponse {
+  data: {
+    peaks: Peak[];
+  };
+}

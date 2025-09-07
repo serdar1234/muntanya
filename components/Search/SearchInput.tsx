@@ -3,26 +3,40 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { LuSearch } from "react-icons/lu";
-import { Box, IconButton, Group, Input, InputGroup } from "@chakra-ui/react";
+import {
+  Box,
+  IconButton,
+  Group,
+  Input,
+  InputGroup,
+  Spinner,
+} from "@chakra-ui/react";
 import styles from "./SearchInput.module.scss";
 
 export default function SearchInput() {
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleKeyDown = (
-    e: React.KeyboardEvent<HTMLInputElement | HTMLButtonElement>,
-  ) => {
+  const handleSearch = () => {
+    const mountainSlug = searchQuery.toLowerCase();
+    if (mountainSlug === "") return;
+
+    setIsLoading(true);
+
+    router.push(`/mountains/${mountainSlug}`);
+
+    setIsLoading(false);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
-      const mountainSlug = searchQuery.toLowerCase();
-      router.push(`/mountains/${mountainSlug}`);
+      handleSearch();
     }
   };
 
   const handleButtonClick = () => {
-    const mountainSlug = searchQuery.toLowerCase();
-    if (mountainSlug === "") return;
-    router.push(`/mountains/${mountainSlug}`);
+    handleSearch();
   };
 
   return (
@@ -40,15 +54,16 @@ export default function SearchInput() {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             onKeyDown={handleKeyDown}
+            disabled={isLoading}
             className={styles["search-input"]}
           />
           <IconButton
             aria-label="Search"
             type="button"
-            onKeyDown={handleKeyDown}
             onClick={handleButtonClick}
+            disabled={isLoading}
           >
-            <LuSearch />
+            {isLoading ? <Spinner size="sm" /> : <LuSearch />}
           </IconButton>
         </Group>
       </InputGroup>
