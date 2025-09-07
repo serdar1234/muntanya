@@ -25,18 +25,12 @@ export default function SearchInput() {
     setIsLoading(true);
 
     router.push(`/mountains/${mountainSlug}`);
-
-    setIsLoading(false);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       handleSearch();
     }
-  };
-
-  const handleButtonClick = () => {
-    handleSearch();
   };
 
   return (
@@ -60,7 +54,7 @@ export default function SearchInput() {
           <IconButton
             aria-label="Search"
             type="button"
-            onClick={handleButtonClick}
+            onClick={handleSearch}
             disabled={isLoading}
           >
             {isLoading ? <Spinner size="sm" /> : <LuSearch />}
