@@ -34,16 +34,14 @@ export default function MainLayout({
       <div className="map-column">
         {mapPosition && <DynamicMap pos={mapPosition} />}
       </div>
-      <div className="wrapper">
-        <SearchInput />
-        {initialMountain && (
-          <div className="mountain-info-panel">
-            <h3>{initialMountain.name}</h3>
-            <p>Координаты: {initialMountain.coords.join(", ")}</p>
-          </div>
-        )}
-        <MenuItem />
-      </div>
+      <SearchInput />
+      {initialMountain && (
+        <div className="mountain-info-panel">
+          <h3>{initialMountain.name}</h3>
+          <p>Координаты: {initialMountain.coords.join(", ")}</p>
+        </div>
+      )}
+      <MenuItem />
     </main>
   );
 }

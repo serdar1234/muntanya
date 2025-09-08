@@ -50,17 +50,6 @@ main,
   height: 100%;
 }
 
-.wrapper {
-  z-index: 400;
-  position: absolute;
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  height: 84px;
-  justify-content: center;
-  align-items: center;
-}
-
 /* Small responsive tweak: stack on narrow screens */
 @media (max-width: 800px) {
   .main-layout {

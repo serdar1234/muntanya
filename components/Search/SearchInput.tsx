@@ -42,7 +42,17 @@ export default function SearchComponent() {
   };
 
   return (
-    <Stack spacing={2} width="300px" className={styles["search-box"]}>
+    <Stack
+      spacing={2}
+      width="300px"
+      className={styles["search-box"]}
+      sx={{
+        position: "absolute",
+        left: "4rem",
+        top: "1.5rem",
+        zIndex: 401,
+      }}
+    >
       <Autocomplete
         size="small"
         options={options}
