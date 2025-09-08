@@ -1,5 +1,7 @@
 import type { Metadata, Viewport } from "next";
-import { Provider } from "@/components/ui/provider";
+import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
+import { ThemeProvider } from "@mui/material/styles";
+import theme from "@/shared/theme";
 import "./globals.scss";
 
 export const viewport: Viewport = {
@@ -23,7 +25,9 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body>
-        <Provider>{children}</Provider>
+        <AppRouterCacheProvider options={{ key: "css" }}>
+          <ThemeProvider theme={theme}>{children}</ThemeProvider>
+        </AppRouterCacheProvider>
       </body>
     </html>
   );

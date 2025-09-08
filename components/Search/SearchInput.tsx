@@ -1,128 +1,84 @@
 "use client";
 
-import { useState } from "react";
+import { useState, SyntheticEvent, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { LuSearch } from "react-icons/lu";
-import { useAsync } from "react-use";
-import {
-  Box,
-  IconButton,
-  Group,
-  InputGroup,
-  Spinner,
-  Combobox,
-  HStack,
-  Portal,
-  Span,
-  useListCollection,
-} from "@chakra-ui/react";
-import { Peak } from "@/shared/types";
-import styles from "./SearchInput.module.scss";
+import { Autocomplete, Stack, TextField } from "@mui/material";
 import { getAutocompleteSuggestions } from "@/shared/api";
+import styles from "./SearchInput.module.scss";
+import { Peak } from "@/shared/types";
 
-export default function SearchInput() {
+export default function SearchComponent() {
   const router = useRouter();
   const [inputValue, setInputValue] = useState("");
+  const [options, setOptions] = useState<Peak[]>([]);
 
-  const { collection, set } = useListCollection<Peak>({
-    initialItems: [],
-    itemToString: (item) => item.name,
-    itemToValue: (item) => item.slug,
-  });
+  // Хук для загрузки вариантов автозаполнения
+  useEffect(() => {
+    const debounceTimeout = setTimeout(async () => {
+      const data = await getAutocompleteSuggestions(inputValue);
+      setOptions(data);
+    }, 300);
 
-  const state = useAsync(async () => {
-    if (inputValue.length < 3) {
-      return [];
-    }
-    const suggestions = await getAutocompleteSuggestions(inputValue);
-    set(suggestions);
-  }, [inputValue, set]);
+    return () => clearTimeout(debounceTimeout);
+  }, [inputValue]);
 
-  const handleSelectSuggestion = (item: Peak) => {
-    router.push(`/mountains/${item.slug}`);
-    setInputValue("");
-  };
+  // Обработчик события для нажатия Enter
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if (event.key === "Enter") {
+      // Ищем точное совпадение в списке
+      const exactMatch = options.find(
+        (mountain) => mountain.name.toLowerCase() === inputValue.toLowerCase(),
+      );
 
-  const handleSearch = () => {
-    const firstItem = collection.items[0];
-    if (firstItem) {
-      handleSelectSuggestion(firstItem);
-    } else {
-      router.push(`/mountains/${inputValue}`);
-    }
-  };
-
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      handleSearch();
+      if (exactMatch) {
+        // Если нашли совпадение, переходим на страницу горы по slug
+        router.push(`/mountains/${exactMatch.slug}`);
+      } else {
+        // Если совпадения нет, переходим на общую страницу поиска по query
+        const encodedSearchText = encodeURIComponent(inputValue);
+        router.push(`/search?q=${encodedSearchText}`);
+      }
     }
   };
 
   return (
-    <Box
-      height="100vh"
-      display="flex"
-      justifyContent="center"
-      className={styles["search-box"]}
-    >
-      <Combobox.Root
-        width="100%"
-        collection={collection}
-        placeholder="Mountains"
-        onInputValueChange={(e) => setInputValue(e.inputValue)}
-        positioning={{ sameWidth: false, placement: "bottom-start" }}
-      >
-        <Combobox.Control>
-          <InputGroup flex="1">
-            <Group attached w="full" maxW="sm">
-              <Combobox.Input
-                placeholder="Search mountain..."
-                className={styles["search-input"]}
-                onKeyDown={handleKeyDown}
-                disabled={state.loading}
-              />
-              <IconButton
-                aria-label="Search"
-                type="button"
-                onClick={handleSearch}
-                disabled={state.loading}
-              >
-                {state.loading ? <Spinner size="sm" /> : <LuSearch />}
-              </IconButton>
-            </Group>
-          </InputGroup>
-        </Combobox.Control>
-
-        <Portal>
-          <Combobox.Positioner>
-            <Combobox.Content minW="sm">
-              {state.loading ? (
-                <HStack p="2">
-                  <Spinner size="xs" borderWidth="1px" />
-                  <Span>Loading...</Span>
-                </HStack>
-              ) : state.error ? (
-                <Span p="2" color="fg.error">
-                  Error fetching
-                </Span>
-              ) : (
-                collection.items?.map((peak) => (
-                  <Combobox.Item key={peak.slug} item={peak.slug}>
-                    <HStack justify="space-between" textStyle="sm">
-                      <Span fontWeight="medium" truncate>
-                        {peak.name}
-                      </Span>
-                      <Span color="fg.muted" truncate>
-                        {peak.country} / {peak.region}
-                      </Span>
-                    </HStack>
-                  </Combobox.Item>
-                ))
-              )}
-            </Combobox.Content>
-          </Combobox.Positioner>
-        </Portal>
-      </Combobox.Root>
-    </Box>
+    <Stack spacing={2} width="300px" className={styles["search-box"]}>
+      <Autocomplete
+        size="small"
+        options={options}
+        className={styles["search-input"]}
+        getOptionLabel={(option) => {
+          if (typeof option === "string") {
+            return option;
+          }
+          return `${option.name}`;
+        }}
+        getOptionKey={(option) => {
+          if (typeof option === "string") {
+            return option;
+          }
+          return option.slug;
+        }}
+        onInputChange={(event: SyntheticEvent, newInputValue: string) => {
+          setInputValue(newInputValue);
+        }}
+        onKeyDown={handleKeyDown}
+        freeSolo
+        renderOption={(props, option) => {
+          const { key, ...otherProps } = props;
+          return (
+            <li key={key} {...otherProps}>
+              <div style={{ padding: "8px" }}>
+                <strong>{option.name}</strong>
+                <div style={{ color: "#888", fontSize: "0.8rem" }}>
+                  {option.region} / {option.country}
+                </div>
+              </div>
+            </li>
+          );
+        }}
+        renderInput={(params) => <TextField {...params} variant="outlined" />}
+      />
+    </Stack>
   );
 }
