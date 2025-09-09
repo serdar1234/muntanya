@@ -4,8 +4,8 @@ import { useState, SyntheticEvent, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Autocomplete, Stack, TextField } from "@mui/material";
 import { getAutocompleteSuggestions } from "@/shared/api";
-import styles from "./SearchInput.module.scss";
 import { Peak } from "@/shared/types";
+import styles from "./SearchInput.module.scss";
 
 export default function SearchComponent() {
   const router = useRouter();
@@ -21,8 +21,21 @@ export default function SearchComponent() {
     return () => clearTimeout(debounceTimeout);
   }, [inputValue]);
 
+  // Новый обработчик для выбора опции
+  const handleOptionSelect = (
+    event: SyntheticEvent,
+    value: Peak | string | null,
+  ) => {
+    // Проверяем, что выбрана именно гора (не строка)
+    if (value && typeof value !== "string") {
+      router.push(`/mountains/${value.slug}`);
+    }
+  };
+
+  // Обработчик нажатия Enter
   const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
     if (event.key === "Enter") {
+      // Ищем точное совпадение в списке
       const exactMatch = options.find(
         (mountain) => mountain.name.toLowerCase() === inputValue.toLowerCase(),
       );
@@ -61,6 +74,8 @@ export default function SearchComponent() {
           }
           return `${option.name}`;
         }}
+        // ДОБАВЛЯЕМ ОБРАБОТЧИК ВЫБОРА ОПЦИИ
+        onChange={handleOptionSelect}
         getOptionKey={(option) => {
           // key для списка
           if (typeof option === "string") {
@@ -71,7 +86,6 @@ export default function SearchComponent() {
         onInputChange={(event: SyntheticEvent, newInputValue: string) => {
           setInputValue(newInputValue); // контроль ввода
         }}
-        onChange={() => {}}
         onKeyDown={handleKeyDown}
         freeSolo
         renderOption={(props, option) => {
