@@ -7,6 +7,7 @@ import { MainLayoutProps } from "@/shared/types";
 import DynamicMap from "@/components/Map/";
 import { useEffect, useState } from "react";
 import { getDefaultPosition } from "@/shared/api";
+import MountainInfoCard from "../MountainInfoCard/MountainInfoCard";
 
 export default function MainLayout({
   initialMountain = null,
@@ -27,7 +28,10 @@ export default function MainLayout({
     fetchDefaultPosition();
   }, []);
 
-  const mapPosition = initialMountain?.coords ?? defaultPosition;
+  const coords = initialMountain?.peak?.coordinates;
+  const mapPosition =
+    ((coords && [coords?.lat, coords?.lng]) as unknown as LatLngTuple) ??
+    defaultPosition;
 
   return (
     <main className="main-layout">
@@ -35,12 +39,7 @@ export default function MainLayout({
         {mapPosition && <DynamicMap pos={mapPosition} />}
       </div>
       <SearchInput />
-      {initialMountain && (
-        <div className="mountain-info-panel">
-          <h3>{initialMountain.name}</h3>
-          <p>Координаты: {initialMountain.coords.join(", ")}</p>
-        </div>
-      )}
+      {initialMountain && <MountainInfoCard data={initialMountain} />}
       <MenuItem />
     </main>
   );

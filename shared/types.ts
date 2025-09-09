@@ -1,4 +1,5 @@
 import { LatLngTuple } from "leaflet";
+import { MountainDataBig } from "./mountainDataTypes";
 
 export interface MountainData {
   name: string;
@@ -6,7 +7,7 @@ export interface MountainData {
 }
 
 export interface MainLayoutProps {
-  initialMountain?: MountainData | null;
+  initialMountain?: MountainDataBig | null;
 }
 
 export interface ApiPeak {
@@ -39,3 +40,35 @@ export interface AutocompleteResponse {
     peaks: Peak[];
   };
 }
+
+// export interface MountainDataBig {
+//   peak: {
+//     id: number;
+//     name: string;
+//     slug: string;
+//     elevation: number;
+//     prominence: number;
+//     coordinates: {
+//       lat: string;
+//       lng: string;
+//       formatted: string;
+//     };
+//     tags: Record<string, string>;
+//     isVolcano: boolean;
+//     wikipedia: string;
+//     peak_ranges: { name: string }[];
+//     parks: [];
+//   };
+//   weather: {
+//     current: {
+//       temperature: number;
+//       condition: string;
+//       wind_speed: number;
+//     };
+//   };
+//   nearby_peaks: {
+//     name: string;
+//     distance_km: number;
+//   }[];
+//   error?: string;
+// }

@@ -27,15 +27,15 @@ export default function Map({ pos = position }: { pos?: LatLngTuple }) {
 
   const markers: { coords: LatLngTuple; text: string }[] = [
     {
-      coords: pos,
+      coords: pos.map(Number) as unknown as LatLngTuple,
       text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident neque modi aut nostrum voluptatibus, quos illum aperiam reiciendis est nam pariatur?",
     },
     {
-      coords: [pos[0], pos[1] + 0.01],
+      coords: [+pos[0], +pos[1] + 0.01],
       text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident neque modi aut nostrum voluptatibus, quos illum aperiam reiciendis est nam pariatur?",
     },
     {
-      coords: [pos[0] + 0.005, pos[1] - 0.01],
+      coords: [+pos[0] + 0.005, +pos[1] - 0.01],
       text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident neque modi aut nostrum voluptatibus, quos illum aperiam reiciendis est nam pariatur?",
     },
   ];
