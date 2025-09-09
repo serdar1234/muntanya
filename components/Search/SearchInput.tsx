@@ -12,7 +12,6 @@ export default function SearchComponent() {
   const [inputValue, setInputValue] = useState("");
   const [options, setOptions] = useState<Peak[]>([]);
 
-  // Хук для загрузки вариантов автозаполнения
   useEffect(() => {
     const debounceTimeout = setTimeout(async () => {
       const data = await getAutocompleteSuggestions(inputValue);
@@ -22,10 +21,8 @@ export default function SearchComponent() {
     return () => clearTimeout(debounceTimeout);
   }, [inputValue]);
 
-  // Обработчик события для нажатия Enter
   const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
     if (event.key === "Enter") {
-      // Ищем точное совпадение в списке
       const exactMatch = options.find(
         (mountain) => mountain.name.toLowerCase() === inputValue.toLowerCase(),
       );
@@ -55,26 +52,30 @@ export default function SearchComponent() {
     >
       <Autocomplete
         size="small"
-        options={options}
+        options={options} // тут берутся данные для автозаполнения
         className={styles["search-input"]}
         getOptionLabel={(option) => {
+          // текст в инпуте после выбора из списка
           if (typeof option === "string") {
             return option;
           }
           return `${option.name}`;
         }}
         getOptionKey={(option) => {
+          // key для списка
           if (typeof option === "string") {
             return option;
           }
           return option.slug;
         }}
         onInputChange={(event: SyntheticEvent, newInputValue: string) => {
-          setInputValue(newInputValue);
+          setInputValue(newInputValue); // контроль ввода
         }}
+        onChange={() => {}}
         onKeyDown={handleKeyDown}
         freeSolo
         renderOption={(props, option) => {
+          // как выглядят элементы списка
           const { key, ...otherProps } = props;
           return (
             <li key={key} {...otherProps}>
@@ -87,6 +88,7 @@ export default function SearchComponent() {
             </li>
           );
         }}
+        // внешний вид поля инпут
         renderInput={(params) => <TextField {...params} variant="outlined" />}
       />
     </Stack>
