@@ -1,0 +1,40 @@
+import {
+  AutocompleteRenderInputParams,
+  CircularProgress,
+  IconButton,
+  InputAdornment,
+  TextField,
+} from "@mui/material";
+import SearchIcon from "@mui/icons-material/Search";
+
+const renderSearchInput = (
+  params: AutocompleteRenderInputParams,
+  loading: boolean,
+  handleSearchClick: () => void,
+) => (
+  <TextField
+    {...params}
+    variant="outlined"
+    slotProps={{
+      input: {
+        ...params.InputProps,
+        endAdornment: (
+          <>
+            {params.InputProps.endAdornment}
+            <InputAdornment position="end">
+              {loading ? (
+                <CircularProgress color="inherit" size={20} />
+              ) : (
+                <IconButton aria-label="search" onClick={handleSearchClick}>
+                  <SearchIcon />
+                </IconButton>
+              )}
+            </InputAdornment>
+          </>
+        ),
+      },
+    }}
+  />
+);
+
+export default renderSearchInput;
