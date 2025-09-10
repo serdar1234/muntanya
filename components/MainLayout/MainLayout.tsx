@@ -8,6 +8,7 @@ import DynamicMap from "@/components/Map/";
 import { useEffect, useState } from "react";
 import { getDefaultPosition } from "@/shared/api";
 import MountainInfoCard from "../MountainInfoCard/MountainInfoCard";
+import ScrollToTopButton from "../ScrollToTopButton";
 
 export default function MainLayout({
   initialMountain = null,
@@ -41,6 +42,7 @@ export default function MainLayout({
       <SearchInput />
       {initialMountain && <MountainInfoCard data={initialMountain} />}
       <MenuItem />
+      <ScrollToTopButton />
     </main>
   );
 }

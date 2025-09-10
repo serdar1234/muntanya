@@ -1,14 +1,5 @@
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  Typography,
-  Grid,
-  Box,
-  List,
-  ListItem,
-  ListItemText,
-} from "@mui/material";
+import { Box, CardContent, CardHeader, Typography, Grid } from "@mui/material";
+import style from "./MountainInfoCard.module.scss";
 
 import { MountainDataBig } from "@/shared/mountainDataTypes";
 
@@ -18,10 +9,10 @@ interface MountainInfoCardProps {
 
 export default function MountainInfoCard({ data }: MountainInfoCardProps) {
   console.log(data);
-  const { peak, weather, nearby_peaks } = data;
+  const { peak, weather } = data;
 
   return (
-    <Card>
+    <Box component={"section"} className={style["card-container"]}>
       {/* sx={{ maxWidth: 600, margin: "auto", mt: 4 }}> */}
       <CardHeader
         title={peak.name}
@@ -49,9 +40,15 @@ export default function MountainInfoCard({ data }: MountainInfoCardProps) {
           </Grid>
         </Grid>
       </CardContent>
-    </Card>
+    </Box>
   );
 }
+
+// import {
+//   List,
+//   ListItem,
+//   ListItemText,
+// } from "@mui/material";
 
 // <Grid size={{ xs: 12, sm: 6 }}>
 //   <Box>

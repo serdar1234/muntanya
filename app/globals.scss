@@ -1,5 +1,4 @@
 :root {
-  --gap: 1rem;
   --page-padding: 1.25rem;
   --font-stack:
     system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
@@ -73,4 +72,10 @@ main,
   z-index: 401;
   font-size: 3rem;
   color: rgba(0, 0, 0, 0.5);
+}
+
+.leaflet-container .leaflet-control-attribution.leaflet-control {
+  position: fixed;
+  bottom: 0;
+  right: 0;
 }
