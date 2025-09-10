@@ -1,7 +1,12 @@
 import { Box, CardContent, CardHeader, Typography, Grid } from "@mui/material";
 import style from "./MountainInfoCard.module.scss";
-
+import Accordion from "@mui/material/Accordion";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import { MountainDataBig } from "@/shared/mountainDataTypes";
+import PeakDescription from "../PeakDescription";
 
 interface MountainInfoCardProps {
   data: MountainDataBig;
@@ -13,15 +18,16 @@ export default function MountainInfoCard({ data }: MountainInfoCardProps) {
 
   return (
     <Box component={"section"} className={style["card-container"]}>
-      {/* sx={{ maxWidth: 600, margin: "auto", mt: 4 }}> */}
       <CardHeader
         title={peak.name}
         subheader={`Elevation: ${peak.elevation} m`}
       />
       <CardContent>
-        <Typography variant="body1" sx={{ mb: 2 }}>
-          {peak.tags.description}
-        </Typography>
+        {peak.tags.description && (
+          <Typography component="div" variant="body1" sx={{ mb: 2 }}>
+            {<PeakDescription text={peak.tags.description} />}
+          </Typography>
+        )}
 
         <Grid container spacing={4}>
           <Grid size={{ xs: 12 }}>
