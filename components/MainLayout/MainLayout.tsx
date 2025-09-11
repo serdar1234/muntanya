@@ -1,20 +1,20 @@
 "use client";
 
-import MenuItem from "@/components/Menu";
-import SearchInput from "@/components/Search/SearchInput";
-import { LatLngTuple } from "leaflet";
-import { MainLayoutProps } from "@/shared/types";
-import DynamicMap from "@/components/Map/";
 import { useEffect, useState } from "react";
-import { getDefaultPosition } from "@/shared/api";
+import { LatLngTuple } from "leaflet";
+import MenuItem from "../Menu";
+import SearchInput from "../Search";
+import DynamicMap from "../Map";
 import MountainInfoCard from "../MountainInfoCard";
 import ScrollToTopButton from "../ScrollToTopButton";
-import SearchResultCard from "../SearchResultCard";
-import { Box } from "@mui/material";
+import SearchResultList from "../SearchResultList";
+import Box from "@mui/material/Box";
+import { MainLayoutProps } from "@/shared/types";
+import { getDefaultPosition } from "@/shared/api";
 
 export default function MainLayout({
   initialMountain = null,
-  searchResults = [],
+  searchResults = null,
 }: MainLayoutProps) {
   const [defaultPosition, setDefaultPosition] = useState<LatLngTuple | null>(
     null,
@@ -36,7 +36,6 @@ export default function MainLayout({
   const mapPosition =
     ((coords && [coords?.lat, coords?.lng]) as unknown as LatLngTuple) ??
     defaultPosition;
-  // console.log("search: ", searchResults);
   return (
     <main className="main-layout">
       <div className="map-column">
@@ -45,13 +44,9 @@ export default function MainLayout({
       <SearchInput />
       <Box component={"section"} className="card-container">
         {initialMountain && <MountainInfoCard data={initialMountain} />}
-        {searchResults &&
-          searchResults.length > 0 &&
-          searchResults.map((peak) => (
-            <div key={peak.slug}>
-              <SearchResultCard peak={peak} />
-            </div>
-          ))}
+        {searchResults && searchResults.data.peaks.length > 0 && (
+          <SearchResultList searchResults={searchResults} />
+        )}
       </Box>
       <MenuItem />
       <ScrollToTopButton />

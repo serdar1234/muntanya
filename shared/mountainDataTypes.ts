@@ -3,7 +3,7 @@ export interface MountainDataBig {
   weather: Weather;
   nearby_peaks: Nearby_Peak[];
   recent_reviews: Recent_Review[];
-  error: string;
+  error?: string;
 }
 
 export interface Recent_Review {

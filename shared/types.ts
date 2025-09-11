@@ -8,7 +8,7 @@ export interface MountainData {
 
 export interface MainLayoutProps {
   initialMountain?: MountainDataBig | null;
-  searchResults?: ApiPeak[];
+  searchResults?: SuccessResponse | null;
 }
 
 export interface ApiPeak {
@@ -20,12 +20,20 @@ export interface ApiPeak {
   lng: string;
   prominence: number;
   is_volcano: boolean;
+  type: string; // type: "peak";
 }
 
-export interface ApiResponse {
+export type ApiResponse = SuccessResponse | ErrorResponse;
+export interface SuccessResponse {
   data: {
     peaks: ApiPeak[];
+    pagination: IPagination;
+    query: string;
   };
+}
+
+export interface ErrorResponse {
+  error: string;
 }
 
 export interface Peak {
@@ -42,34 +50,9 @@ export interface AutocompleteResponse {
   };
 }
 
-// export interface MountainDataBig {
-//   peak: {
-//     id: number;
-//     name: string;
-//     slug: string;
-//     elevation: number;
-//     prominence: number;
-//     coordinates: {
-//       lat: string;
-//       lng: string;
-//       formatted: string;
-//     };
-//     tags: Record<string, string>;
-//     isVolcano: boolean;
-//     wikipedia: string;
-//     peak_ranges: { name: string }[];
-//     parks: [];
-//   };
-//   weather: {
-//     current: {
-//       temperature: number;
-//       condition: string;
-//       wind_speed: number;
-//     };
-//   };
-//   nearby_peaks: {
-//     name: string;
-//     distance_km: number;
-//   }[];
-//   error?: string;
-// }
+export interface IPagination {
+  current_page: number;
+  per_page: number;
+  total_count: number;
+  total_pages: number;
+}

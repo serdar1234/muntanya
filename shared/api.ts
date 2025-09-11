@@ -5,63 +5,57 @@ import {
   MountainData,
   AutocompleteResponse,
   Peak,
+  SuccessResponse,
 } from "./types";
 import { MountainDataBig } from "./mountainDataTypes";
 
 export async function getSearchSuggestions(
   query: string
-): Promise<{ peaks: ApiPeak[] }> {
+): Promise<SuccessResponse | null> {
   const url = `https://api.climepeak.com/api/v1/home/search?q=${query}`;
 
   try {
     const response = await fetch(url);
     if (!response.ok) {
       console.error(`Error in getSearchSuggestions: ${response.statusText}`);
-      return { peaks: [] };
+      return null;
     }
 
     const apiData: ApiResponse = await response.json();
-    console.log("API data: ", apiData);
-    const data: { peaks: ApiPeak[] } = apiData.data;
-    return data;
+
+    if ("error" in apiData) {
+      return null;
+    }
+    return apiData;
   } catch (error) {
     console.error("Could not find data about the mountain:", error);
-    return { peaks: [] };
+    return null;
   }
 }
 
-export async function getMountainData(
-  query: string
-): Promise<MountainData | null> {
+export async function getSearchResults(
+  query: string,
+  page?: number | undefined
+): Promise<SuccessResponse | null> {
+  if (page) {
+    query += `&page=${page}`;
+  }
   const url = `https://api.climepeak.com/api/v1/home/search?q=${query}`;
 
   try {
     const response = await fetch(url);
     if (!response.ok) {
-      console.error(`Error in getMountainData: ${response.statusText}`);
+      console.error(`Error in getSearchResults: ${response.statusText}`);
       return null;
     }
 
     const apiData: ApiResponse = await response.json();
-    const data: ApiPeak[] = apiData.data.peaks.sort(
-      (a, b) => b.prominence - a.prominence
-    );
-    const mountain = data.find(
-      (peak) =>
-        peak.name.toLowerCase().includes(query.toLowerCase()) ||
-        peak.slug.toLowerCase().includes(query.toLowerCase())
-    );
 
-    if (!mountain) {
+    if ("error" in apiData) {
       return null;
     }
 
-    const mountainData: MountainData = {
-      name: mountain.name,
-      coords: [parseFloat(mountain.lat), parseFloat(mountain.lng)],
-    };
-
-    return mountainData;
+    return apiData;
   } catch (error) {
     console.error("Could not find data about the mountain:", error);
     return null;
@@ -74,7 +68,7 @@ export async function getPeakById(id: string): Promise<MountainDataBig | null> {
     const response = await fetch(url);
     if (!response.ok) {
       const url = `https://api.climepeak.com/api/v1/home/search?q=${id}`;
-      const res = getMountainData(url);
+      const res = getSearchResults(url);
       if (res === null) return null;
       return res as unknown as MountainDataBig;
     }

@@ -16,7 +16,7 @@ export default async function MountainPage({
   // const endTime = performance.now();
   // const duration = endTime - startTime;
   // console.log(`Время выполнения getPeakById: ${duration.toFixed(2)} мс`);
-
+  console.log("mountain: ", mountain);
   if (!mountain || mountain.error) {
     notFound();
   }

@@ -1,4 +1,4 @@
-import { getSearchSuggestions } from "@/shared/api";
+import { getSearchResults } from "@/shared/api";
 import { ApiPeak } from "@/shared/types";
 import { notFound } from "next/navigation";
 import MainLayout from "@/components/MainLayout";
@@ -10,17 +10,20 @@ interface SearchPageProps {
 }
 
 export default async function SearchPage({ searchParams }: SearchPageProps) {
-  const query = searchParams.q;
+  const query = await searchParams.q;
 
   if (!query) {
     notFound();
   }
-  const data = await getSearchSuggestions(query);
-  const results: ApiPeak[] = data.peaks;
+  const data = await getSearchResults(query);
+  let results: ApiPeak[] = [];
+  if (data) {
+    results = data.data.peaks;
+  }
 
   if (results.length === 0) {
     notFound();
   }
 
-  return <MainLayout searchResults={results} />;
+  return <MainLayout searchResults={data} />;
 }
