@@ -1,5 +1,4 @@
-import { Box, CardContent, CardHeader, Typography, Grid } from "@mui/material";
-import style from "./MountainInfoCard.module.scss";
+import { CardContent, CardHeader, Typography, Grid } from "@mui/material";
 import { MountainDataBig } from "@/shared/mountainDataTypes";
 import PeakDescription from "../PeakDescription";
 import WeatherConverter from "../WeatherConverter";
@@ -13,7 +12,7 @@ export default function MountainInfoCard({ data }: MountainInfoCardProps) {
   const { peak, weather } = data;
 
   return (
-    <Box component={"section"} className={style["card-container"]}>
+    <>
       <CardHeader
         title={peak.name}
         subheader={`Elevation: ${peak.elevation} m`}
@@ -35,6 +34,6 @@ export default function MountainInfoCard({ data }: MountainInfoCardProps) {
           </Grid>
         </Grid>
       </CardContent>
-    </Box>
+    </>
   );
 }

@@ -44,6 +44,7 @@ export default function SearchComponent() {
         router.push(`/mountains/${exactMatch.slug}`);
       } else {
         const encodedSearchText = encodeURIComponent(inputValue);
+        // router.push(`/mountains/${encodedSearchText}`);
         router.push(`/search?q=${encodedSearchText}`);
       }
     }

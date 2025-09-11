@@ -8,6 +8,7 @@ export interface MountainData {
 
 export interface MainLayoutProps {
   initialMountain?: MountainDataBig | null;
+  searchResults?: ApiPeak[];
 }
 
 export interface ApiPeak {

@@ -8,6 +8,28 @@ import {
 } from "./types";
 import { MountainDataBig } from "./mountainDataTypes";
 
+export async function getSearchSuggestions(
+  query: string
+): Promise<{ peaks: ApiPeak[] }> {
+  const url = `https://api.climepeak.com/api/v1/home/search?q=${query}`;
+
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      console.error(`Error in getSearchSuggestions: ${response.statusText}`);
+      return { peaks: [] };
+    }
+
+    const apiData: ApiResponse = await response.json();
+    console.log("API data: ", apiData);
+    const data: { peaks: ApiPeak[] } = apiData.data;
+    return data;
+  } catch (error) {
+    console.error("Could not find data about the mountain:", error);
+    return { peaks: [] };
+  }
+}
+
 export async function getMountainData(
   query: string
 ): Promise<MountainData | null> {
@@ -60,14 +82,6 @@ export async function getPeakById(id: string): Promise<MountainDataBig | null> {
     const { data: mountain } = await response.json();
 
     if (!mountain) return null;
-
-    // const mountainData: MountainData = {
-    //   name: mountain.name,
-    //   coords: [
-    //     parseFloat(mountain.coordinates.lat),
-    //     parseFloat(mountain.coordinates.lng),
-    //   ],
-    // };
 
     return mountain;
   } catch (error) {
