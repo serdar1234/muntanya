@@ -46,11 +46,12 @@ const WeatherConverter = ({
 
   return (
     <Box
+      className="weather-card"
       sx={{
         p: 2,
         border: "1px solid #ccc",
         borderRadius: 2,
-        backgroundColor: "white",
+        // backgroundColor: "white",
         boxShadow: "0px 2px 4px rgba(0,0,0,0.1)",
       }}
     >

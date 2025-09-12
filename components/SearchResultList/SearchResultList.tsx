@@ -34,7 +34,7 @@ export default function SearchResultList({
   }
 
   return (
-    <List>
+    <List className="search-result-list">
       <Typography variant="h5" sx={{ m: 2 }}>
         Search results:
       </Typography>
