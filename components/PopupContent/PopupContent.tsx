@@ -1,4 +1,4 @@
-const leaf = "/leaflet/mount.jpg";
+// const leaf = "/leaflet/mount.jpg";
 
 export default function PopupContent({
   title,
@@ -9,8 +9,8 @@ export default function PopupContent({
 }) {
   return (
     <>
-      <h3>{title || "Mt.Ayrybaba"}</h3>
-      <img src={leaf} alt={title || "Ayrybaba"} style={{ float: "right" }} />
+      <h3>{title || ""}</h3>
+      {/* <img src={leaf} alt={title || ""} style={{ float: "right" }} /> */}
       <p>{description || ""}</p>
     </>
   );

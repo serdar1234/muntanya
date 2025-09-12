@@ -11,6 +11,7 @@ import SearchResultList from "../SearchResultList";
 import Box from "@mui/material/Box";
 import { MainLayoutProps } from "@/shared/types";
 import { getDefaultPosition } from "@/shared/api";
+import setMarkers from "@/shared/setMarkers";
 
 export default function MainLayout({
   initialMountain = null,
@@ -19,6 +20,7 @@ export default function MainLayout({
   const [defaultPosition, setDefaultPosition] = useState<LatLngTuple | null>(
     null,
   );
+
   useEffect(() => {
     async function fetchDefaultPosition() {
       try {
@@ -28,18 +30,19 @@ export default function MainLayout({
         console.error("Could not find data about the mountain:", error);
       }
     }
-
     fetchDefaultPosition();
   }, []);
 
   const coords = initialMountain?.peak?.coordinates;
+  const markers = initialMountain ? setMarkers({ data: initialMountain }) : [];
+  console.log("markers", markers);
   const mapPosition =
     ((coords && [coords?.lat, coords?.lng]) as unknown as LatLngTuple) ??
     defaultPosition;
   return (
     <main className="main-layout">
       <div className="map-column">
-        {mapPosition && <DynamicMap pos={mapPosition} />}
+        {mapPosition && <DynamicMap pos={mapPosition} markers={markers} />}
       </div>
       <Suspense>
         <SearchInput />

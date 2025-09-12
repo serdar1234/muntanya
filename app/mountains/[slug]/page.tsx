@@ -1,6 +1,6 @@
 import MainLayout from "@/components/MainLayout";
 import { notFound } from "next/navigation";
-import { getPeakById } from "@/shared/api";
+import { getPeakById, getSearchResults } from "@/shared/api";
 
 export default async function MountainPage({
   params,
@@ -13,13 +13,17 @@ export default async function MountainPage({
 
   const mountain = await getPeakById(slug);
 
+  if (mountain === null) {
+    const searchResults = await getSearchResults(slug);
+    if (searchResults) {
+      return <MainLayout searchResults={searchResults} />;
+    } else {
+      notFound();
+    }
+  }
   // const endTime = performance.now();
   // const duration = endTime - startTime;
   // console.log(`Время выполнения getPeakById: ${duration.toFixed(2)} мс`);
-  console.log("mountain: ", mountain);
-  if (!mountain || mountain.error) {
-    notFound();
-  }
 
   return <MainLayout initialMountain={mountain} />;
 }

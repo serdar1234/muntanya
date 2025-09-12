@@ -1,5 +1,5 @@
 import { LatLngTuple } from "leaflet";
-import { MountainDataBig } from "./mountainDataTypes";
+import { MountainDataBig, Nearby_Peak } from "./mountainDataTypes";
 
 export interface MountainData {
   name: string;
@@ -36,6 +36,21 @@ export interface ErrorResponse {
   error: string;
 }
 
+export interface SuccessNearbyPeaksResponse {
+  data: {
+    center_peak: {
+      id: number;
+      name: string;
+      slug: string;
+      lat: string;
+      lng: string;
+    };
+    radius_km: number;
+    nearby_peaks: Nearby_Peak[];
+    pagination: IPagination;
+  };
+}
+
 export interface Peak {
   name: string;
   elevation: number;
@@ -56,3 +71,8 @@ export interface IPagination {
   total_count: number;
   total_pages: number;
 }
+
+export type MarkerData = {
+  coords: LatLngTuple;
+  text: string;
+};

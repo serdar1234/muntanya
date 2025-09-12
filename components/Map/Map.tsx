@@ -6,6 +6,7 @@ import { DivIcon, divIcon, Icon, LatLngTuple, point } from "leaflet";
 import styles from "./Map.module.scss";
 import "leaflet/dist/leaflet.css";
 import PopupContent from "../PopupContent/";
+import { MarkerData } from "@/shared/types";
 
 const position: LatLngTuple = [46.8523, -121.7605];
 
@@ -16,7 +17,13 @@ const myIcon = new Icon({
   shadowSize: [38, 38],
 });
 
-export default function Map({ pos = position }: { pos?: LatLngTuple }) {
+export default function Map({
+  pos = position,
+  markers = [],
+}: {
+  pos?: LatLngTuple;
+  markers?: MarkerData[];
+}) {
   const makeIcon = (cluster: { getChildCount: () => number }): DivIcon => {
     return divIcon({
       html: `<div class=${styles["cluster-icon"]}>${cluster.getChildCount()}</div>`,
@@ -25,20 +32,20 @@ export default function Map({ pos = position }: { pos?: LatLngTuple }) {
     });
   };
 
-  const markers: { coords: LatLngTuple; text: string }[] = [
-    {
-      coords: pos.map(Number) as unknown as LatLngTuple,
-      text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident neque modi aut nostrum voluptatibus, quos illum aperiam reiciendis est nam pariatur?",
-    },
-    {
-      coords: [+pos[0], +pos[1] + 0.01],
-      text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident neque modi aut nostrum voluptatibus, quos illum aperiam reiciendis est nam pariatur?",
-    },
-    {
-      coords: [+pos[0] + 0.005, +pos[1] - 0.01],
-      text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident neque modi aut nostrum voluptatibus, quos illum aperiam reiciendis est nam pariatur?",
-    },
-  ];
+  // const markerZ: MarkerData[] = [
+  //   {
+  //     coords: pos.map(Number) as unknown as LatLngTuple,
+  //     text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident neque modi aut nostrum voluptatibus, quos illum aperiam reiciendis est nam pariatur?",
+  //   },
+  //   {
+  //     coords: [+pos[0], +pos[1] + 0.01],
+  //     text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident neque modi aut nostrum voluptatibus, quos illum aperiam reiciendis est nam pariatur?",
+  //   },
+  //   {
+  //     coords: [+pos[0] + 0.005, +pos[1] - 0.01],
+  //     text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident neque modi aut nostrum voluptatibus, quos illum aperiam reiciendis est nam pariatur?",
+  //   },
+  // ];
 
   return (
     <MapContainer
@@ -52,15 +59,16 @@ export default function Map({ pos = position }: { pos?: LatLngTuple }) {
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
       <MarkerClusterGroup chunkedLoading iconCreateFunction={makeIcon}>
-        {markers.map((m) => {
-          return (
-            <Marker key={String(m.coords)} position={m.coords} icon={myIcon}>
-              <Popup offset={[0, -10]}>
-                <PopupContent title="" description={m.text} />
-              </Popup>
-            </Marker>
-          );
-        })}
+        {markers.length > 0 &&
+          markers.map((m) => {
+            return (
+              <Marker key={String(m.coords)} position={m.coords} icon={myIcon}>
+                <Popup offset={[0, -10]}>
+                  <PopupContent title={m.text} description={""} />
+                </Popup>
+              </Marker>
+            );
+          })}
       </MarkerClusterGroup>
     </MapContainer>
   );

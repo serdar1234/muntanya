@@ -2,34 +2,12 @@ import { LatLngTuple } from "leaflet";
 import {
   ApiResponse,
   AutocompleteResponse,
+  ErrorResponse,
   Peak,
+  SuccessNearbyPeaksResponse,
   SuccessResponse,
 } from "./types";
 import { MountainDataBig } from "./mountainDataTypes";
-
-export async function getSearchSuggestions(
-  query: string
-): Promise<SuccessResponse | null> {
-  const url = `https://api.climepeak.com/api/v1/home/search?q=${query}`;
-
-  try {
-    const response = await fetch(url);
-    if (!response.ok) {
-      console.error(`Error in getSearchSuggestions: ${response.statusText}`);
-      return null;
-    }
-
-    const apiData: ApiResponse = await response.json();
-
-    if ("error" in apiData) {
-      return null;
-    }
-    return apiData;
-  } catch (error) {
-    console.error("Could not find data about the mountain:", error);
-    return null;
-  }
-}
 
 export async function getSearchResults(
   query: string,
@@ -43,7 +21,7 @@ export async function getSearchResults(
   try {
     const response = await fetch(url);
     if (!response.ok) {
-      console.error(`Error in getSearchResults: ${response}`);
+      console.log(`Error in getSearchResults: ${response}`);
       return null;
     }
 
@@ -55,29 +33,7 @@ export async function getSearchResults(
 
     return apiData;
   } catch (error) {
-    console.error("Could not find data about the mountain:", error);
-    return null;
-  }
-}
-
-export async function getPeakById(id: string): Promise<MountainDataBig | null> {
-  const url = `https://api.climepeak.com/api/v1/peaks/${id}`;
-  try {
-    const response = await fetch(url);
-    if (!response.ok) {
-      const url = `https://api.climepeak.com/api/v1/home/search?q=${id}`;
-      const res = getSearchResults(url);
-      if (res === null) return null;
-      return res as unknown as MountainDataBig;
-    }
-
-    const { data: mountain } = await response.json();
-
-    if (!mountain) return null;
-
-    return mountain;
-  } catch (error) {
-    console.error("Could not find the mountain", error);
+    console.log("Could not find data about the mountain:", error);
     return null;
   }
 }
@@ -88,7 +44,7 @@ export async function getDefaultPosition(): Promise<LatLngTuple> {
       "https://api.climepeak.com/api/v1/home/location"
     );
     if (!response.ok) {
-      console.error(`Error receiving data: ${response.statusText}`);
+      console.log(`Error receiving data: ${response.statusText}`);
       return [46.8523, -121.7605];
     }
 
@@ -101,11 +57,11 @@ export async function getDefaultPosition(): Promise<LatLngTuple> {
       const { lat, lng } = responseData.data.location.location;
       return [lat, lng];
     } else {
-      console.error("Incorrect data format:", responseData);
+      console.log("Incorrect data format:", responseData);
       return [46.8523, -121.7605];
     }
   } catch (error) {
-    console.error("Could not find data about the mountain:", error);
+    console.log("Could not find data about the mountain:", error);
     return [46.8523, -121.7605];
   }
 }
@@ -118,14 +74,58 @@ export async function getAutocompleteSuggestions(
   try {
     const response = await fetch(url);
     if (!response.ok) {
-      console.error(`Ошибка API: ${response.statusText}`);
+      console.log(`Ошибка API: ${response.statusText}`);
       return [];
     }
 
     const data: AutocompleteResponse = await response.json();
     return data.data.peaks;
   } catch (error) {
-    console.error("Не удалось получить данные для автокомплита:", error);
+    console.log("Не удалось получить данные для автокомплита:", error);
     return [];
+  }
+}
+
+export async function getPeakById(id: string): Promise<MountainDataBig | null> {
+  const url = `https://api.climepeak.com/api/v1/peaks/${id}`;
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      return null;
+    }
+
+    const { data: mountain } = await response.json();
+
+    if (!mountain) return null;
+
+    return mountain;
+  } catch (error) {
+    if (error instanceof Error) {
+      console.log("getPeakById error: ", error.message);
+    }
+    return null;
+  }
+}
+
+export async function getNearbyPeaks(
+  id: string
+): Promise<SuccessNearbyPeaksResponse | null> {
+  const url = `https://api.climepeak.com/api/v1/peaks/${id}/nearby`;
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      return null;
+    }
+    const apiData: SuccessNearbyPeaksResponse | ErrorResponse =
+      await response.json();
+    if ("error" in apiData) {
+      return null;
+    }
+    return apiData;
+  } catch (error) {
+    if (error instanceof Error) {
+      console.log("getNearbyPeaks error: ", error.message);
+    }
+    return null;
   }
 }
