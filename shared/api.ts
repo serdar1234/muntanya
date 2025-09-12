@@ -1,8 +1,6 @@
 import { LatLngTuple } from "leaflet";
 import {
-  ApiPeak,
   ApiResponse,
-  MountainData,
   AutocompleteResponse,
   Peak,
   SuccessResponse,
@@ -45,7 +43,7 @@ export async function getSearchResults(
   try {
     const response = await fetch(url);
     if (!response.ok) {
-      console.error(`Error in getSearchResults: ${response.statusText}`);
+      console.error(`Error in getSearchResults: ${response}`);
       return null;
     }
 

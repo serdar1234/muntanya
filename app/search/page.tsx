@@ -10,7 +10,8 @@ interface SearchPageProps {
 }
 
 export default async function SearchPage({ searchParams }: SearchPageProps) {
-  const query = await searchParams.q;
+  const params = await searchParams;
+  const query = params.q;
 
   if (!query) {
     notFound();

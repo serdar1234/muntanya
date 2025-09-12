@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, SyntheticEvent, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Autocomplete, Stack } from "@mui/material";
 import { getAutocompleteSuggestions } from "@/shared/api";
 import { Peak } from "@/shared/types";
@@ -10,9 +10,14 @@ import renderSearchInput from "./renderSearchInput";
 
 export default function SearchComponent() {
   const router = useRouter();
+  const searchParams = useSearchParams().toString();
   const [inputValue, setInputValue] = useState("");
   const [options, setOptions] = useState<Peak[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
+
+  useEffect(() => {
+    setLoading(false);
+  }, [searchParams]);
 
   useEffect(() => {
     const debounceTimeout = setTimeout(async () => {
@@ -44,15 +49,15 @@ export default function SearchComponent() {
         router.push(`/mountains/${exactMatch.slug}`);
       } else {
         const encodedSearchText = encodeURIComponent(inputValue);
-        // router.push(`/mountains/${encodedSearchText}`);
         router.push(`/search?q=${encodedSearchText}`);
       }
     }
   };
 
   const handleSearchClick = () => {
+    setLoading(true);
     const encodedSearchText = encodeURIComponent(inputValue);
-    router.push(`/mountains/${encodedSearchText}`);
+    router.push(`/search?q=${encodedSearchText}`);
   };
 
   return (

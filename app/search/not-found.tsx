@@ -11,10 +11,10 @@ export default function NotFound() {
       <Snackbar
         open={open}
         autoHideDuration={5000}
-        sx={{ mt: "4rem" }}
         onClose={() => setOpen(false)}
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
-        message="This page does not exist"
+        sx={{ mt: "4rem" }}
+        message="Could not find this mountain"
       />
       <MainLayout />
     </>
