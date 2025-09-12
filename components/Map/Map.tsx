@@ -32,21 +32,6 @@ export default function Map({
     });
   };
 
-  // const markerZ: MarkerData[] = [
-  //   {
-  //     coords: pos.map(Number) as unknown as LatLngTuple,
-  //     text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident neque modi aut nostrum voluptatibus, quos illum aperiam reiciendis est nam pariatur?",
-  //   },
-  //   {
-  //     coords: [+pos[0], +pos[1] + 0.01],
-  //     text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident neque modi aut nostrum voluptatibus, quos illum aperiam reiciendis est nam pariatur?",
-  //   },
-  //   {
-  //     coords: [+pos[0] + 0.005, +pos[1] - 0.01],
-  //     text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident neque modi aut nostrum voluptatibus, quos illum aperiam reiciendis est nam pariatur?",
-  //   },
-  // ];
-
   return (
     <MapContainer
       center={pos || position}
@@ -64,7 +49,7 @@ export default function Map({
             return (
               <Marker key={String(m.coords)} position={m.coords} icon={myIcon}>
                 <Popup offset={[0, -10]}>
-                  <PopupContent title={m.text} description={""} />
+                  <PopupContent marker={m} />
                 </Popup>
               </Marker>
             );

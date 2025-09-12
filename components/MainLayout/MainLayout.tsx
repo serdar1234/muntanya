@@ -11,7 +11,7 @@ import SearchResultList from "../SearchResultList";
 import Box from "@mui/material/Box";
 import { MainLayoutProps } from "@/shared/types";
 import { getDefaultPosition } from "@/shared/api";
-import setMarkers from "@/shared/setMarkers";
+import getNearbyMarkers from "@/shared/getNearbyMarkers";
 
 export default function MainLayout({
   initialMountain = null,
@@ -27,15 +27,17 @@ export default function MainLayout({
         const position = await getDefaultPosition();
         setDefaultPosition(position);
       } catch (error) {
-        console.error("Could not find data about the mountain:", error);
+        console.log("Could not find data about the mountain:", error);
       }
     }
     fetchDefaultPosition();
   }, []);
 
   const coords = initialMountain?.peak?.coordinates;
-  const markers = initialMountain ? setMarkers({ data: initialMountain }) : [];
-  console.log("markers", markers);
+  const markers = initialMountain
+    ? getNearbyMarkers({ data: initialMountain })
+    : [];
+
   const mapPosition =
     ((coords && [coords?.lat, coords?.lng]) as unknown as LatLngTuple) ??
     defaultPosition;

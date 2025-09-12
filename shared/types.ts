@@ -74,5 +74,7 @@ export interface IPagination {
 
 export type MarkerData = {
   coords: LatLngTuple;
-  text: string;
+  name: string;
+  slug: string;
+  elevation: number;
 };

@@ -8,7 +8,6 @@ interface MountainInfoCardProps {
 }
 
 export default function MountainInfoCard({ data }: MountainInfoCardProps) {
-  console.log(WeatherConverter);
   const { peak, weather } = data;
 
   return (

@@ -1,17 +1,14 @@
-// const leaf = "/leaflet/mount.jpg";
+import { MarkerData } from "@/shared/types";
+import Link from "next/link";
 
-export default function PopupContent({
-  title,
-  description,
-}: {
-  title: string;
-  description: string;
-}) {
+export default function PopupContent({ marker }: { marker: MarkerData }) {
+  const { name, slug, elevation } = marker;
   return (
     <>
-      <h3>{title || ""}</h3>
-      {/* <img src={leaf} alt={title || ""} style={{ float: "right" }} /> */}
-      <p>{description || ""}</p>
+      <h3>
+        <Link href={`/mountains/${slug}`}>{name || ""}</Link>
+      </h3>
+      <p>Elevation: {elevation} m</p>
     </>
   );
 }
