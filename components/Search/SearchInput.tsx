@@ -8,7 +8,7 @@ import { Peak } from "@/shared/types";
 import styles from "./SearchInput.module.scss";
 import renderSearchInput from "./renderSearchInput";
 
-export default function SearchComponent() {
+export default function SearchInput() {
   const router = useRouter();
   const searchParams = useSearchParams().toString();
   const [inputValue, setInputValue] = useState("");

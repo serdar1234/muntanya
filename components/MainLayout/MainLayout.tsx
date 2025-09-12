@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { LatLngTuple } from "leaflet";
 import MenuItem from "../Menu";
 import SearchInput from "../Search";
@@ -41,7 +41,9 @@ export default function MainLayout({
       <div className="map-column">
         {mapPosition && <DynamicMap pos={mapPosition} />}
       </div>
-      <SearchInput />
+      <Suspense>
+        <SearchInput />
+      </Suspense>
       <Box component={"section"} className="card-container">
         {initialMountain && <MountainInfoCard data={initialMountain} />}
         {searchResults && searchResults.data.peaks.length > 0 && (
