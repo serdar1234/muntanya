@@ -8,6 +8,12 @@ export function MenuList({
 }: {
   toggleDrawer: (open: boolean) => void;
 }) {
+  const listItems = [
+    { text: "Home", href: "/" },
+    { text: "Mount Everest", href: "/mountains/mount-everest" },
+    { text: "Kilimanjaro", href: "/mountains/kilimanjaro" },
+  ];
+
   return (
     <div
       role="presentation"
@@ -15,36 +21,19 @@ export function MenuList({
       onKeyDown={() => toggleDrawer(false)}
     >
       <List>
-        <ListItem
-          component={Link}
-          href="/"
-          sx={{ textDecoration: "none", color: "inherit" }}
-        >
-          <ListItemIcon>
-            <HomeIcon />
-          </ListItemIcon>
-          <ListItemText primary="Главная" />
-        </ListItem>
-        <ListItem
-          component={Link}
-          href="/mountains/mount-everest"
-          sx={{ textDecoration: "none", color: "inherit" }}
-        >
-          <ListItemIcon>
-            <TerrainIcon />
-          </ListItemIcon>
-          <ListItemText primary="Гора Эверест" />
-        </ListItem>
-        <ListItem
-          component={Link}
-          href="/mountains/kilimanjaro"
-          sx={{ textDecoration: "none", color: "inherit" }}
-        >
-          <ListItemIcon>
-            <TerrainIcon />
-          </ListItemIcon>
-          <ListItemText primary="Гора Килиманджаро" />
-        </ListItem>
+        {listItems.map((item) => (
+          <ListItem
+            key={item.text}
+            component={Link}
+            href={item.href}
+            sx={{ textDecoration: "none", color: "inherit" }}
+          >
+            <ListItemIcon>
+              {item.text === "Home" ? <HomeIcon /> : <TerrainIcon />}
+            </ListItemIcon>
+            <ListItemText primary={item.text} />
+          </ListItem>
+        ))}
       </List>
     </div>
   );
