@@ -1,18 +1,19 @@
+"use client";
+
 import Fab from "@mui/material/Fab";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { useScrollTrigger, Zoom } from "@mui/material";
 
 const ScrollToTopButton = () => {
-  // `useScrollTrigger` помогает определить, когда нужно показывать кнопку
   const trigger = useScrollTrigger({
-    disableHysteresis: true, // Кнопка появляется сразу
-    threshold: 100, // Показываем кнопку, когда прокручено 100px
+    disableHysteresis: true,
+    threshold: 100,
   });
 
   const handleClick = () => {
     window.scrollTo({
       top: 0,
-      behavior: "smooth", // Делает прокрутку плавной
+      behavior: "smooth",
     });
   };
 

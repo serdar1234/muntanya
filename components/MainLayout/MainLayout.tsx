@@ -1,6 +1,4 @@
-"use client";
-
-import { Suspense, useEffect, useState } from "react";
+import { Suspense } from "react";
 import { LatLngTuple } from "leaflet";
 import MenuItem from "../Menu";
 import SearchInput from "../Search";
@@ -10,29 +8,12 @@ import ScrollToTopButton from "../ScrollToTopButton";
 import SearchResultList from "../SearchResultList";
 import Box from "@mui/material/Box";
 import { MainLayoutProps } from "@/shared/types";
-import { getDefaultPosition } from "@/shared/api";
 import getNearbyMarkers from "@/shared/getNearbyMarkers";
 
 export default function MainLayout({
   initialMountain = null,
   searchResults = null,
 }: MainLayoutProps) {
-  const [defaultPosition, setDefaultPosition] = useState<LatLngTuple | null>(
-    null,
-  );
-
-  useEffect(() => {
-    async function fetchDefaultPosition() {
-      try {
-        const position = await getDefaultPosition();
-        setDefaultPosition(position);
-      } catch (error) {
-        console.log("Could not find data about the mountain:", error);
-      }
-    }
-    fetchDefaultPosition();
-  }, []);
-
   const coords = initialMountain?.peak?.coordinates;
   const markers = initialMountain
     ? getNearbyMarkers({ data: initialMountain })
@@ -40,11 +21,11 @@ export default function MainLayout({
 
   const mapPosition =
     ((coords && [coords?.lat, coords?.lng]) as unknown as LatLngTuple) ??
-    defaultPosition;
+    undefined;
   return (
     <main className="main-layout">
       <div className="map-column">
-        {mapPosition && <DynamicMap pos={mapPosition} markers={markers} />}
+        <DynamicMap pos={mapPosition} markers={markers} />
       </div>
       <Suspense>
         <SearchInput />
