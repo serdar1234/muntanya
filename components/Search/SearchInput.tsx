@@ -29,7 +29,7 @@ export default function SearchInput() {
   }, [inputValue]);
 
   const handleOptionSelect = (
-    event: SyntheticEvent,
+    _: SyntheticEvent,
     value: Peak | string | null,
   ) => {
     if (value && typeof value !== "string") {
@@ -91,7 +91,7 @@ export default function SearchInput() {
           }
           return option.slug;
         }}
-        onInputChange={(event: SyntheticEvent, newInputValue: string) => {
+        onInputChange={(_: SyntheticEvent, newInputValue: string) => {
           setInputValue(newInputValue); // контроль ввода
         }}
         onKeyDown={handleKeyDown}

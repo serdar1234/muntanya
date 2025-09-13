@@ -27,7 +27,7 @@ export default function MainLayout({
       <div className="map-column">
         <DynamicMap pos={mapPosition} markers={markers} />
       </div>
-      <Suspense>
+      <Suspense fallback={<div>Loading search...</div>}>
         <SearchInput />
       </Suspense>
       <Box component={"section"} className="card-container">

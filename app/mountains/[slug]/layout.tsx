@@ -39,18 +39,10 @@ export async function generateMetadata({
   };
 }
 
-export default function RootLayout({
+export default function MoutainPageLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return (
-    <html lang="en" suppressHydrationWarning>
-      <body>
-        <AppRouterCacheProvider options={{ key: "css" }}>
-          <ThemeProvider theme={theme}>{children}</ThemeProvider>
-        </AppRouterCacheProvider>
-      </body>
-    </html>
-  );
+  return <>{children}</>;
 }
