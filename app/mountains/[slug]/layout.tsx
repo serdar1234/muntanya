@@ -1,7 +1,4 @@
 import type { Metadata, Viewport } from "next";
-import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
-import { ThemeProvider } from "@mui/material/styles";
-import theme from "@/shared/theme";
 import "../../globals.scss";
 import { getPeakById } from "@/shared/api";
 
