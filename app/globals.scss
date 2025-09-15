@@ -4,7 +4,6 @@
     system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
 }
 
-/* Ensure full-height layout */
 html,
 body {
   height: 100%;
@@ -26,21 +25,14 @@ main,
   gap: var(--gap);
 }
 
-.map-column {
+.map-section {
   width: 100%;
   height: 100vh;
   box-sizing: border-box;
 }
 
-.content-column {
-  width: 50%;
-  padding: var(--page-padding);
-  box-sizing: border-box;
-  overflow: auto;
-}
-
 /* Make sure the Leaflet container fills its parent */
-.map-column > div {
+.map-section > div {
   width: 100%;
   height: 100%;
 }
@@ -50,25 +42,24 @@ main,
   .main-layout {
     flex-direction: column;
   }
-  .map-column,
-  .content-column {
+  .map-section {
     width: 100%;
     height: 100vh;
   }
-  .map-column {
+  .map-section {
     height: 100vh;
   }
 }
 
-.not-found {
-  position: absolute;
-  top: 20%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 401;
-  font-size: 3rem;
-  color: rgba(0, 0, 0, 0.5);
-}
+// .not-found {
+//   position: absolute;
+//   top: 20%;
+//   left: 50%;
+//   transform: translate(-50%, -50%);
+//   z-index: 401;
+//   font-size: 3rem;
+//   color: rgba(0, 0, 0, 0.5);
+// }
 
 .leaflet-container .leaflet-control-attribution.leaflet-control {
   position: fixed;
@@ -76,7 +67,7 @@ main,
   right: 0;
 }
 
-.card-container {
+.info-section {
   background-image: linear-gradient(
     to bottom,
     #b2d8e4 0%,

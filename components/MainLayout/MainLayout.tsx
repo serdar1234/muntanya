@@ -24,13 +24,13 @@ export default function MainLayout({
     undefined;
   return (
     <main className="main-layout">
-      <div className="map-column">
+      <section className="map-section">
         <DynamicMap pos={mapPosition} markers={markers} />
-      </div>
+      </section>
       <Suspense fallback={<div>Loading search...</div>}>
         <SearchInput />
       </Suspense>
-      <Box component={"section"} className="card-container">
+      <Box component={"section"} className="info-section">
         {initialMountain && <MountainInfoCard data={initialMountain} />}
         {searchResults && searchResults.data.peaks.length > 0 && (
           <SearchResultList searchResults={searchResults} />
