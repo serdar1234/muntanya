@@ -50,8 +50,8 @@ export default function Map({
   return (
     <MapContainer
       center={centerPosition || [46.8523, -121.7605]}
-      zoom={13}
-      scrollWheelZoom
+      zoom={16}
+      scrollWheelZoom={false}
       className={styles["map-container"]}
     >
       <TileLayer
