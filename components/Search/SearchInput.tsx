@@ -61,17 +61,7 @@ export default function SearchInput() {
   };
 
   return (
-    <Stack
-      spacing={2}
-      width="300px"
-      className={styles["search-box"]}
-      sx={{
-        position: "absolute",
-        left: "4rem",
-        top: "1.5rem",
-        zIndex: 401,
-      }}
-    >
+    <Stack spacing={2} className={styles["search-box"]}>
       <Autocomplete
         size="small"
         options={options} // тут берутся данные для автозаполнения

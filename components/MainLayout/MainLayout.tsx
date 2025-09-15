@@ -23,7 +23,7 @@ export default function MainLayout({
     ((coords && [coords?.lat, coords?.lng]) as unknown as LatLngTuple) ??
     undefined;
   return (
-    <main className="main-layout">
+    <Box component="main" className="main-layout">
       <section className="map-section">
         <DynamicMap pos={mapPosition} markers={markers} />
       </section>
@@ -38,6 +38,6 @@ export default function MainLayout({
       </Box>
       <MenuItem />
       <ScrollToTopButton />
-    </main>
+    </Box>
   );
 }

@@ -1,6 +1,11 @@
 .search-box {
-  max-width: 50%;
+  max-width: 40vw;
   text-align: center;
+  width: 35vw;
+  position: fixed;
+  left: 4rem;
+  top: 1.5rem;
+  z-index: 401;
 }
 
 .search-input,
