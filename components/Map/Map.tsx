@@ -12,6 +12,11 @@ import customDivIcon from "@/shared/customDivIcon";
 import { getDefaultPosition } from "@/shared/api";
 import MapUpdater from "./MapUpdater";
 
+import * as L from "leaflet";
+import { GestureHandling } from "leaflet-gesture-handling";
+
+import "leaflet-gesture-handling/dist/leaflet-gesture-handling.css";
+
 export default function Map({
   pos,
   markers = [],
@@ -36,6 +41,7 @@ export default function Map({
     }
     fetchDefaultPosition();
   }, []);
+  L.Map.addInitHook("addHandler", "gestureHandling", GestureHandling);
 
   const makeIcon = (cluster: { getChildCount: () => number }): DivIcon => {
     return divIcon({
@@ -51,7 +57,14 @@ export default function Map({
     <MapContainer
       center={centerPosition || [46.8523, -121.7605]}
       zoom={16}
-      scrollWheelZoom={false}
+      gestureHandling={true}
+      gestureHandlingOptions={{
+        text: {
+          touch: "Hey bro, use two fingers to move the map",
+          scroll: "Hey bro, use ctrl + scroll to zoom the map",
+          scrollMac: "Hey bro, use \u2318 + scroll to zoom the map",
+        },
+      }}
       className={styles["map-container"]}
     >
       <TileLayer

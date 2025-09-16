@@ -7,6 +7,7 @@ import { getAutocompleteSuggestions } from "@/shared/api";
 import { Peak } from "@/shared/types";
 import styles from "./SearchInput.module.scss";
 import renderSearchInput from "./renderSearchInput";
+import ClearIcon from "@mui/icons-material/Clear";
 
 export default function SearchInput() {
   const router = useRouter();
@@ -63,6 +64,7 @@ export default function SearchInput() {
   return (
     <Stack spacing={2} className={styles["search-box"]}>
       <Autocomplete
+        disableClearable
         size="small"
         options={options} // тут берутся данные для автозаполнения
         className={styles["search-input"]}

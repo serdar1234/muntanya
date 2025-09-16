@@ -15,6 +15,7 @@ const renderSearchInput = (
   <TextField
     {...params}
     variant="outlined"
+    sx={{ pr: 0 }}
     slotProps={{
       input: {
         ...params.InputProps,

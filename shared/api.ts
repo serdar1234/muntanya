@@ -16,7 +16,7 @@ export async function getSearchResults(
   if (page) {
     query += `&page=${page}`;
   }
-  const url = `https://api.climepeak.com/api/v1/home/search?q=${query}`;
+  const url = `https://api.climepeak.com/api/v1/home/search?q=${query}&sort_by=elevation_desc`;
 
   try {
     const response = await fetch(url);
