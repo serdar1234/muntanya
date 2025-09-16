@@ -25,6 +25,7 @@ export default function MainLayout({
     ? getNearbyMarkers({ data: initialMountain })
     : [];
 
+  // Если был поиск то добавляем первый результат в маркер
   if (!initialMountain && searchResults) {
     const { name, slug, elevation } = searchResults.data.peaks[0];
     markers.push({

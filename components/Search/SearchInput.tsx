@@ -4,7 +4,7 @@ import { useState, SyntheticEvent, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Autocomplete, Stack } from "@mui/material";
 import { getAutocompleteSuggestions } from "@/shared/api";
-import { Peak } from "@/shared/types";
+import { AutocompletePeak } from "@/shared/types";
 import styles from "./SearchInput.module.scss";
 import renderSearchInput from "./renderSearchInput";
 
@@ -12,9 +12,9 @@ export default function SearchInput() {
   const router = useRouter();
   const searchParams = useSearchParams().toString();
   const [inputValue, setInputValue] = useState("");
-  const [options, setOptions] = useState<Peak[]>([]);
+  const [options, setOptions] = useState<AutocompletePeak[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
-
+  console.log("options", options);
   useEffect(() => {
     setLoading(false);
   }, [searchParams]);
@@ -30,7 +30,7 @@ export default function SearchInput() {
 
   const handleOptionSelect = (
     _: SyntheticEvent,
-    value: Peak | string | null,
+    value: AutocompletePeak | string | null,
   ) => {
     if (value && typeof value !== "string") {
       setLoading(true);
@@ -96,6 +96,8 @@ export default function SearchInput() {
                 <strong>{option.name}</strong>
                 <div style={{ color: "#888", fontSize: "0.8rem" }}>
                   {option.region} / {option.country}
+                  <br />
+                  {option.elevation} m
                 </div>
               </div>
             </li>

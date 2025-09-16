@@ -8,7 +8,9 @@ export default function PopupContent({ marker }: { marker: MarkerData }) {
       <h3>
         <Link href={`/mountains/${slug}`}>{name || ""}</Link>
       </h3>
-      <p>Elevation: {elevation} m</p>
+      <p>
+        Elevation: {elevation} m. / {(elevation * 3.28).toFixed(2)} ft
+      </p>
     </>
   );
 }

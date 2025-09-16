@@ -1,6 +1,12 @@
 import { LatLngTuple } from "leaflet";
 import { MountainDataBig, Nearby_Peak } from "./mountainDataTypes";
 
+export interface BasePeak {
+  name: string;
+  slug: string;
+  elevation: number;
+}
+
 export interface MountainData {
   name: string;
   coords: LatLngTuple;
@@ -11,15 +17,14 @@ export interface MainLayoutProps {
   searchResults?: SuccessResponse | null;
 }
 
-export interface ApiPeak {
-  id: number;
-  name: string;
-  elevation: number;
-  slug: string;
+export interface ApiPeak extends BasePeak {
+  id: string;
   lat: string;
   lng: string;
   prominence: number;
   is_volcano: boolean;
+  country: string;
+  region: string;
   type: string; // type: "peak";
 }
 
@@ -29,6 +34,9 @@ export interface SuccessResponse {
     peaks: ApiPeak[];
     pagination: IPagination;
     query: string;
+    filters: Filters;
+    sort_by: string;
+    aggregations: object;
   };
 }
 
@@ -51,17 +59,25 @@ export interface SuccessNearbyPeaksResponse {
   };
 }
 
-export interface Peak {
-  name: string;
-  elevation: number;
-  slug: string;
+export interface Filters {
+  min_elevation: string;
+  max_elevation: string;
+  region: string;
+  park: string;
+  category: string;
+  is_volcano: string;
+  type: string;
+  peak_range: string;
+}
+
+export interface AutocompletePeak extends BasePeak {
   country: string;
   region: string;
 }
 
 export interface AutocompleteResponse {
   data: {
-    peaks: Peak[];
+    peaks: AutocompletePeak[];
   };
 }
 
@@ -72,9 +88,6 @@ export interface IPagination {
   total_pages: number;
 }
 
-export type MarkerData = {
+export interface MarkerData extends BasePeak {
   coords: LatLngTuple;
-  name: string;
-  slug: string;
-  elevation: number;
-};
+}

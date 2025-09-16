@@ -1,9 +1,9 @@
 import { LatLngTuple } from "leaflet";
 import {
   ApiResponse,
+  AutocompletePeak,
   AutocompleteResponse,
   ErrorResponse,
-  Peak,
   SuccessNearbyPeaksResponse,
   SuccessResponse,
 } from "./types";
@@ -68,7 +68,7 @@ export async function getDefaultPosition(): Promise<LatLngTuple> {
 
 export async function getAutocompleteSuggestions(
   query: string
-): Promise<Peak[]> {
+): Promise<AutocompletePeak[]> {
   const url = `https://api.climepeak.com/api/v1/home/autocomplete?q=${query}`;
 
   try {
