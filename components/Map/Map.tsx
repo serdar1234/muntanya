@@ -60,9 +60,9 @@ export default function Map({
       gestureHandling={true}
       gestureHandlingOptions={{
         text: {
-          touch: "Hey bro, use two fingers to move the map",
-          scroll: "Hey bro, use ctrl + scroll to zoom the map",
-          scrollMac: "Hey bro, use \u2318 + scroll to zoom the map",
+          touch: "Please use two fingers to move the map",
+          scroll: "Please use ctrl + scroll to zoom the map",
+          scrollMac: "Please use \u2318 + scroll to zoom the map",
         },
       }}
       className={styles["map-container"]}

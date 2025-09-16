@@ -14,10 +14,28 @@ export default function MainLayout({
   initialMountain = null,
   searchResults = null,
 }: MainLayoutProps) {
-  const coords = initialMountain?.peak?.coordinates;
+  const searchResultsFirstPosition = {
+    lat: searchResults?.data.peaks[0]?.lat,
+    lng: searchResults?.data.peaks[0]?.lng,
+  };
+  const coords =
+    initialMountain?.peak?.coordinates ||
+    (searchResults && searchResultsFirstPosition);
   const markers = initialMountain
     ? getNearbyMarkers({ data: initialMountain })
     : [];
+
+  if (!initialMountain && searchResults) {
+    const { name, slug, elevation } = searchResults.data.peaks[0];
+    markers.push({
+      coords: Object.values(
+        searchResultsFirstPosition,
+      ) as unknown as LatLngTuple,
+      name,
+      slug,
+      elevation,
+    });
+  }
 
   const mapPosition =
     ((coords && [coords?.lat, coords?.lng]) as unknown as LatLngTuple) ??
@@ -31,7 +49,9 @@ export default function MainLayout({
         <SearchInput />
       </Suspense>
       <Box component={"section"} className="info-section">
-        {initialMountain && <MountainInfoCard data={initialMountain} />}
+        {!searchResults && initialMountain && (
+          <MountainInfoCard data={initialMountain} />
+        )}
         {searchResults && searchResults.data.peaks.length > 0 && (
           <SearchResultList searchResults={searchResults} />
         )}
