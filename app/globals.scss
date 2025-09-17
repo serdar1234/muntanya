@@ -99,6 +99,14 @@ body {
   position: fixed;
   bottom: 0;
   right: 50%;
+  opacity: 0.5;
+  @media (max-width: 800px) {
+    right: 0;
+    bottom: 50%;
+  }
+  &:hover {
+    opacity: 1;
+  }
 }
 
 .weather-card {

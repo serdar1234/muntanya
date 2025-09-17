@@ -9,7 +9,8 @@ import {
   Tooltip,
   useMapEvent,
 } from "react-leaflet";
-import MarkerClusterGroup from "react-leaflet-markercluster";
+// import MarkerClusterGroup from "react-leaflet-markercluster";
+
 import { DivIcon, divIcon, LatLngTuple, point } from "leaflet";
 import customDivIcon from "@/shared/customDivIcon";
 import { MarkerData } from "@/shared/types";
@@ -63,8 +64,8 @@ export default function Map({
 
   function makeIcon(cluster: { getChildCount: () => number }): DivIcon {
     return divIcon({
-      html: `<div class=${styles["cluster-icon"]}>${cluster.getChildCount()}</div>`,
-      className: "custom-marker-cluster",
+      html: `<div>${cluster.getChildCount()}</div>`,
+      className: styles["cluster-icon"],
       iconSize: point(33, 33, true),
     });
   }
@@ -86,35 +87,45 @@ export default function Map({
       }}
       className={styles["map-container"]}
     >
-      <TileLayer
+      {/* <TileLayer
         attribution='&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+      /> */}
+      {/* <TileLayer
+          attribution='&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
+          url="https://jura.snow-forecast.com/osm_tiles/{z}/{x}/{y}.png"
+        /> PIZDING */}
+      <TileLayer
+        url="https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png"
+        attribution='Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
       />
       <HomeControl position="topleft" centralPosition={centerPosition} />
       <SetViewOnClick />
       <MapUpdater newPosition={centerPosition} />
-      <MarkerClusterGroup
+      {/* <MarkerClusterGroup
         chunkedLoading
         iconCreateFunction={makeIcon}
         showCoverageOnHover={false}
         removeOutsideVisibleBounds={true}
-      >
-        {markers.length > 0 &&
-          markers.map((m, idx) => (
-            <Marker
-              key={String(m.coords)}
-              position={m.coords}
-              icon={idx === 0 ? customDivIcon("You") : customDivIcon(m.name)}
-            >
-              <Popup offset={[0, -10]} className={styles["popup-content"]}>
-                <PopupContent marker={m} />
-              </Popup>
-              <Tooltip sticky>
-                <TooltipContent marker={m} />
-              </Tooltip>
-            </Marker>
-          ))}
-      </MarkerClusterGroup>
+      > */}
+      {markers.length > 0 &&
+        markers.map((m, idx) => (
+          <Marker
+            key={String(m.coords)}
+            position={m.coords}
+            icon={
+              idx === 0 ? customDivIcon(m.name, true) : customDivIcon(m.name)
+            }
+          >
+            <Popup offset={[0, -10]} className={styles["popup-content"]}>
+              <PopupContent marker={m} />
+            </Popup>
+            <Tooltip sticky>
+              <TooltipContent marker={m} />
+            </Tooltip>
+          </Marker>
+        ))}
+      {/* </MarkerClusterGroup> */}
     </MapContainer>
   );
 }

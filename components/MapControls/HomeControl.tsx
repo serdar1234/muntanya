@@ -37,7 +37,7 @@ const createControl = (
       const root = createRoot(homeButton);
       root.render(<NearMeIcon fontSize="small" sx={{ paddingTop: "5px" }} />);
       homeButton.href = "#";
-      homeButton.title = "Home";
+      homeButton.title = "Back on track";
 
       const zoomOutButton = L.DomUtil.create(
         "a",
