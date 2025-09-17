@@ -69,6 +69,14 @@ body {
     z-index: -1;
   }
 }
+
+.header {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 401;
+}
+
 /* Small responsive tweak: stack on narrow screens */
 @media (max-width: 800px) {
   .main-layout {

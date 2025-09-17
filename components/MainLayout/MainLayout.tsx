@@ -9,6 +9,7 @@ import SearchResultList from "../SearchResultList";
 import Box from "@mui/material/Box";
 import { MainLayoutProps } from "@/shared/types";
 import getNearbyMarkers from "@/shared/getNearbyMarkers";
+import Logo from "../Logo";
 
 export default function MainLayout({
   initialMountain = null,
@@ -25,7 +26,6 @@ export default function MainLayout({
     ? getNearbyMarkers({ data: initialMountain })
     : [];
 
-  // Если был поиск то добавляем первый результат в маркер
   if (!initialMountain && searchResults) {
     const { name, slug, elevation } = searchResults.data.peaks[0];
     markers.push({
@@ -50,6 +50,7 @@ export default function MainLayout({
         <SearchInput />
       </Suspense>
       <Box component={"section"} className="info-section">
+        <Logo />
         {!searchResults && initialMountain && (
           <MountainInfoCard data={initialMountain} />
         )}
