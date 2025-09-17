@@ -25,6 +25,7 @@ import styles from "./Map.module.scss";
 import "leaflet/dist/leaflet.css";
 import "leaflet-gesture-handling/dist/leaflet-gesture-handling.css";
 import TooltipContent from "../Tooltip/Tooltip";
+import HomeControl from "../MapControls/HomeControl";
 
 function SetViewOnClick() {
   const map = useMapEvent("click", (e) => {
@@ -74,6 +75,7 @@ export default function Map({
     <MapContainer
       center={centerPosition || [46.8523, -121.7605]}
       zoom={16}
+      zoomControl={false}
       gestureHandling={true}
       gestureHandlingOptions={{
         text: {
@@ -88,6 +90,7 @@ export default function Map({
         attribution='&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
+      <HomeControl position="topleft" centralPosition={centerPosition} />
       <SetViewOnClick />
       <MapUpdater newPosition={centerPosition} />
       <MarkerClusterGroup

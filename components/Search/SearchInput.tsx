@@ -14,7 +14,6 @@ export default function SearchInput() {
   const [inputValue, setInputValue] = useState("");
   const [options, setOptions] = useState<AutocompletePeak[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
-  console.log("options", options);
   useEffect(() => {
     setLoading(false);
   }, [searchParams]);
@@ -95,9 +94,9 @@ export default function SearchInput() {
               <div style={{ padding: "8px" }}>
                 <strong>{option.name}</strong>
                 <div style={{ color: "#888", fontSize: "0.8rem" }}>
-                  {option.region} / {option.country}
+                  Elevation: {option.elevation} m
                   <br />
-                  {option.elevation} m
+                  {option.region} / {option.country}
                 </div>
               </div>
             </li>
