@@ -3,11 +3,15 @@ import {
   ApiResponse,
   AutocompletePeak,
   AutocompleteResponse,
+  DefaultPosition,
   ErrorResponse,
+  MarkerData,
   SuccessNearbyPeaksResponse,
   SuccessResponse,
 } from "./types";
 import { MountainDataBig } from "./mountainDataTypes";
+
+const DEFAULT_POSITION: LatLngTuple = [46.8523, -121.7605];
 
 export async function getSearchResults(
   query: string,
@@ -38,31 +42,39 @@ export async function getSearchResults(
   }
 }
 
-export async function getDefaultPosition(): Promise<LatLngTuple> {
+export async function getDefaultPosition(): Promise<{
+  latlng: LatLngTuple;
+  markers: MarkerData[];
+}> {
   try {
-    const response = await fetch(
-      "https://api.climepeak.com/api/v1/home/location"
-    );
+    const response = await fetch("https://api.climepeak.com/api/v1/home/");
     if (!response.ok) {
       console.log(`Error receiving data: ${response.statusText}`);
-      return [46.8523, -121.7605];
+      return { latlng: DEFAULT_POSITION, markers: [] };
     }
 
-    const responseData = await response.json();
+    const responseData: { data: DefaultPosition } = await response.json();
 
     if (
-      responseData.data?.location?.location?.lat &&
-      responseData.data?.location?.location?.lng
+      responseData.data?.user_location?.location?.lat &&
+      responseData.data?.user_location?.location?.lng
     ) {
-      const { lat, lng } = responseData.data.location.location;
-      return [lat, lng];
+      const { lat, lng } = responseData.data.user_location.location;
+      const { nearby_peaks } = responseData.data;
+      const markers = nearby_peaks.map((peak) => ({
+        coords: [peak.lat, peak.lng].map(Number) as unknown as LatLngTuple,
+        name: peak.name,
+        slug: peak.slug,
+        elevation: peak.elevation,
+      }));
+      return { latlng: [lat, lng], markers };
     } else {
       console.log("Incorrect data format:", responseData);
-      return [46.8523, -121.7605];
+      return { latlng: DEFAULT_POSITION, markers: [] };
     }
   } catch (error) {
     console.log("Could not find data about the mountain:", error);
-    return [46.8523, -121.7605];
+    return { latlng: DEFAULT_POSITION, markers: [] };
   }
 }
 
@@ -94,11 +106,10 @@ export async function getPeakById(id: string): Promise<MountainDataBig | null> {
       return null;
     }
 
-    const { data: mountain } = await response.json();
+    const { data }: { data: MountainDataBig } = await response.json();
 
-    if (!mountain) return null;
-
-    return mountain;
+    if (!data) return null;
+    return data;
   } catch (error) {
     if (error instanceof Error) {
       console.log("getPeakById error: ", error.message);

@@ -43,8 +43,9 @@ export default function Map({
   markers = [],
 }: {
   pos?: LatLngTuple;
-  markers?: MarkerData[];
+  markers: MarkerData[];
 }) {
+  const [markersArray, setMarkersArray] = useState<MarkerData[]>(markers);
   const [defaultPosition, setDefaultPosition] = useState<LatLngTuple>();
   const context = useContext(MapContext);
   if (!context) throw new Error("Map must be used within a MapProvider");
@@ -54,8 +55,13 @@ export default function Map({
     async function fetchDefaultPosition() {
       try {
         const position = await getDefaultPosition();
-        if (position && Array.isArray(position) && position.length === 2) {
-          setDefaultPosition(position);
+        if (
+          position &&
+          Array.isArray(position.latlng) &&
+          position.latlng.length === 2
+        ) {
+          setDefaultPosition(position.latlng);
+          setMarkersArray(position.markers);
         }
       } catch (error) {
         console.log("Could not find data about the mountain:", error);
@@ -101,8 +107,8 @@ export default function Map({
       <HomeControl position="topleft" centralPosition={centerPosition} />
       <SetViewOnClick />
       <MapUpdater newPosition={centerPosition} />
-      {markers.length > 0 &&
-        markers.map((m, idx) => (
+      {markersArray.length > 0 &&
+        markersArray.map((m, idx) => (
           <Marker
             key={String(m.coords)}
             position={m.coords}

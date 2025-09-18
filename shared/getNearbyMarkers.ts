@@ -8,7 +8,6 @@ export default function getNearbyMarkers({
   data: MountainDataBig;
 }): MarkerData[] {
   const { nearby_peaks, peak } = data;
-
   // Первый маркер - самый близкий
   const markers: MarkerData[] = [
     {

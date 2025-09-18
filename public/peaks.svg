@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Nearby peaks">
   <!-- grey background -->
-  <circle cx="32" cy="32" r="30" fill="#CCCCCC"/>
+  <circle cx="32" cy="32" r="30" fill="#CCCCCC" stroke="#1E6FB8" stroke-width="4"/>
   
   <!-- left peak -->
   <path d="M14 44 L24 28 L34 44 Z" fill="#1E6FB8" stroke="white" stroke-width="2.5" stroke-linejoin="round"/>

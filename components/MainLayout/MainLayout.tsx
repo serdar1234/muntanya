@@ -13,13 +13,16 @@ import Logo from "../Logo";
 import SelectMap from "../SelectMap";
 
 export default function MainLayout({
-  initialMountain = null,
+  initialMountain = null, // MountainDataBig
   searchResults = null,
 }: MainLayoutProps) {
-  const searchResultsFirstPosition = {
-    lat: searchResults?.data.peaks[0]?.lat,
-    lng: searchResults?.data.peaks[0]?.lng,
-  };
+  let searchResultsFirstPosition = { lat: "0", lng: "0" };
+  if (searchResults) {
+    searchResultsFirstPosition = {
+      lat: searchResults?.data.peaks[0]?.lat,
+      lng: searchResults?.data.peaks[0]?.lng,
+    };
+  }
   const coords =
     initialMountain?.peak?.coordinates ||
     (searchResults && searchResultsFirstPosition);
