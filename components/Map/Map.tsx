@@ -50,7 +50,6 @@ export default function Map({
   if (!context) throw new Error("Map must be used within a MapProvider");
 
   const { style } = context;
-  console.log("style", typeof style);
   useEffect(() => {
     async function fetchDefaultPosition() {
       try {
@@ -83,17 +82,17 @@ export default function Map({
       }}
       className={styles["map-container"]}
     >
-      {style === 1 && (
-        <TileLayer
-          attribution='&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
-      )}
       {/* <TileLayer
           attribution='&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
           url="https://jura.snow-forecast.com/osm_tiles/{z}/{x}/{y}.png"
         /> PIZDING */}
-      {style === 2 && (
+      {style === "1" && (
+        <TileLayer
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          attribution='&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
+        />
+      )}
+      {style === "2" && (
         <TileLayer
           url="https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png"
           attribution='Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'

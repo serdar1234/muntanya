@@ -13,23 +13,23 @@ export default function SelectMap() {
 
   const { style, setStyle } = context;
 
-  const handleChange = (event: SelectChangeEvent<number>) => {
-    const mapValue = Number(event.target.value);
+  const handleChange = (event: SelectChangeEvent<string>) => {
+    const mapValue = event.target.value;
     setStyle(mapValue);
   };
 
   return (
     <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-      <InputLabel id="demo-select-small-label">Select map</InputLabel>
+      <InputLabel id="map-select-label">Select map</InputLabel>
       <Select
-        labelId="demo-select-small-label"
-        id="demo-select-small"
+        labelId="map-select-label"
+        id="map-select"
         value={style}
         label="Select map"
         onChange={handleChange}
       >
-        <MenuItem value={1}>Ten</MenuItem>
-        <MenuItem value={2}>Twenty</MenuItem>
+        <MenuItem value={"1"}>OpenStreetMap</MenuItem>
+        <MenuItem value={"2"}>OpenTopoMap</MenuItem>
       </Select>
     </FormControl>
   );
