@@ -10,6 +10,7 @@ import Box from "@mui/material/Box";
 import { MainLayoutProps } from "@/shared/types";
 import getNearbyMarkers from "@/shared/getNearbyMarkers";
 import Logo from "../Logo";
+import SelectMap from "../SelectMap";
 
 export default function MainLayout({
   initialMountain = null,
@@ -50,6 +51,7 @@ export default function MainLayout({
         <SearchInput />
       </Suspense>
       <Box component={"section"} className="info-section">
+        <SelectMap />
         <Logo />
         {!searchResults && initialMountain && (
           <MountainInfoCard data={initialMountain} />

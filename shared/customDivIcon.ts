@@ -1,6 +1,4 @@
 import { divIcon } from "leaflet";
-// import PeakIcon from "/peak.svg";
-// import PeaksIcon from "/peaks.svg";
 
 export default function customDivIcon(name?: string, selected?: boolean) {
   return divIcon({
@@ -14,4 +12,3 @@ export default function customDivIcon(name?: string, selected?: boolean) {
     className: "",
   });
 }
-// <img src="/leaflet/marker-icon.png" style="width: 38px; height: 38px;" alt="${name}" />

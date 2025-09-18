@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useContext, useState } from "react";
+import { MapContext } from "@/app/providers/MapProvider";
 import {
   MapContainer,
   TileLayer,
@@ -9,9 +10,8 @@ import {
   Tooltip,
   useMapEvent,
 } from "react-leaflet";
-// import MarkerClusterGroup from "react-leaflet-markercluster";
 
-import { DivIcon, divIcon, LatLngTuple, point } from "leaflet";
+import { LatLngTuple } from "leaflet";
 import customDivIcon from "@/shared/customDivIcon";
 import { MarkerData } from "@/shared/types";
 import { getDefaultPosition } from "@/shared/api";
@@ -46,7 +46,11 @@ export default function Map({
   markers?: MarkerData[];
 }) {
   const [defaultPosition, setDefaultPosition] = useState<LatLngTuple>();
+  const context = useContext(MapContext);
+  if (!context) throw new Error("Map must be used within a MapProvider");
 
+  const { style } = context;
+  console.log("style", typeof style);
   useEffect(() => {
     async function fetchDefaultPosition() {
       try {
@@ -61,14 +65,6 @@ export default function Map({
     fetchDefaultPosition();
   }, []);
   L.Map.addInitHook("addHandler", "gestureHandling", GestureHandling);
-
-  function makeIcon(cluster: { getChildCount: () => number }): DivIcon {
-    return divIcon({
-      html: `<div>${cluster.getChildCount()}</div>`,
-      className: styles["cluster-icon"],
-      iconSize: point(33, 33, true),
-    });
-  }
 
   const centerPosition = pos || defaultPosition;
 
@@ -87,35 +83,33 @@ export default function Map({
       }}
       className={styles["map-container"]}
     >
-      {/* <TileLayer
-        attribution='&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-      /> */}
+      {style === 1 && (
+        <TileLayer
+          attribution='&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        />
+      )}
       {/* <TileLayer
           attribution='&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
           url="https://jura.snow-forecast.com/osm_tiles/{z}/{x}/{y}.png"
         /> PIZDING */}
-      <TileLayer
-        url="https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png"
-        attribution='Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
-      />
+      {style === 2 && (
+        <TileLayer
+          url="https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png"
+          attribution='Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
+        />
+      )}
       <HomeControl position="topleft" centralPosition={centerPosition} />
       <SetViewOnClick />
       <MapUpdater newPosition={centerPosition} />
-      {/* <MarkerClusterGroup
-        chunkedLoading
-        iconCreateFunction={makeIcon}
-        showCoverageOnHover={false}
-        removeOutsideVisibleBounds={true}
-      > */}
       {markers.length > 0 &&
         markers.map((m, idx) => (
           <Marker
             key={String(m.coords)}
             position={m.coords}
-            icon={
-              idx === 0 ? customDivIcon(m.name, true) : customDivIcon(m.name)
-            }
+            {...(idx === 0
+              ? { zIndexOffset: 1000, icon: customDivIcon(m.name, true) }
+              : { icon: customDivIcon(m.name) })}
           >
             <Popup offset={[0, -10]} className={styles["popup-content"]}>
               <PopupContent marker={m} />
@@ -125,7 +119,6 @@ export default function Map({
             </Tooltip>
           </Marker>
         ))}
-      {/* </MarkerClusterGroup> */}
     </MapContainer>
   );
 }
