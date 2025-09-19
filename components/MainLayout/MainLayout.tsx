@@ -34,7 +34,6 @@ export default async function MainLayout({
   const markers = initialMountain
     ? extractNearbyMarkers({ data: initialMountain })
     : [];
-  console.log("Main layout markers", markers);
 
   if (!initialMountain && searchResults) {
     const { name, slug, elevation } = searchResults.data.peaks[0];
@@ -47,7 +46,6 @@ export default async function MainLayout({
       elevation,
     });
   }
-  console.log("Main layout markers after search", markers);
 
   const mapPosition =
     ((coords && [coords?.lat, coords?.lng]) as unknown as LatLngTuple) ??

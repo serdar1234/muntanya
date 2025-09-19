@@ -57,7 +57,6 @@ export default function Map({
     async function fetchDefaultPosition() {
       try {
         const position = await getDefaultPosition();
-        console.log("position from API:", position, Date.now());
         if (
           position &&
           Array.isArray(position.latlng) &&
@@ -70,9 +69,13 @@ export default function Map({
         console.log("Could not find data about the mountain:", error);
       }
     }
-    fetchDefaultPosition();
+    if (!pos) fetchDefaultPosition();
     L.Map.addInitHook("addHandler", "gestureHandling", GestureHandling);
   }, []);
+
+  useEffect(() => {
+    setMarkersArray(markers);
+  }, [markers]);
 
   const centralPosition = pos || defaultPosition;
 
