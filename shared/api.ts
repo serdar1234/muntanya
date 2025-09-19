@@ -60,8 +60,8 @@ export async function getDefaultPosition(): Promise<{
       responseData.data?.user_location?.location?.lng
     ) {
       const { lat, lng } = responseData.data.user_location.location;
-      const { nearby_peaks } = responseData.data;
-      const markers = nearby_peaks.map((peak) => ({
+      const { nearby_peaks, top_peaks } = responseData.data;
+      const markers = [...nearby_peaks, ...top_peaks].map((peak) => ({
         coords: [peak.lat, peak.lng].map(Number) as unknown as LatLngTuple,
         name: peak.name,
         slug: peak.slug,
