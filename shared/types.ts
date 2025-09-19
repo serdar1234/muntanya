@@ -1,4 +1,4 @@
-import { LatLngTuple } from "leaflet";
+import { LatLngLiteral, LatLngTuple } from "leaflet";
 import { MountainDataBig, Nearby_Peak, Park } from "./mountainDataTypes";
 
 export interface BasePeak {
@@ -37,6 +37,14 @@ export interface SuccessResponse {
     filters: Filters;
     sort_by: string;
     aggregations: object;
+  };
+}
+
+export interface SuccessPeaksInBoundsResponse {
+  data: {
+    peaks: ApiPeak[];
+    pagination: IPagination;
+    bounds: Bounds;
   };
 }
 
@@ -134,3 +142,5 @@ export interface Location {
   lng: number;
   accuracy_radius: number;
 }
+
+export type Bounds = Record<string, LatLngLiteral>;

@@ -27,7 +27,7 @@ import "leaflet-gesture-handling/dist/leaflet-gesture-handling.css";
 import TooltipContent from "../Tooltip/Tooltip";
 import HomeControl from "../MapControls/HomeControl";
 import { CircularProgress } from "@mui/material";
-import { SetViewOnClick, MapUpdater } from "./utils";
+import { SetViewOnClick, MapUpdater, MapBoundsListener } from "./utils";
 
 export default function Map({
   geoCoordinates,
@@ -115,8 +115,9 @@ export default function Map({
         />
       )}
       <HomeControl position="topleft" centralPosition={centralPosition} />
-      <ScaleControl position="bottomright" />
+      <ScaleControl position="bottomleft" />
       <SetViewOnClick />
+      <MapBoundsListener setMarkersArray={setMarkersArray} />
       <MapUpdater newPosition={centralPosition} />
       {markersArray.length > 0 &&
         markersArray.map((m, idx) => (

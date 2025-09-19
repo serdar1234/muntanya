@@ -1,4 +1,4 @@
-import { LatLngTuple } from "leaflet";
+import { LatLngLiteral, LatLngTuple } from "leaflet";
 import {
   ApiResponse,
   AutocompletePeak,
@@ -7,6 +7,7 @@ import {
   ErrorResponse,
   MarkerData,
   SuccessNearbyPeaksResponse,
+  SuccessPeaksInBoundsResponse,
   SuccessResponse,
 } from "./types";
 import { MountainDataBig } from "./mountainDataTypes";
@@ -136,6 +137,38 @@ export async function getNearbyPeaks(
   } catch (error) {
     if (error instanceof Error) {
       console.log("getNearbyPeaks error: ", error.message);
+    }
+    return null;
+  }
+}
+
+export async function getPeaksInBounds(
+  northWest: LatLngLiteral,
+  southEast: LatLngLiteral,
+  page: number = 1,
+  perPage: number = 20
+): Promise<MarkerData[] | null> {
+  const url = `https://api.climepeak.com/api/v1/home/peaks_in_bounds?top_left_lat=${northWest.lat}&top_left_lng=${northWest.lng}&bottom_right_lat=${southEast.lat}&bottom_right_lng=${southEast.lng}&page=${page}&per_page=${perPage}`;
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      return null;
+    }
+    const apiData: SuccessPeaksInBoundsResponse | ErrorResponse =
+      await response.json();
+    if ("error" in apiData) {
+      return null;
+    }
+    const markers: MarkerData[] = apiData.data.peaks.map((peak) => ({
+      coords: [peak.lat, peak.lng].map(Number) as unknown as LatLngTuple,
+      name: peak.name,
+      slug: peak.slug,
+      elevation: peak.elevation,
+    }));
+    return markers;
+  } catch (error) {
+    if (error instanceof Error) {
+      console.log("getPeaksInBounds error: ", error.message);
     }
     return null;
   }
