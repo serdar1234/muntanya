@@ -54,7 +54,7 @@ export default async function MainLayout({
   return (
     <Box component="main" className="main-layout">
       <section className="map-section">
-        <DynamicMap pos={mapPosition} markers={markers} />
+        <DynamicMap geoCoordinates={mapPosition} markers={markers} />
       </section>
       <Suspense fallback={<div>Loading search...</div>}>
         <SearchInput />

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Drawer, IconButton } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { MenuList } from "./MenuList";
+import styles from "./Menu.module.scss";
 
 export default function SidebarMenu() {
   const [isOpen, setIsOpen] = useState(false);
@@ -18,12 +19,10 @@ export default function SidebarMenu() {
         edge="start"
         color="inherit"
         aria-label="menu"
+        className={styles["menu-button"]}
         onClick={() => toggleDrawer(true)}
         sx={{
           position: "absolute",
-          right: "2rem",
-          top: "1.5rem",
-          zIndex: 401,
         }}
       >
         <MenuIcon />

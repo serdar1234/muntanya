@@ -8,7 +8,7 @@ import {
   Marker,
   Popup,
   Tooltip,
-  useMapEvent,
+  ScaleControl,
 } from "react-leaflet";
 
 import { LatLngTuple } from "leaflet";
@@ -17,7 +17,6 @@ import { MarkerData } from "@/shared/types";
 import { getDefaultPosition } from "@/shared/api";
 
 import PopupContent from "../PopupContent/";
-import MapUpdater from "./MapUpdater";
 
 import * as L from "leaflet";
 import { GestureHandling } from "leaflet-gesture-handling";
@@ -28,22 +27,13 @@ import "leaflet-gesture-handling/dist/leaflet-gesture-handling.css";
 import TooltipContent from "../Tooltip/Tooltip";
 import HomeControl from "../MapControls/HomeControl";
 import { CircularProgress } from "@mui/material";
-
-function SetViewOnClick() {
-  const map = useMapEvent("click", (e) => {
-    map.setView(e.latlng, map.getZoom(), {
-      animate: true,
-    });
-  });
-
-  return null;
-}
+import { SetViewOnClick, MapUpdater } from "./utils";
 
 export default function Map({
-  pos,
+  geoCoordinates,
   markers = [],
 }: {
-  pos?: LatLngTuple;
+  geoCoordinates?: LatLngTuple;
   markers: MarkerData[];
 }) {
   const [markersArray, setMarkersArray] = useState<MarkerData[]>(markers);
@@ -69,15 +59,15 @@ export default function Map({
         console.log("Could not find data about the mountain:", error);
       }
     }
-    if (!pos) fetchDefaultPosition();
+    if (!geoCoordinates) fetchDefaultPosition();
     L.Map.addInitHook("addHandler", "gestureHandling", GestureHandling);
-  }, []);
+  }, [geoCoordinates]);
 
   useEffect(() => {
     setMarkersArray(markers);
   }, [markers]);
 
-  const centralPosition = pos || defaultPosition;
+  const centralPosition = geoCoordinates || defaultPosition;
 
   if (!centralPosition) {
     return (
@@ -125,6 +115,7 @@ export default function Map({
         />
       )}
       <HomeControl position="topleft" centralPosition={centralPosition} />
+      <ScaleControl position="bottomright" />
       <SetViewOnClick />
       <MapUpdater newPosition={centralPosition} />
       {markersArray.length > 0 &&

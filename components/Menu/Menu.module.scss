@@ -1,0 +1,11 @@
+.menu-button {
+  right: 2rem;
+  top: 6rem;
+  z-index: 401;
+}
+
+@media (max-width: 800px) {
+  .menu-button {
+    top: 1.5rem;
+  }
+}
