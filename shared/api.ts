@@ -11,7 +11,7 @@ import {
 } from "./types";
 import { MountainDataBig } from "./mountainDataTypes";
 
-const DEFAULT_POSITION: LatLngTuple = [46.8523, -121.7605];
+export const DEFAULT_POSITION: LatLngTuple = [46.8523, -121.7605];
 
 export async function getSearchResults(
   query: string,

@@ -2,13 +2,12 @@ import { LatLngTuple } from "leaflet";
 import { MountainDataBig } from "./mountainDataTypes";
 import { MarkerData } from "./types";
 
-export default function getNearbyMarkers({
+export default function extractNearbyMarkers({
   data,
 }: {
   data: MountainDataBig;
 }): MarkerData[] {
   const { nearby_peaks, peak } = data;
-  // Первый маркер - самый близкий
   const markers: MarkerData[] = [
     {
       coords: [peak.coordinates.lat, peak.coordinates.lng].map(

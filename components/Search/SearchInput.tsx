@@ -19,10 +19,13 @@ export default function SearchInput() {
   }, [searchParams]);
 
   useEffect(() => {
-    const debounceTimeout = setTimeout(async () => {
-      const data = await getAutocompleteSuggestions(inputValue);
-      setOptions(data);
-    }, 300);
+    let debounceTimeout: NodeJS.Timeout;
+    if (inputValue.trim() !== "") {
+      debounceTimeout = setTimeout(async () => {
+        const data = await getAutocompleteSuggestions(inputValue);
+        setOptions(data);
+      }, 300);
+    }
 
     return () => clearTimeout(debounceTimeout);
   }, [inputValue]);

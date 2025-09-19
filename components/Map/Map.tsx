@@ -27,6 +27,7 @@ import "leaflet/dist/leaflet.css";
 import "leaflet-gesture-handling/dist/leaflet-gesture-handling.css";
 import TooltipContent from "../Tooltip/Tooltip";
 import HomeControl from "../MapControls/HomeControl";
+import { CircularProgress } from "@mui/material";
 
 function SetViewOnClick() {
   const map = useMapEvent("click", (e) => {
@@ -51,10 +52,12 @@ export default function Map({
   if (!context) throw new Error("Map must be used within a MapProvider");
 
   const { style } = context;
+
   useEffect(() => {
     async function fetchDefaultPosition() {
       try {
         const position = await getDefaultPosition();
+        console.log("position from API:", position, Date.now());
         if (
           position &&
           Array.isArray(position.latlng) &&
@@ -68,14 +71,28 @@ export default function Map({
       }
     }
     fetchDefaultPosition();
+    L.Map.addInitHook("addHandler", "gestureHandling", GestureHandling);
   }, []);
-  L.Map.addInitHook("addHandler", "gestureHandling", GestureHandling);
 
-  const centerPosition = pos || defaultPosition;
+  const centralPosition = pos || defaultPosition;
 
+  if (!centralPosition) {
+    return (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+        }}
+      >
+        <CircularProgress />
+      </div>
+    );
+  }
   return (
     <MapContainer
-      center={centerPosition || [46.8523, -121.7605]}
+      center={centralPosition}
       zoom={16}
       zoomControl={false}
       gestureHandling={true}
@@ -104,9 +121,9 @@ export default function Map({
           attribution='Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
         />
       )}
-      <HomeControl position="topleft" centralPosition={centerPosition} />
+      <HomeControl position="topleft" centralPosition={centralPosition} />
       <SetViewOnClick />
-      <MapUpdater newPosition={centerPosition} />
+      <MapUpdater newPosition={centralPosition} />
       {markersArray.length > 0 &&
         markersArray.map((m, idx) => (
           <Marker

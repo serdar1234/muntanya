@@ -8,15 +8,19 @@ import ScrollToTopButton from "../ScrollToTopButton";
 import SearchResultList from "../SearchResultList";
 import Box from "@mui/material/Box";
 import { MainLayoutProps } from "@/shared/types";
-import getNearbyMarkers from "@/shared/getNearbyMarkers";
+import extractNearbyMarkers from "@/shared/extractNearbyMarkers";
 import Logo from "../Logo";
 import SelectMap from "../SelectMap";
+import { DEFAULT_POSITION } from "@/shared/api";
 
-export default function MainLayout({
+export default async function MainLayout({
   initialMountain = null, // MountainDataBig
   searchResults = null,
 }: MainLayoutProps) {
-  let searchResultsFirstPosition = { lat: "0", lng: "0" };
+  let searchResultsFirstPosition = {
+    lat: String(DEFAULT_POSITION[0]),
+    lng: String(DEFAULT_POSITION[1]),
+  };
   if (searchResults) {
     searchResultsFirstPosition = {
       lat: searchResults?.data.peaks[0]?.lat,
@@ -26,9 +30,11 @@ export default function MainLayout({
   const coords =
     initialMountain?.peak?.coordinates ||
     (searchResults && searchResultsFirstPosition);
+
   const markers = initialMountain
-    ? getNearbyMarkers({ data: initialMountain })
+    ? extractNearbyMarkers({ data: initialMountain })
     : [];
+  console.log("Main layout markers", markers);
 
   if (!initialMountain && searchResults) {
     const { name, slug, elevation } = searchResults.data.peaks[0];
@@ -41,10 +47,12 @@ export default function MainLayout({
       elevation,
     });
   }
+  console.log("Main layout markers after search", markers);
 
   const mapPosition =
     ((coords && [coords?.lat, coords?.lng]) as unknown as LatLngTuple) ??
     undefined;
+
   return (
     <Box component="main" className="main-layout">
       <section className="map-section">

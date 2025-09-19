@@ -4,7 +4,7 @@ import React, { createContext, useState, ReactNode, useEffect } from "react";
 
 interface MapContextType {
   style: string;
-  setStyle: (style: string) => void;
+  setStyle: React.Dispatch<React.SetStateAction<string>>;
 }
 
 export const MapContext = createContext<MapContextType | undefined>(undefined);
@@ -13,15 +13,12 @@ export const MapProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [style, setStyle] = useState("1");
-
   useEffect(() => {
     if (typeof window === "undefined") return;
 
     const savedStyle = localStorage.getItem("mapStyle");
-    if (savedStyle !== null) {
+    if (savedStyle) {
       setStyle(savedStyle);
-    } else {
-      localStorage.setItem("mapStyle", style);
     }
   }, []);
 

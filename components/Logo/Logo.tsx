@@ -1,7 +1,10 @@
+"use client";
+
+import { memo } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-export default function Logo() {
+const Logo = () => {
   return (
     <header className="header">
       <Link href="/">
@@ -9,4 +12,6 @@ export default function Logo() {
       </Link>
     </header>
   );
-}
+};
+
+export default memo(Logo);
