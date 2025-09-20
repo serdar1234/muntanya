@@ -47,7 +47,7 @@ export function MapBoundsListener({
     if (bounds) {
       const northWest = bounds.northWest as LatLngLiteral;
       const southEast = bounds.southEast as LatLngLiteral;
-      getPeaksInBounds(northWest, southEast, 1, 20).then((markers) => {
+      getPeaksInBounds(northWest, southEast, 1, 50).then((markers) => {
         if (markers) {
           setMarkersArray(markers);
         }
