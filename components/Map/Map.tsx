@@ -86,7 +86,7 @@ export default function Map({
   return (
     <MapContainer
       center={centralPosition}
-      zoom={16}
+      zoom={13}
       zoomControl={false}
       gestureHandling={true}
       gestureHandlingOptions={{
