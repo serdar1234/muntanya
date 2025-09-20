@@ -27,7 +27,15 @@ import "leaflet-gesture-handling/dist/leaflet-gesture-handling.css";
 import TooltipContent from "../Tooltip/Tooltip";
 import HomeControl from "../MapControls/HomeControl";
 import { CircularProgress } from "@mui/material";
-import { SetViewOnClick, MapUpdater, MapBoundsListener } from "./utils";
+import {
+  SetViewOnClick,
+  MapUpdater,
+  MapBoundsListener,
+  ChangeViewWithOffset,
+} from "./utils";
+
+const ZOOM = 13;
+const OFFSET_PERCENTAGE = 17.5;
 
 export default function Map({
   geoCoordinates,
@@ -86,7 +94,7 @@ export default function Map({
   return (
     <MapContainer
       center={centralPosition}
-      zoom={13}
+      zoom={ZOOM}
       zoomControl={false}
       gestureHandling={true}
       gestureHandlingOptions={{
@@ -119,6 +127,7 @@ export default function Map({
       <SetViewOnClick />
       <MapBoundsListener setMarkersArray={setMarkersArray} />
       <MapUpdater newPosition={centralPosition} />
+
       {markersArray.length > 0 &&
         markersArray.map((m, idx) => (
           <Marker
@@ -136,6 +145,11 @@ export default function Map({
             </Tooltip>
           </Marker>
         ))}
+      <ChangeViewWithOffset
+        center={centralPosition}
+        zoom={ZOOM}
+        offsetPercentage={OFFSET_PERCENTAGE}
+      />
     </MapContainer>
   );
 }

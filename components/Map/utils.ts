@@ -3,8 +3,8 @@
 import { getPeaksInBounds } from "@/shared/api";
 import { Bounds, MarkerData } from "@/shared/types";
 import { LatLngLiteral, LatLngTuple } from "leaflet";
-import { useState, useEffect } from "react";
-import { useMap, useMapEvent } from "react-leaflet";
+import { useState, useEffect, useCallback } from "react";
+import { useMap, useMapEvent, useMapEvents } from "react-leaflet";
 
 export function MapUpdater({ newPosition }: { newPosition?: LatLngTuple }) {
   const map = useMap();
@@ -62,5 +62,50 @@ export function MapBoundsListener({
   //       map.distance(bounds?.northWest as LatLng, bounds?.southEast as LatLng)
   //     )
   //   );
+  return null;
+}
+
+export function ChangeViewWithOffset({
+  center,
+  zoom,
+  offsetPercentage,
+}: {
+  center?: LatLngTuple;
+  zoom?: number;
+  offsetPercentage: number;
+}) {
+  const map = useMap();
+
+  const applyView = useCallback(() => {
+    if (!center || !zoom) {
+      return;
+    }
+
+    const mapSize = map.getSize();
+    let targetCenter = center;
+
+    if (mapSize.x > 800) {
+      const offsetX = mapSize.x * (offsetPercentage / 100);
+      const offsetY = 0;
+
+      const point = map.project(center, zoom);
+      const newPoint = point.add([offsetX, offsetY]);
+
+      targetCenter = map.unproject(newPoint, zoom) as unknown as LatLngTuple;
+    }
+
+    map.setView(targetCenter, zoom, { animate: false });
+  }, [center, map, offsetPercentage, zoom]);
+
+  useEffect(() => {
+    applyView();
+  }, [applyView, center, zoom]);
+
+  useMapEvents({
+    resize: () => {
+      applyView();
+    },
+  });
+
   return null;
 }
