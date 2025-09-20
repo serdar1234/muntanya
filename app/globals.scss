@@ -23,7 +23,7 @@ body {
 
 .map-section {
   position: fixed;
-  width: 50%;
+  width: 100%;
   height: 100vh;
   box-sizing: border-box;
   & > div {
@@ -33,20 +33,13 @@ body {
 }
 
 .info-section {
-  background-image: linear-gradient(
-    to bottom,
-    #b2d8e4 0%,
-    #e0e9ec 40%,
-    #d1d9d9 70%,
-    #b3c3b5 90%,
-    #8ea39c 100%
-  );
-
-  min-height: 100vh;
+  min-height: calc(100vh - 16px);
   position: absolute;
-  left: 50%;
-  width: 50%;
+  right: 0;
+  width: 35%;
+  margin: 8px;
   z-index: 401;
+  border-radius: 8px;
 
   &::after {
     content: "";
@@ -55,6 +48,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
+    border-radius: 8px;
 
     background-image: linear-gradient(
       #b2d8e4 0%,
@@ -63,6 +57,7 @@ body {
       #b3c3b5 90%,
       #8ea39c 100%
     );
+    opacity: 0.8;
     background-attachment: scroll;
     background-size: cover;
 
@@ -90,8 +85,13 @@ body {
     top: 0;
   }
   .info-section {
+    margin: 0;
+    border-radius: 0;
     top: 50vh;
     height: auto;
+    &::after {
+      border-radius: 0;
+    }
   }
 }
 
