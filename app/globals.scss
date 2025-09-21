@@ -57,6 +57,7 @@ body {
       #b3c3b5 90%,
       #8ea39c 100%
     );
+    opacity: 0.8;
     background-attachment: scroll;
     background-size: cover;
 
@@ -73,7 +74,6 @@ body {
   z-index: 401;
 }
 
-/* Small responsive tweak: stack on narrow screens */
 @media (max-width: 800px) {
   .main-layout {
     flex-direction: row;
