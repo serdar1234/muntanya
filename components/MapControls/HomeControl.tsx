@@ -7,10 +7,8 @@ import * as L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { createRoot } from "react-dom/client";
 
-type ControlPosition = "topright" | "topleft" | "bottomright" | "bottomleft";
-
 const createControl = (
-  position: ControlPosition,
+  position: L.ControlPosition,
   map: L.Map,
   centralPosition?: L.LatLngTuple,
 ) => {
@@ -76,7 +74,7 @@ export default function HomeControl({
   position,
   centralPosition,
 }: {
-  position: ControlPosition;
+  position: L.ControlPosition;
   centralPosition?: L.LatLngTuple;
 }) {
   const map = useMap();

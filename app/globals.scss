@@ -111,6 +111,10 @@ body {
   }
 }
 
+.leaflet-top.leaflet-left {
+  top: calc(50% - 53px);
+}
+
 .weather-card {
   background-color: #f5f5f5;
 }

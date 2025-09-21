@@ -75,8 +75,11 @@ export default function Map({
     setMarkersArray(markers);
   }, [markers]);
 
-  const centralPosition = geoCoordinates || defaultPosition;
+  useEffect(() => {
+    console.log("markersArray", markersArray);
+  }, [markersArray]);
 
+  const centralPosition = geoCoordinates || defaultPosition;
   if (!centralPosition) {
     return (
       <div
@@ -131,7 +134,7 @@ export default function Map({
       {markersArray.length > 0 &&
         markersArray.map((m, idx) => (
           <Marker
-            key={String(m.coords)}
+            key={m.slug}
             position={m.coords}
             {...(idx === 0
               ? { zIndexOffset: 1000, icon: customDivIcon(m.name, true) }

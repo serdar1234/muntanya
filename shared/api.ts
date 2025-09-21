@@ -146,7 +146,7 @@ export async function getPeaksInBounds(
   northWest: LatLngLiteral,
   southEast: LatLngLiteral,
   page: number = 1,
-  perPage: number = 20
+  perPage: number
 ): Promise<MarkerData[] | null> {
   const url = `https://api.climepeak.com/api/v1/home/peaks_in_bounds?top_left_lat=${northWest.lat}&top_left_lng=${northWest.lng}&bottom_right_lat=${southEast.lat}&bottom_right_lng=${southEast.lng}&page=${page}&per_page=${perPage}`;
   try {
