@@ -4,7 +4,7 @@ import { getPeaksInBounds } from "@/shared/api";
 import { Bounds, MarkerData } from "@/shared/types";
 import { LatLngLiteral, LatLngTuple } from "leaflet";
 import { useState, useEffect, useCallback } from "react";
-import { useMap, useMapEvent, useMapEvents } from "react-leaflet";
+import { useMap, useMapEvent } from "react-leaflet";
 
 export function MapUpdater({ newPosition }: { newPosition?: LatLngTuple }) {
   const map = useMap();

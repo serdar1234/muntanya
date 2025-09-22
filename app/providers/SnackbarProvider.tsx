@@ -1,11 +1,18 @@
 "use client";
 
-import MainLayout from "@/components/MainLayout";
 import { Snackbar } from "@mui/material";
-import { useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
-export default function NotFound() {
-  const [open, setOpen] = useState(true);
+export function SnackbarProvider() {
+  const searchParams = useSearchParams();
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    if (searchParams.get("error") === "not-found") {
+      setOpen(true);
+    }
+  }, [searchParams]);
   return (
     <>
       <Snackbar
@@ -16,7 +23,6 @@ export default function NotFound() {
         sx={{ mt: "4rem" }}
         message="Could not find this mountain"
       />
-      <MainLayout />
     </>
   );
 }

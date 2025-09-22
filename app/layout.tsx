@@ -2,8 +2,10 @@ import type { Metadata, Viewport } from "next";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
 import { ThemeProvider } from "@mui/material/styles";
 import { MapProvider } from "./providers/MapProvider";
+import { SnackbarProvider } from "./providers/SnackbarProvider";
 import theme from "@/shared/theme";
 import "./globals.scss";
+import { Suspense } from "react";
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -28,7 +30,14 @@ export default function RootLayout({
       <body>
         <AppRouterCacheProvider options={{ key: "css" }}>
           <MapProvider>
-            <ThemeProvider theme={theme}>{children}</ThemeProvider>
+            <ThemeProvider theme={theme}>
+              <>
+                <Suspense>
+                  <SnackbarProvider />
+                </Suspense>
+                {children}
+              </>
+            </ThemeProvider>
           </MapProvider>
         </AppRouterCacheProvider>
       </body>

@@ -14,7 +14,7 @@ import SelectMap from "../SelectMap";
 import { DEFAULT_POSITION } from "@/shared/api";
 
 export default async function MainLayout({
-  initialMountain = null, // MountainDataBig
+  initialMountain = null,
   searchResults = null,
 }: MainLayoutProps) {
   let searchResultsFirstPosition = {
@@ -70,9 +70,7 @@ export default async function MainLayout({
           markers={markers}
         />
       </section>
-      <Suspense fallback={<div>Loading search...</div>}>
-        <SearchInput />
-      </Suspense>
+
       <Box component={"section"} className="info-section">
         <SelectMap />
         <Logo />
@@ -83,6 +81,9 @@ export default async function MainLayout({
           <SearchResultList searchResults={searchResults} />
         )}
       </Box>
+      <Suspense fallback={<div>Loading search...</div>}>
+        <SearchInput />
+      </Suspense>
       <MenuItem />
       <ScrollToTopButton />
     </Box>

@@ -1,6 +1,6 @@
 import { getSearchResults } from "@/shared/api";
 import { ApiPeak } from "@/shared/types";
-import { notFound } from "next/navigation";
+import { redirect } from "next/navigation";
 import MainLayout from "@/components/MainLayout";
 
 interface SearchPageProps {
@@ -14,7 +14,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
   const query = params.q;
 
   if (!query) {
-    notFound();
+    redirect("/?error=not-found");
   }
   const data = await getSearchResults(query);
   let results: ApiPeak[] = [];
@@ -23,7 +23,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
   }
 
   if (results.length === 0) {
-    notFound();
+    redirect("/?error=not-found");
   }
 
   return <MainLayout searchResults={data} />;
