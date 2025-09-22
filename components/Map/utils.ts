@@ -94,11 +94,5 @@ export function ChangeViewWithOffset({
     applyView();
   }, [applyView, center, zoom]);
 
-  useMapEvents({
-    resize: () => {
-      applyView();
-    },
-  });
-
   return null;
 }

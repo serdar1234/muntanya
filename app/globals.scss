@@ -33,7 +33,7 @@ body {
 }
 
 .info-section {
-  min-height: calc(100vh - 16px);
+  min-height: calc(100vh - 32px);
   position: absolute;
   right: 0;
   width: 35%;
@@ -100,8 +100,9 @@ body {
 .leaflet-container .leaflet-control-attribution.leaflet-control {
   position: fixed;
   bottom: 0;
-  right: 50%;
+  right: 0;
   opacity: 0.5;
+  z-index: 404;
   @media (max-width: 800px) {
     right: 0;
     bottom: 50%;
