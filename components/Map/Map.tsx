@@ -38,9 +38,11 @@ const ZOOM = 13;
 const OFFSET_PERCENTAGE = 17.5;
 
 export default function Map({
+  centralMapMarker,
   geoCoordinates,
   markers = [],
 }: {
+  centralMapMarker?: MarkerData;
   geoCoordinates?: LatLngTuple;
   markers: MarkerData[];
 }) {
@@ -94,6 +96,8 @@ export default function Map({
       </div>
     );
   }
+
+  console.log("centralMapMarker", centralMapMarker);
   return (
     <MapContainer
       center={centralPosition}
@@ -131,23 +135,39 @@ export default function Map({
       <MapBoundsListener setMarkersArray={setMarkersArray} />
       <MapUpdater newPosition={centralPosition} />
 
+      {centralMapMarker && (
+        <Marker
+          key={centralMapMarker?.slug}
+          position={centralPosition}
+          zIndexOffset={1000}
+          icon={customDivIcon(centralMapMarker.name, true)}
+        >
+          <Popup offset={[0, -10]} className={styles["popup-content"]}>
+            <PopupContent marker={centralMapMarker} />
+          </Popup>
+          <Tooltip sticky>
+            <TooltipContent marker={centralMapMarker} />
+          </Tooltip>
+        </Marker>
+      )}
       {markersArray.length > 0 &&
-        markersArray.map((m, idx) => (
-          <Marker
-            key={m.slug}
-            position={m.coords}
-            {...(idx === 0
-              ? { zIndexOffset: 1000, icon: customDivIcon(m.name, true) }
-              : { icon: customDivIcon(m.name) })}
-          >
-            <Popup offset={[0, -10]} className={styles["popup-content"]}>
-              <PopupContent marker={m} />
-            </Popup>
-            <Tooltip sticky>
-              <TooltipContent marker={m} />
-            </Tooltip>
-          </Marker>
-        ))}
+        markersArray.map((m) => {
+          if (centralMapMarker?.slug === m.slug) return null;
+          return (
+            <Marker
+              key={m.slug}
+              position={m.coords}
+              icon={customDivIcon(m.name)}
+            >
+              <Popup offset={[0, -10]} className={styles["popup-content"]}>
+                <PopupContent marker={m} />
+              </Popup>
+              <Tooltip sticky>
+                <TooltipContent marker={m} />
+              </Tooltip>
+            </Marker>
+          );
+        })}
       <ChangeViewWithOffset
         center={centralPosition}
         zoom={ZOOM}

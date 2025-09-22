@@ -54,14 +54,7 @@ export function MapBoundsListener({
       });
     }
   }, [bounds, setMarkersArray]);
-  // console.log("bounds", bounds);
-  // if (bounds)
-  //   console.log(
-  //     "Distance in meters diagonally on screen: ",
-  //     Math.round(
-  //       map.distance(bounds?.northWest as LatLng, bounds?.southEast as LatLng)
-  //     )
-  //   );
+
   return null;
 }
 

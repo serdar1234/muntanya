@@ -7,7 +7,7 @@ import MountainInfoCard from "../MountainInfoCard";
 import ScrollToTopButton from "../ScrollToTopButton";
 import SearchResultList from "../SearchResultList";
 import Box from "@mui/material/Box";
-import { MainLayoutProps } from "@/shared/types";
+import { MainLayoutProps, MarkerData } from "@/shared/types";
 import extractNearbyMarkers from "@/shared/extractNearbyMarkers";
 import Logo from "../Logo";
 import SelectMap from "../SelectMap";
@@ -51,10 +51,24 @@ export default async function MainLayout({
     ((coords && [coords?.lat, coords?.lng]) as unknown as LatLngTuple) ??
     undefined;
 
+  let centralMapMarker: MarkerData | undefined;
+  if (initialMountain) {
+    centralMapMarker = {
+      coords: mapPosition,
+      name: initialMountain.peak.name,
+      slug: initialMountain.peak.slug,
+      elevation: initialMountain.peak.elevation,
+    };
+  }
+
   return (
     <Box component="main" className="main-layout">
       <section className="map-section">
-        <DynamicMap geoCoordinates={mapPosition} markers={markers} />
+        <DynamicMap
+          centralMapMarker={centralMapMarker}
+          geoCoordinates={mapPosition}
+          markers={markers}
+        />
       </section>
       <Suspense fallback={<div>Loading search...</div>}>
         <SearchInput />
