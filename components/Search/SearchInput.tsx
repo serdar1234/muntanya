@@ -41,6 +41,8 @@ export default function SearchInput() {
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if (inputValue === "" || inputValue.trim() === "") return;
+    console.log("event object", event);
     if (event.key === "Enter") {
       setLoading(true);
       const exactMatch = options.find(
@@ -57,6 +59,7 @@ export default function SearchInput() {
   };
 
   const handleSearchClick = () => {
+    if (inputValue === "" || inputValue.trim() === "") return;
     setLoading(true);
     const encodedSearchText = encodeURIComponent(inputValue);
     router.push(`/search?q=${encodedSearchText}`);

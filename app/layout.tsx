@@ -32,10 +32,10 @@ export default function RootLayout({
           <MapProvider>
             <ThemeProvider theme={theme}>
               <>
+                {children}
                 <Suspense>
                   <SnackbarProvider />
                 </Suspense>
-                {children}
               </>
             </ThemeProvider>
           </MapProvider>

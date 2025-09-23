@@ -37,9 +37,17 @@ export function MapBoundsListener({
 
   const map = useMapEvent("moveend", () => {
     const currentBounds = map.getBounds();
+    const northWest = currentBounds.getNorthWest();
+    let southEast = currentBounds.getSouthEast() as unknown as LatLngLiteral;
+
+    if (window.innerWidth > 800) {
+      const newLng = northWest.lng + (southEast.lng - northWest.lng) * 0.65;
+      southEast = { lat: southEast.lat, lng: newLng };
+    }
+
     setBounds({
-      northWest: currentBounds.getNorthWest(),
-      southEast: currentBounds.getSouthEast(),
+      northWest,
+      southEast,
     });
   });
 

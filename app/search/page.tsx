@@ -13,18 +13,21 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
   const params = await searchParams;
   const query = params.q;
 
-  if (!query) {
-    redirect("/?error=not-found");
-  }
-  const data = await getSearchResults(query);
-  let results: ApiPeak[] = [];
-  if (data) {
-    results = data.data.peaks;
-  }
+  try {
+    if (query) {
+      const data = await getSearchResults(query);
+      let results: ApiPeak[] = [];
+      if (data) {
+        results = data.data.peaks;
+      }
 
-  if (results.length === 0) {
-    redirect("/?error=not-found");
-  }
+      if (results.length === 0) {
+        redirect(`/?error=not-found&q=${query}`);
+      }
 
-  return <MainLayout searchResults={data} />;
+      return <MainLayout searchResults={data} />;
+    }
+  } catch {
+    redirect(`/?error=not-found`);
+  }
 }

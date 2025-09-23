@@ -26,7 +26,7 @@ export async function getSearchResults(
   try {
     const response = await fetch(url);
     if (!response.ok) {
-      console.log(`Error in getSearchResults: ${response}`);
+      console.log(`Error in getSearchResults: ${response.status}`);
       return null;
     }
 
