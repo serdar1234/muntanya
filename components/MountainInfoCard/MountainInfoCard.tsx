@@ -2,6 +2,7 @@ import { CardContent, CardHeader, Typography, Grid } from "@mui/material";
 import { MountainDataBig } from "@/shared/mountainDataTypes";
 import PeakDescription from "../PeakDescription";
 import WeatherConverter from "../WeatherConverter";
+import WeatherForecast from "../WeatherForecast";
 
 interface MountainInfoCardProps {
   data: MountainDataBig;
@@ -33,6 +34,7 @@ export default function MountainInfoCard({ data }: MountainInfoCardProps) {
           </Grid>
         </Grid>
       </CardContent>
+      <WeatherForecast />
     </>
   );
 }

@@ -8,7 +8,7 @@ const Logo = () => {
   return (
     <header className="header">
       <Link href="/">
-        <Image src="/logo.png" alt="Logo" width={100} height={100} />
+        <Image src="/logo.png" alt="Logo" width={60} height={60} />
       </Link>
     </header>
   );
