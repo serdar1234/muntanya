@@ -11,6 +11,7 @@ interface MountainInfoCardProps {
 export default function MountainInfoCard({ data }: MountainInfoCardProps) {
   const { peak, weather } = data;
 
+  // returns header, description, weather, forecast
   return (
     <>
       <CardHeader
@@ -34,7 +35,7 @@ export default function MountainInfoCard({ data }: MountainInfoCardProps) {
           </Grid>
         </Grid>
       </CardContent>
-      <WeatherForecast />
+      <WeatherForecast peakID={peak.id} />
     </>
   );
 }

@@ -67,6 +67,56 @@ export interface SuccessNearbyPeaksResponse {
   };
 }
 
+export interface WeatherResponse {
+  status: "success" | "error";
+  message?: string;
+  data: Weather;
+}
+
+export interface Weather {
+  location: WeatherLocation;
+  timezone: "GMT" | string;
+  updated_at: string;
+  forecast: Record<string, Forecast>;
+}
+
+// export type ForecastKeys =
+//   | "sunrise"
+//   | "sunset"
+// | "morning"
+// | "day"
+// | "evening"
+// | "night";
+
+export interface Forecast {
+  sunrise: string;
+  sunset: string;
+  morning: TimeOfDay;
+  day: TimeOfDay;
+  evening: TimeOfDay;
+  night: TimeOfDay;
+}
+
+export interface TimeOfDay {
+  id?: "morning" | "day" | "evening" | "night";
+  time: string;
+  temperature_2m: number;
+  rain: number;
+  wind_speed_10m: number;
+  wind_direction_10m: number;
+  atmospheric: Record<string, Pressure>;
+}
+
+export interface Pressure {
+  temperature: number;
+  relative_humidity: number;
+  cloud_cover: number;
+  wind_speed: number;
+  wind_direction: number;
+  altitude_m: number;
+  altitude_display: string;
+}
+
 export interface Filters {
   min_elevation: string;
   max_elevation: string;
@@ -141,6 +191,11 @@ export interface Location {
   lat: number;
   lng: number;
   accuracy_radius: number;
+}
+
+export interface WeatherLocation {
+  latitude: number;
+  longitude: number;
 }
 
 export type Bounds = Record<string, LatLngLiteral>;

@@ -1,3 +1,13 @@
+const altMap = {
+  pressure_950hPa: "500m",
+  pressure_900hPa: "1000m",
+  pressure_800hPa: "1900m",
+  pressure_700hPa: "3km",
+  pressure_600hPa: "4.2km",
+  pressure_500hPa: "5.6km",
+  pressure_400hPa: "7.2km",
+};
+
 const weatherData = [
   {
     date: "2024-04-27",

@@ -9,6 +9,8 @@ import {
   SuccessNearbyPeaksResponse,
   SuccessPeaksInBoundsResponse,
   SuccessResponse,
+  Weather,
+  WeatherResponse,
 } from "./types";
 import { MountainDataBig } from "./mountainDataTypes";
 
@@ -169,6 +171,27 @@ export async function getPeaksInBounds(
   } catch (error) {
     if (error instanceof Error) {
       console.log("getPeaksInBounds error: ", error.message);
+    }
+    return null;
+  }
+}
+
+export async function getWeather(mountainId: number): Promise<Weather | null> {
+  const url = `https://api.climepeak.com/api/v1/peaks/${mountainId}/weather`;
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      return null;
+    }
+    const apiData: WeatherResponse = await response.json();
+    if (apiData.status === "error") {
+      console.log(apiData.message);
+      return null;
+    }
+    return apiData.data;
+  } catch (error) {
+    if (error instanceof Error) {
+      console.log("getWeather error: ", error.message);
     }
     return null;
   }
