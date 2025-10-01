@@ -12,8 +12,10 @@ import {
 import SunnySnowingIcon from "@mui/icons-material/SunnySnowing";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { getWeather } from "@/shared/api";
-import { Weather } from "@/shared/types";
+import { transWeatherResult, Weather } from "@/shared/types";
 import { transformWeather } from "./transformWeather";
+import styles from "./WeatherForecast.module.scss";
+import ForecastTable from "./ForecastTable";
 
 export default function WeatherForecast({ peakID = 497159 }) {
   const [expanded, setExpanded] = useState<string | null>(null);
@@ -40,7 +42,7 @@ export default function WeatherForecast({ peakID = 497159 }) {
   return (
     <Box sx={{ padding: "1rem" }}>
       {weather &&
-        transformedWeather.map((day) => (
+        transformedWeather.map((day: transWeatherResult) => (
           <Accordion
             key={day.dayAndDate}
             expanded={expanded === day.dayAndDate}
@@ -51,13 +53,7 @@ export default function WeatherForecast({ peakID = 497159 }) {
             </AccordionSummary>
             <AccordionDetails>
               {/* times of day start */}
-              <Box
-                sx={{
-                  display: "flex",
-                  gap: "1rem",
-                  padding: "0 1rem 0 0",
-                }}
-              >
+              <Box className={styles.chipbox}>
                 <Chip
                   label={"Sunrise: " + day.sunrise}
                   color="error"
@@ -77,9 +73,7 @@ export default function WeatherForecast({ peakID = 497159 }) {
                     <Typography>{forecast.id}</Typography>
                   </AccordionSummary>
                   <AccordionDetails>
-                    <Typography>
-                      Wind speed: {forecast.wind_speed_10m}m/s
-                    </Typography>
+                    <ForecastTable f={forecast} />
                   </AccordionDetails>
                 </Accordion>
               ))}

@@ -1,4 +1,4 @@
-import { Forecast } from "@/shared/types";
+import { Forecast, TimeOfDay, transWeatherResult } from "@/shared/types";
 
 function convertDate(dateStr: string) {
   const date = new Date(dateStr);
@@ -10,7 +10,9 @@ function convertDate(dateStr: string) {
   return new Intl.DateTimeFormat("en-US", options).format(date);
 }
 
-function convertForecastToArray(forecast: Forecast) {
+function convertForecastToArray(
+  forecast: Forecast,
+): Array<TimeOfDay & { id: "morning" | "day" | "evening" | "night" }> {
   return [
     { id: "morning", ...forecast.morning },
     { id: "day", ...forecast.day },
@@ -19,14 +21,17 @@ function convertForecastToArray(forecast: Forecast) {
   ];
 }
 
-export function transformWeather(weather?: Record<string, Forecast>) {
-  const result = Object.entries(weather || {}).map(([date, forecast]) => ({
-    dayAndDate: convertDate(date),
-    sunrise: forecast.sunrise,
-    sunset: forecast.sunset,
-    forecast: convertForecastToArray(forecast),
-  }));
+export function transformWeather(
+  weather?: Record<string, Forecast>,
+): transWeatherResult[] {
+  const result: transWeatherResult[] = Object.entries(weather || {}).map(
+    ([date, forecast]) => ({
+      dayAndDate: convertDate(date),
+      sunrise: forecast.sunrise,
+      sunset: forecast.sunset,
+      forecast: convertForecastToArray(forecast),
+    }),
+  );
 
-  console.log("weather data 123", result);
   return result;
 }

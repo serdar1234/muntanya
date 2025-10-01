@@ -77,9 +77,9 @@ export default function Map({
     setMarkersArray(markers);
   }, [markers]);
 
-  useEffect(() => {
-    console.log("markersArray", markersArray);
-  }, [markersArray]);
+  // useEffect(() => {
+  //   console.log("markersArray", markersArray);
+  // }, [markersArray]);
 
   const centralPosition = geoCoordinates || defaultPosition;
   if (!centralPosition) {
@@ -97,7 +97,7 @@ export default function Map({
     );
   }
 
-  console.log("centralMapMarker", centralMapMarker);
+  // console.log("centralMapMarker", centralMapMarker);
   return (
     <MapContainer
       center={centralPosition}

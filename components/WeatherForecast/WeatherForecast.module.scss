@@ -1,0 +1,12 @@
+.chipbox {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.25rem;
+  padding: 0.25rem;
+  @media (max-width: 800px) {
+    justify-content: right;
+    gap: 1rem;
+    padding: 1rem;
+  }
+}

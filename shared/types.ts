@@ -88,6 +88,13 @@ export interface Weather {
 // | "evening"
 // | "night";
 
+export interface transWeatherResult {
+  dayAndDate: string;
+  sunrise: string;
+  sunset: string;
+  forecast: TimeOfDay[];
+}
+
 export interface Forecast {
   sunrise: string;
   sunset: string;
