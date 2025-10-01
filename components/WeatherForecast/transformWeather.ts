@@ -1,4 +1,10 @@
-import { Forecast, TimeOfDay, transWeatherResult } from "@/shared/types";
+import {
+  Forecast,
+  Pressure,
+  TimeOfDay,
+  ChartData,
+  transWeatherResult,
+} from "@/shared/types";
 
 function convertDate(dateStr: string) {
   const date = new Date(dateStr);
@@ -34,4 +40,18 @@ export function transformWeather(
   );
 
   return result;
+}
+
+export function transformToChartData(
+  data: Record<string, Pressure>,
+): ChartData[] {
+  const obj = Object.values(data);
+  const chartData: ChartData[] = obj.map((item) => ({
+    altitude: item.altitude_m,
+    temperature: item.temperature,
+    windSpeed: item.wind_speed,
+    humidity: item.relative_humidity,
+  }));
+
+  return chartData.sort((a, b) => a.altitude - b.altitude);
 }

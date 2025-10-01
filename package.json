@@ -26,6 +26,7 @@
     "@mui/icons-material": "^7.3.2",
     "@mui/material": "^7.3.2",
     "@mui/material-nextjs": "^7.3.2",
+    "@mui/x-charts": "^8.13.1",
     "leaflet": "^1.9.4",
     "leaflet-gesture-handling": "^1.2.2",
     "next": "15.5.2",

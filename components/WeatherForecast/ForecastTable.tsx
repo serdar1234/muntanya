@@ -6,24 +6,31 @@ import {
   TableRow,
   TableCell,
 } from "@mui/material";
+import { transformToChartData } from "./transformWeather";
 
-export default function ForecastTable({ f }: { f: TimeOfDay }) {
+export default function ForecastTable({ forecast }: { forecast: TimeOfDay }) {
+  const qwe = transformToChartData(forecast.atmospheric);
+  console.log("forecast qwe", qwe);
   return (
-    <Table>
+    <Table size="small">
       <TableHead>
         <TableRow>
-          <TableCell>Temperature (°C)</TableCell>
+          <TableCell sx={{ wordBreak: "break-word" }}>
+            Temperature (°C)
+          </TableCell>
           <TableCell>Rain (%)</TableCell>
           <TableCell>Wind Speed (m/sec)</TableCell>
-          <TableCell>Wind Direction (°)</TableCell>
+          <TableCell sx={{ wordBreak: "break-word" }}>
+            Wind Direction (°)
+          </TableCell>
         </TableRow>
       </TableHead>
       <TableBody>
-        <TableRow key={f.id}>
-          <TableCell>{f.temperature_2m}</TableCell>
-          <TableCell>{f.rain * 100}</TableCell>
-          <TableCell>{f.wind_speed_10m}</TableCell>
-          <TableCell>{f.wind_direction_10m}</TableCell>
+        <TableRow key={forecast.id}>
+          <TableCell>{forecast.temperature_2m}</TableCell>
+          <TableCell>{forecast.rain * 100}</TableCell>
+          <TableCell>{forecast.wind_speed_10m}</TableCell>
+          <TableCell>{forecast.wind_direction_10m}</TableCell>
         </TableRow>
       </TableBody>
     </Table>

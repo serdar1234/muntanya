@@ -16,6 +16,7 @@ import { transWeatherResult, Weather } from "@/shared/types";
 import { transformWeather } from "./transformWeather";
 import styles from "./WeatherForecast.module.scss";
 import ForecastTable from "./ForecastTable";
+import ForecastChart from "./ForecastChart";
 
 export default function WeatherForecast({ peakID = 497159 }) {
   const [expanded, setExpanded] = useState<string | null>(null);
@@ -73,10 +74,11 @@ export default function WeatherForecast({ peakID = 497159 }) {
                     <Typography>{forecast.id}</Typography>
                   </AccordionSummary>
                   <AccordionDetails>
-                    <ForecastTable f={forecast} />
+                    <ForecastTable forecast={forecast} />
                   </AccordionDetails>
                 </Accordion>
               ))}
+              <ForecastChart />
               {/* times of day end */}
             </AccordionDetails>
           </Accordion>

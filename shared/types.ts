@@ -114,6 +114,14 @@ export interface TimeOfDay {
   atmospheric: Record<string, Pressure>;
 }
 
+export interface ChartData {
+  altitude: number;
+  temperature: number;
+  windSpeed: number;
+  humidity: number;
+  [key: string]: number | string | Date | null | undefined;
+}
+
 export interface Pressure {
   temperature: number;
   relative_humidity: number;
