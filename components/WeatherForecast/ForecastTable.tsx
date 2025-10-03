@@ -5,18 +5,33 @@ import {
   TableBody,
   TableRow,
   TableCell,
+  Box,
 } from "@mui/material";
-import { transformToChartData } from "./transformWeather";
+import DeviceThermostatIcon from "@mui/icons-material/DeviceThermostat";
 
 export default function ForecastTable({ forecast }: { forecast: TimeOfDay }) {
-  const qwe = transformToChartData(forecast.atmospheric);
-  console.log("forecast qwe", qwe);
   return (
     <Table size="small">
       <TableHead>
         <TableRow>
-          <TableCell sx={{ wordBreak: "break-word" }}>
-            Temperature (°C)
+          <TableCell>
+            <DeviceThermostatIcon
+              titleAccess="Temperature"
+              sx={{
+                display: { xs: "inline-flex", sm: "none" },
+                verticalAlign: "middle",
+                mr: 0.5,
+              }}
+            />
+            <Box
+              component="span"
+              sx={{ display: { xs: "none", sm: "inline" } }}
+            >
+              Temperature
+            </Box>
+            <Box component="span" sx={{ ml: 0.5 }}>
+              (°C)
+            </Box>
           </TableCell>
           <TableCell>Rain (%)</TableCell>
           <TableCell>Wind Speed (m/sec)</TableCell>

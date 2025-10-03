@@ -9,16 +9,8 @@ import {
 } from "@mui/x-charts";
 import { axisClasses } from "@mui/x-charts/ChartsAxis";
 
-import { ChartData } from "@/shared/types";
-
-const chartData: ChartData[] = [
-  { altitude: 500, temperature: 15, windSpeed: 5, humidity: 75 },
-  { altitude: 1800, temperature: 8, windSpeed: 12, humidity: 60 },
-  { altitude: 3000, temperature: 2, windSpeed: 18, humidity: 45 },
-  { altitude: 4200, temperature: -4, windSpeed: 25, humidity: 30 },
-  { altitude: 5600, temperature: -12, windSpeed: 30, humidity: 20 },
-  { altitude: 7200, temperature: -20, windSpeed: 35, humidity: 10 },
-];
+import { ChartData, Pressure } from "@/shared/types";
+import { transformToChartData } from "./transformWeather";
 
 const valueLabels = {
   temperature: "Temperature (°C)",
@@ -51,7 +43,12 @@ const series = [
   },
 ] as const;
 
-export default function AltitudeWeatherChart() {
+export default function ForecastChart({
+  atmospheric,
+}: {
+  atmospheric: Record<string, Pressure>;
+}) {
+  const chartData: ChartData[] = transformToChartData(atmospheric);
   return (
     <ChartContainer
       series={series}
@@ -61,23 +58,23 @@ export default function AltitudeWeatherChart() {
           scaleType: "band",
           dataKey: "altitude",
           label: valueLabels.altitude,
-          valueFormatter: (value) => `${value} м`,
+          valueFormatter: (value) => `${value} m`,
         },
       ]}
-      yAxis={[
-        {
-          id: "temperatureAxis",
-          scaleType: "linear",
-          label: "Температура (°C) / Влажность (%)",
-        },
+      // yAxis={[
+      //   {
+      //     id: "temperatureAxis",
+      //     scaleType: "linear",
+      //     label: "Температура (°C) / Влажность (%)",
+      //   },
 
-        {
-          id: "windAxis",
-          scaleType: "linear",
-          label: valueLabels.windSpeed,
-          position: "right",
-        },
-      ]}
+      //   {
+      //     id: "windAxis",
+      //     scaleType: "linear",
+      //     label: valueLabels.windSpeed,
+      //     position: "right",
+      //   },
+      // ]}
       height={350}
       sx={{
         [`.${axisClasses.left} .${axisClasses.label}`]: {

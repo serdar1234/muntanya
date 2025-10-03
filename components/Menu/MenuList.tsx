@@ -12,6 +12,7 @@ export function MenuList({
     { text: "Home", href: "/" },
     { text: "Mount Everest", href: "/mountains/mount-everest" },
     { text: "Kilimanjaro", href: "/mountains/kilimanjaro" },
+    { text: "Ama Dablam", href: "/mountains/ama-dablam" },
   ];
 
   return (

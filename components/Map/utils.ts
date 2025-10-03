@@ -1,10 +1,13 @@
 "use client";
 
 import { getPeaksInBounds } from "@/shared/api";
+import { useDebouncedCallback } from "@/shared/hooks";
 import { Bounds, MarkerData } from "@/shared/types";
 import { LatLngLiteral, LatLngTuple } from "leaflet";
-import { useState, useEffect, useCallback } from "react";
+import { useEffect, useCallback } from "react";
 import { useMap, useMapEvent } from "react-leaflet";
+
+const DEBOUNCE_DELAY_MS = 500;
 
 export function MapUpdater({ newPosition }: { newPosition?: LatLngTuple }) {
   const map = useMap();
@@ -33,7 +36,16 @@ export function MapBoundsListener({
 }: {
   setMarkersArray: (markers: MarkerData[]) => void;
 }) {
-  const [bounds, setBounds] = useState<Bounds | null>(null);
+  const debouncedFetch = useDebouncedCallback((b: Bounds) => {
+    const northWest = b.northWest as LatLngLiteral;
+    const southEast = b.southEast as LatLngLiteral;
+
+    getPeaksInBounds(northWest, southEast, 1, 50).then((markers) => {
+      if (markers) {
+        setMarkersArray(markers);
+      }
+    });
+  }, DEBOUNCE_DELAY_MS);
 
   const map = useMapEvent("moveend", () => {
     const currentBounds = map.getBounds();
@@ -45,23 +57,9 @@ export function MapBoundsListener({
       southEast = { lat: southEast.lat, lng: newLng };
     }
 
-    setBounds({
-      northWest,
-      southEast,
-    });
+    const newBounds = { northWest, southEast };
+    debouncedFetch(newBounds);
   });
-
-  useEffect(() => {
-    if (bounds) {
-      const northWest = bounds.northWest as LatLngLiteral;
-      const southEast = bounds.southEast as LatLngLiteral;
-      getPeaksInBounds(northWest, southEast, 1, 50).then((markers) => {
-        if (markers) {
-          setMarkersArray(markers);
-        }
-      });
-    }
-  }, [bounds, setMarkersArray]);
 
   return null;
 }

@@ -75,10 +75,10 @@ export default function WeatherForecast({ peakID = 497159 }) {
                   </AccordionSummary>
                   <AccordionDetails>
                     <ForecastTable forecast={forecast} />
+                    <ForecastChart atmospheric={forecast.atmospheric} />
                   </AccordionDetails>
                 </Accordion>
               ))}
-              <ForecastChart />
               {/* times of day end */}
             </AccordionDetails>
           </Accordion>
