@@ -55,3 +55,28 @@ export function transformToChartData(
 
   return chartData.sort((a, b) => a.altitude - b.altitude);
 }
+
+export function transformToLocalDateTime(apiString: string) {
+  const utcIsoString = `${apiString}:00Z`;
+  const dateObject = new Date(utcIsoString);
+
+  const options: Intl.DateTimeFormatOptions = {
+    // year: "numeric",
+    // month: "long",
+    // day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    // second: "2-digit",
+    // The default 'timeZone' is 'default', which uses the user's local timezone.
+    // timeZoneName: "short",
+  };
+
+  const localDateTimeString = dateObject.toLocaleString(
+    navigator.language,
+    options,
+  );
+
+  console.log(localDateTimeString);
+
+  return localDateTimeString;
+}

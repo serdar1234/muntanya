@@ -13,10 +13,11 @@ import SunnySnowingIcon from "@mui/icons-material/SunnySnowing";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { getWeather } from "@/shared/api";
 import { transWeatherResult, Weather } from "@/shared/types";
-import { transformWeather } from "./transformWeather";
+import { transformToLocalDateTime, transformWeather } from "./transformWeather";
 import styles from "./WeatherForecast.module.scss";
 import ForecastTable from "./ForecastTable";
 import ForecastChart from "./ForecastChart";
+import { transform } from "next/dist/build/swc/generated-native";
 
 export default function WeatherForecast({ peakID = 497159 }) {
   const [expanded, setExpanded] = useState<string | null>(null);
@@ -39,6 +40,7 @@ export default function WeatherForecast({ peakID = 497159 }) {
   }, [peakID]);
 
   const transformedWeather = transformWeather(weather?.forecast);
+  console.log(transformedWeather);
 
   return (
     <Box sx={{ padding: "1rem" }}>
@@ -56,20 +58,26 @@ export default function WeatherForecast({ peakID = 497159 }) {
               {/* times of day start */}
               <Box className={styles.chipbox}>
                 <Chip
-                  label={"Sunrise: " + day.sunrise}
+                  label={"Sunrise at " + transformToLocalDateTime(day.sunrise)}
                   color="error"
                   icon={<SunnySnowingIcon />}
                   variant="outlined"
                 />
                 <Chip
-                  label={"Sunset: " + day.sunset}
+                  label={"Sunset at " + transformToLocalDateTime(day.sunset)}
                   color="warning"
                   icon={<SunnySnowingIcon />}
                   variant="outlined"
                 />
+                <div>
+                  All times are displayed in your device&apos;s local timezone
+                </div>
               </Box>
               {day.forecast.map((forecast) => (
-                <Accordion key={forecast.id}>
+                <Accordion
+                  key={forecast.id}
+                  slotProps={{ transition: { unmountOnExit: true } }} // for unmounting accrodion's content
+                >
                   <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                     <Typography>{forecast.id}</Typography>
                   </AccordionSummary>
