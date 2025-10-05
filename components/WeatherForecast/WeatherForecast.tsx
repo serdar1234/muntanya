@@ -17,7 +17,6 @@ import { transformToLocalDateTime, transformWeather } from "./transformWeather";
 import styles from "./WeatherForecast.module.scss";
 import ForecastTable from "./ForecastTable";
 import ForecastChart from "./ForecastChart";
-import { transform } from "next/dist/build/swc/generated-native";
 
 export default function WeatherForecast({ peakID = 497159 }) {
   const [expanded, setExpanded] = useState<string | null>(null);
@@ -43,7 +42,7 @@ export default function WeatherForecast({ peakID = 497159 }) {
   console.log(transformedWeather);
 
   return (
-    <Box sx={{ padding: "1rem" }}>
+    <>
       {weather &&
         transformedWeather.map((day: transWeatherResult) => (
           <Accordion
@@ -52,7 +51,7 @@ export default function WeatherForecast({ peakID = 497159 }) {
             onChange={handleChange(day.dayAndDate)}
           >
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography>{day.dayAndDate}</Typography>
+              <Typography variant="subtitle1">{day.dayAndDate}</Typography>
             </AccordionSummary>
             <AccordionDetails>
               {/* times of day start */}
@@ -69,9 +68,9 @@ export default function WeatherForecast({ peakID = 497159 }) {
                   icon={<SunnySnowingIcon />}
                   variant="outlined"
                 />
-                <div>
+                <Typography variant="caption">
                   All times are displayed in your device&apos;s local timezone
-                </div>
+                </Typography>
               </Box>
               {day.forecast.map((forecast) => (
                 <Accordion
@@ -91,6 +90,6 @@ export default function WeatherForecast({ peakID = 497159 }) {
             </AccordionDetails>
           </Accordion>
         ))}
-    </Box>
+    </>
   );
 }

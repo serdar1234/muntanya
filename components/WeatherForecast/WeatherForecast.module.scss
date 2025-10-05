@@ -10,3 +10,19 @@
     padding: 1rem;
   }
 }
+
+.forecast-table {
+  th,
+  td {
+    text-align: center;
+    padding: 6px 12px;
+  }
+  th:first-child,
+  td:first-child {
+    padding-left: 0;
+  }
+}
+
+svg.forecast-line-chart {
+  transform: translateX(-1rem);
+}

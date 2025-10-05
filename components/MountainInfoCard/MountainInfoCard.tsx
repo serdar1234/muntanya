@@ -17,6 +17,7 @@ export default function MountainInfoCard({ data }: MountainInfoCardProps) {
       <CardHeader
         title={peak.name}
         subheader={`Elevation: ${peak.elevation} m`}
+        slotProps={{ title: { component: "h1", sx: { fontSize: "2rem" } } }}
       />
       <CardContent>
         {peak.tags.description && (
@@ -25,17 +26,17 @@ export default function MountainInfoCard({ data }: MountainInfoCardProps) {
           </Typography>
         )}
 
-        <Grid container spacing={3}>
-          <Grid size={{ xs: 12, md: 6 }}>
-            <WeatherConverter
-              initialTempC={weather.current.temperature}
-              initialWindKph={weather.current.wind_speed}
-              currentCondition={weather.current.condition}
-            />
-          </Grid>
+        {/* <Grid size="grow">
+          <WeatherConverter
+            initialTempC={weather.current.temperature}
+            initialWindKph={weather.current.wind_speed}
+            currentCondition={weather.current.condition}
+          />
+        </Grid> */}
+        <Grid size="grow" sx={{ mt: 2 }}>
+          <WeatherForecast peakID={peak.id} />
         </Grid>
       </CardContent>
-      <WeatherForecast peakID={peak.id} />
     </>
   );
 }

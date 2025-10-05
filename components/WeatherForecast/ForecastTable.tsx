@@ -1,4 +1,5 @@
 import { TimeOfDay } from "@/shared/types";
+import style from "./WeatherForecast.module.scss";
 import {
   Table,
   TableHead,
@@ -8,35 +9,54 @@ import {
   Box,
 } from "@mui/material";
 import DeviceThermostatIcon from "@mui/icons-material/DeviceThermostat";
+import WaterDropIcon from "@mui/icons-material/WaterDrop";
+import WindPowerIcon from "@mui/icons-material/WindPower";
+import NavigationIcon from "@mui/icons-material/Navigation";
+import { transformWindDirection } from "./transformWeather";
 
 export default function ForecastTable({ forecast }: { forecast: TimeOfDay }) {
   return (
-    <Table size="small">
+    <Table size="small" className={style["forecast-table"]}>
       <TableHead>
         <TableRow>
           <TableCell>
             <DeviceThermostatIcon
               titleAccess="Temperature"
               sx={{
-                display: { xs: "inline-flex", sm: "none" },
                 verticalAlign: "middle",
-                mr: 0.5,
               }}
             />
-            <Box
-              component="span"
-              sx={{ display: { xs: "none", sm: "inline" } }}
-            >
-              Temperature
-            </Box>
-            <Box component="span" sx={{ ml: 0.5 }}>
-              (°C)
-            </Box>
+            <Box component="span">(°C)</Box>
           </TableCell>
-          <TableCell>Rain (%)</TableCell>
-          <TableCell>Wind Speed (m/sec)</TableCell>
-          <TableCell sx={{ wordBreak: "break-word" }}>
-            Wind Direction (°)
+          <TableCell>
+            <WaterDropIcon
+              titleAccess="Rain"
+              sx={{
+                verticalAlign: "middle",
+              }}
+            />
+            <Box component="span">(%)</Box>
+          </TableCell>
+          <TableCell>
+            <WindPowerIcon
+              titleAccess="Wind speed in m/sec"
+              sx={{
+                verticalAlign: "middle",
+              }}
+            />
+            <Box component="span">(m/s)</Box>
+          </TableCell>
+          <TableCell>
+            <NavigationIcon
+              titleAccess={`Wind direction is from the ${transformWindDirection(
+                forecast.wind_direction_10m,
+              )}, ${forecast.wind_direction_10m}°`}
+              sx={{
+                verticalAlign: "middle",
+                transform: `rotate(${forecast.wind_direction_10m + 180}deg)`,
+              }}
+            />
+            <Box component="span">(°)</Box>
           </TableCell>
         </TableRow>
       </TableHead>

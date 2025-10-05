@@ -76,7 +76,20 @@ export function transformToLocalDateTime(apiString: string) {
     options,
   );
 
-  console.log(localDateTimeString);
-
   return localDateTimeString;
+}
+
+export function transformWindDirection(degrees: number) {
+  const directions = [
+    "North",
+    "North East",
+    "East",
+    "South East",
+    "South",
+    "South West",
+    "West",
+    "North West",
+  ];
+  const index = Math.round((degrees / 45) % 8);
+  return directions[index];
 }

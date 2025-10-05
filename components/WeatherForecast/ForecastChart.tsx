@@ -1,13 +1,5 @@
-import * as React from "react";
-import {
-  ChartContainer,
-  BarPlot,
-  LinePlot,
-  ChartsXAxis,
-  ChartsYAxis,
-  ChartsTooltip,
-} from "@mui/x-charts";
-import { axisClasses } from "@mui/x-charts/ChartsAxis";
+import { LinePlot, ChartsXAxis, ChartsTooltip, LineChart } from "@mui/x-charts";
+import style from "./WeatherForecast.module.scss";
 
 import { ChartData, Pressure } from "@/shared/types";
 import { transformToChartData } from "./transformWeather";
@@ -15,31 +7,34 @@ import { transformToChartData } from "./transformWeather";
 const valueLabels = {
   temperature: "Temperature (°C)",
   humidity: "Humidity (%)",
-  windSpeed: "Wind (m/s)",
+  windSpeed: "Wind speed (m/s)",
   altitude: "Altitude (m)",
 };
 
 const series = [
   {
-    type: "bar",
     dataKey: "temperature",
     label: valueLabels.temperature,
-    yAxisKey: "temperatureAxis",
+    area: true,
+    stack: "total",
+    showMark: false,
     color: "#FF6384",
   },
   {
-    type: "bar",
-    dataKey: "humidity",
-    label: valueLabels.humidity,
-    yAxisKey: "temperatureAxis",
-    color: "#36A2EB",
-  },
-  {
-    type: "bar",
     dataKey: "windSpeed",
     label: valueLabels.windSpeed,
-    yAxisKey: "windAxis",
+    area: true,
+    stack: "none",
+    showMark: false,
     color: "#FFCE56",
+  },
+  {
+    dataKey: "humidity",
+    label: valueLabels.humidity,
+    area: true,
+    stack: "total",
+    showMark: false,
+    color: "#36A2EB",
   },
 ] as const;
 
@@ -50,52 +45,25 @@ export default function ForecastChart({
 }) {
   const chartData: ChartData[] = transformToChartData(atmospheric);
   return (
-    <ChartContainer
+    <LineChart
       series={series}
       dataset={chartData}
       xAxis={[
         {
-          scaleType: "band",
+          scaleType: "point",
           dataKey: "altitude",
           label: valueLabels.altitude,
           valueFormatter: (value) => `${value} m`,
         },
       ]}
-      // yAxis={[
-      //   {
-      //     id: "temperatureAxis",
-      //     scaleType: "linear",
-      //     label: "Температура (°C) / Влажность (%)",
-      //   },
-
-      //   {
-      //     id: "windAxis",
-      //     scaleType: "linear",
-      //     label: valueLabels.windSpeed,
-      //     position: "right",
-      //   },
-      // ]}
       height={350}
-      sx={{
-        [`.${axisClasses.left} .${axisClasses.label}`]: {
-          transform: "translateX(-20px)",
-        },
-        [`.${axisClasses.right} .${axisClasses.label}`]: {
-          transform: "translateX(20px)",
-        },
-      }}
+      className={style["forecast-line-chart"]}
     >
-      {/* Компоненты для визуализации */}
-      <BarPlot />
       <LinePlot />
 
-      {/* Компоненты для подписей и интерактивности */}
       <ChartsXAxis />
-      {/* Y-оси привязываем по ID */}
-      <ChartsYAxis axisId="temperatureAxis" />
-      <ChartsYAxis axisId="windAxis" />
 
       <ChartsTooltip trigger="axis" />
-    </ChartContainer>
+    </LineChart>
   );
 }
