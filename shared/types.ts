@@ -214,3 +214,18 @@ export interface WeatherLocation {
 }
 
 export type Bounds = Record<string, LatLngLiteral>;
+
+// UNITS SPEED DIAL
+
+export interface UnitAction {
+  icon: React.ReactElement;
+  name: "Speed" | "Height" | "Temperature";
+  value: string[];
+  currentValue: number;
+}
+
+export interface UnitsState {
+  speedUnits: UnitAction;
+  heightUnits: UnitAction;
+  tempUnits: UnitAction;
+}

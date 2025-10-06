@@ -1,64 +1,26 @@
 "use client";
 
-import * as React from "react";
+import { useReducer } from "react";
 import Box from "@mui/material/Box";
 import SpeedDial from "@mui/material/SpeedDial";
 import SpeedDialIcon from "@mui/material/SpeedDialIcon";
 import SpeedDialAction from "@mui/material/SpeedDialAction";
-import SpeedIcon from "@mui/icons-material/Speed";
-import LandscapeIcon from "@mui/icons-material/Landscape";
-import ThermostatIcon from "@mui/icons-material/Thermostat";
 import SettingsInputSvideoIcon from "@mui/icons-material/SettingsInputSvideo";
 import style from "./SpeedDial.module.scss";
 import Tooltip from "@mui/material/Tooltip";
 import { ToggleButton, ToggleButtonGroup } from "@mui/material";
-
-interface Actions {
-  icon: React.JSX.Element;
-  name: string;
-  value: string[];
-  currentValue: number;
-}
+import { initialState, unitsReducer } from "./unitsReducer";
 
 export default function UnitsSpeedDial() {
-  const [speedUnits, setSpeedUnits] = React.useState<Actions>({
-    icon: <SpeedIcon />,
-    name: "Speed",
-    value: ["m/s", "mph", "km/h"],
-    currentValue: 0,
-  });
-  const [heightUnits, setHeightUnits] = React.useState<Actions>({
-    icon: <LandscapeIcon />,
-    name: "Height",
-    value: ["m", "ft"],
-    currentValue: 0,
-  });
-  const [tempUnits, setTempUnits] = React.useState<Actions>({
-    icon: <ThermostatIcon />,
-    name: "Temperature",
-    value: ["C", "F"],
-    currentValue: 0,
-  });
+  const [state, dispatch] = useReducer(unitsReducer, initialState);
 
-  const actions = [speedUnits, heightUnits, tempUnits];
+  const actions = [state.speedUnits, state.heightUnits, state.tempUnits];
 
   const handleActionChange = (actionName: string) => {
-    if (actionName === "Speed") {
-      setSpeedUnits({
-        ...speedUnits,
-        currentValue: (speedUnits.currentValue + 1) % 3,
-      });
-    } else if (actionName === "Height") {
-      setHeightUnits({
-        ...heightUnits,
-        currentValue: (heightUnits.currentValue + 1) % 2,
-      });
-    } else if (actionName === "Temperature") {
-      setTempUnits({
-        ...tempUnits,
-        currentValue: (tempUnits.currentValue + 1) % 2,
-      });
-    }
+    dispatch({
+      type: "TOGGLE_UNIT",
+      payload: { name: actionName },
+    });
   };
 
   return (
