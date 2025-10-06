@@ -12,6 +12,7 @@ import extractNearbyMarkers from "@/shared/extractNearbyMarkers";
 import Logo from "../Logo";
 import SelectMap from "../SelectMap";
 import { DEFAULT_POSITION } from "@/shared/api";
+import SpeedDial from "../SpeedDial";
 
 export default async function MainLayout({
   initialMountain = null,
@@ -72,7 +73,8 @@ export default async function MainLayout({
       </section>
 
       <Box component={"section"} className="info-section">
-        <SelectMap />
+        {/* <SelectMap /> */}
+        <SpeedDial />
         <Logo />
         {!searchResults && initialMountain && (
           <MountainInfoCard data={initialMountain} />

@@ -78,7 +78,9 @@ export default function WeatherForecast({ peakID = 497159 }) {
                   slotProps={{ transition: { unmountOnExit: true } }} // for unmounting accrodion's content
                 >
                   <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                    <Typography>{forecast.id}</Typography>
+                    <Typography variant="overline" color="text.secondary">
+                      {forecast.id + " forecast"}
+                    </Typography>
                   </AccordionSummary>
                   <AccordionDetails>
                     <ForecastTable forecast={forecast} />

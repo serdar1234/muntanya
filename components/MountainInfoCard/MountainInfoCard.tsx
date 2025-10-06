@@ -1,15 +1,16 @@
 import { CardContent, CardHeader, Typography, Grid } from "@mui/material";
 import { MountainDataBig } from "@/shared/mountainDataTypes";
 import PeakDescription from "../PeakDescription";
-import WeatherConverter from "../WeatherConverter";
 import WeatherForecast from "../WeatherForecast";
+// import WeatherConverter from "../WeatherConverter";
 
 interface MountainInfoCardProps {
   data: MountainDataBig;
 }
 
 export default function MountainInfoCard({ data }: MountainInfoCardProps) {
-  const { peak, weather } = data;
+  const { peak } = data;
+  // const { weather } = data;
 
   // returns header, description, weather, forecast
   return (
