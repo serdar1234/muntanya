@@ -15,4 +15,11 @@ const onRenderCallback: ProfilerOnRenderCallback = (
   console.log(`Commit time: ${commitTime} ms`);
 };
 
-export default onRenderCallback;
+const convertMetersToFeet = (value: number, isImperial = false): string => {
+  if (isImperial) {
+    return (value * 3.28).toFixed(0) + " ft";
+  }
+  return value + " m";
+};
+
+export { onRenderCallback, convertMetersToFeet };

@@ -1,14 +1,19 @@
+"use client";
+
 import { LinePlot, ChartsXAxis, ChartsTooltip, LineChart } from "@mui/x-charts";
 import style from "./WeatherForecast.module.scss";
 
 import { ChartData, Pressure } from "@/shared/types";
 import { transformToChartData } from "./transformWeather";
+import { useContext } from "react";
+import { UnitsContext } from "@/app/providers/UnitsProvider";
+import { convertMetersToFeet } from "@/shared/utils";
 
 const valueLabels = {
   temperature: "Temperature (°C)",
   humidity: "Humidity (%)",
   windSpeed: "Wind speed (m/s)",
-  altitude: "Altitude (m)",
+  altitude: "Altitude",
 };
 
 const series = [
@@ -43,6 +48,7 @@ export default function ForecastChart({
 }: {
   atmospheric: Record<string, Pressure>;
 }) {
+  const { units } = useContext(UnitsContext);
   const chartData: ChartData[] = transformToChartData(atmospheric);
   return (
     <LineChart
@@ -52,8 +58,15 @@ export default function ForecastChart({
         {
           scaleType: "point",
           dataKey: "altitude",
-          label: valueLabels.altitude,
-          valueFormatter: (value) => `${value} m`,
+          label: `Altitude in ${units.heightUnits.currentValue === 0 ? "meters" : "feet"}`,
+          valueFormatter: (value) => {
+            if (units.heightUnits.currentValue === 1) {
+              const roundValue = Math.floor((value * 3.28) / 100) * 100;
+              return roundValue.toString();
+            } else {
+              return value.toString();
+            }
+          },
         },
       ]}
       height={350}

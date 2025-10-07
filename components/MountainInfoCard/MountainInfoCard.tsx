@@ -1,7 +1,8 @@
-import { CardContent, CardHeader, Typography, Grid } from "@mui/material";
+import { CardContent, Typography, Grid } from "@mui/material";
 import { MountainDataBig } from "@/shared/mountainDataTypes";
 import PeakDescription from "../PeakDescription";
 import WeatherForecast from "../WeatherForecast";
+import MountainHeader from "./MountainHeader";
 // import WeatherConverter from "../WeatherConverter";
 
 interface MountainInfoCardProps {
@@ -15,11 +16,7 @@ export default function MountainInfoCard({ data }: MountainInfoCardProps) {
   // returns header, description, weather, forecast
   return (
     <>
-      <CardHeader
-        title={peak.name}
-        subheader={`Elevation: ${peak.elevation} m`}
-        slotProps={{ title: { component: "h1", sx: { fontSize: "2rem" } } }}
-      />
+      <MountainHeader peakName={peak.name} elevation={peak.elevation} />
       <CardContent>
         {peak.tags.description && (
           <Typography component="div" variant="body1" sx={{ mb: 2 }}>

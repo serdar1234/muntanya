@@ -1,3 +1,5 @@
+"use client";
+
 import { ApiPeak } from "@/shared/types";
 import Link from "next/link";
 import {
@@ -10,11 +12,14 @@ import {
   Box,
   Button,
 } from "@mui/material";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
+import { UnitsContext } from "@/app/providers/UnitsProvider";
+import { convertMetersToFeet } from "@/shared/utils";
 
 export default function SearchResultCard({ peak }: { peak: ApiPeak }) {
   const [open, setOpen] = useState(false);
+  const { units } = useContext(UnitsContext);
 
   const handleClick = () => {
     setOpen(!open);
@@ -48,13 +53,24 @@ export default function SearchResultCard({ peak }: { peak: ApiPeak }) {
                 </Button>
               </Typography>
               <Typography color="text.secondary" sx={{ mt: 1 }}>
-                Elevation: {peak.elevation} m
+                Elevation:{" "}
+                {convertMetersToFeet(
+                  peak.elevation,
+                  units.heightUnits.currentValue === 1,
+                )}
               </Typography>
               <Typography color="text.secondary">
-                Prominence: {peak.prominence} m
+                Prominence:{" "}
+                {convertMetersToFeet(
+                  peak.prominence,
+                  units.heightUnits.currentValue === 1,
+                )}
               </Typography>
               <Typography color="text.secondary">
-                Latitude: {peak.lat} / Longitude: {peak.lng}
+                Latitude: {peak.lat}
+              </Typography>
+              <Typography color="text.secondary">
+                Longitude: {peak.lng}
               </Typography>
               <Typography color="text.secondary">
                 This peak {peak.is_volcano ? "is" : "is not"} a volcano

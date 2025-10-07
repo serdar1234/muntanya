@@ -30,7 +30,7 @@ export default function ForecastTable({ forecast }: { forecast: TimeOfDay }) {
           </TableCell>
           <TableCell>
             <WaterDropIcon
-              titleAccess="Rain"
+              titleAccess="Probability of Rain"
               sx={{
                 verticalAlign: "middle",
               }}

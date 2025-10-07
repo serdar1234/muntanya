@@ -1,4 +1,5 @@
 import { MarkerData } from "@/shared/types";
+import { Box, Typography, Stack } from "@mui/material";
 
 interface TooltipContentProps {
   marker: MarkerData;
@@ -6,15 +7,18 @@ interface TooltipContentProps {
 
 const TooltipContent: React.FC<TooltipContentProps> = ({ marker }) => {
   return (
-    <div>
-      <strong>{marker.name}</strong>
-      <br />
-      <strong>Elevation:</strong> {marker.elevation} m.
-      <br />
-      <span>
-        <strong>Coordinates:</strong> {marker.coords[0]}, {marker.coords[1]}
-      </span>
-    </div>
+    <Stack spacing={0.5}>
+      <Typography variant="h6" fontWeight="bold" mb={0.5}>
+        {marker.name}
+      </Typography>
+
+      <Typography variant="body2">
+        <Box component="span" fontWeight="bold">
+          Coordinates:
+        </Box>{" "}
+        {marker.coords[0]}, {marker.coords[1]}
+      </Typography>
+    </Stack>
   );
 };
 
