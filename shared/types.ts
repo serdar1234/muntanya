@@ -217,9 +217,12 @@ export type Bounds = Record<string, LatLngLiteral>;
 
 // UNITS SPEED DIAL
 
+export type Metric = "Speed" | "Height" | "Temperature";
+export type MetricUnits = "speedUnits" | "heightUnits" | "tempUnits";
+
 export interface UnitAction {
   icon: React.ReactElement;
-  name: "Speed" | "Height" | "Temperature";
+  name: Metric;
   value: string[];
   currentValue: number;
 }

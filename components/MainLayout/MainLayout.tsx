@@ -10,9 +10,9 @@ import Box from "@mui/material/Box";
 import { MainLayoutProps, MarkerData } from "@/shared/types";
 import extractNearbyMarkers from "@/shared/extractNearbyMarkers";
 import Logo from "../Logo";
-import SelectMap from "../SelectMap";
+// import SelectMap from "../SelectMap";
 import { DEFAULT_POSITION } from "@/shared/api";
-import SpeedDial from "../SpeedDial";
+import UnitSetter from "../UnitSetter";
 
 export default async function MainLayout({
   initialMountain = null,
@@ -74,7 +74,7 @@ export default async function MainLayout({
 
       <Box component={"section"} className="info-section">
         {/* <SelectMap /> */}
-        <SpeedDial />
+        <UnitSetter />
         <Logo />
         {!searchResults && initialMountain && (
           <MountainInfoCard data={initialMountain} />

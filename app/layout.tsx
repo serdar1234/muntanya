@@ -6,6 +6,7 @@ import { SnackbarProvider } from "./providers/SnackbarProvider";
 import theme from "@/shared/theme";
 import "./globals.scss";
 import { Suspense } from "react";
+import { UnitsProvider } from "./providers/UnitsProvider";
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -30,14 +31,16 @@ export default function RootLayout({
       <body>
         <AppRouterCacheProvider options={{ key: "css" }}>
           <MapProvider>
-            <ThemeProvider theme={theme}>
-              <>
-                {children}
-                <Suspense>
-                  <SnackbarProvider />
-                </Suspense>
-              </>
-            </ThemeProvider>
+            <UnitsProvider>
+              <ThemeProvider theme={theme}>
+                <>
+                  {children}
+                  <Suspense>
+                    <SnackbarProvider />
+                  </Suspense>
+                </>
+              </ThemeProvider>
+            </UnitsProvider>
           </MapProvider>
         </AppRouterCacheProvider>
       </body>

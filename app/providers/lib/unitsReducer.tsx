@@ -1,9 +1,12 @@
-import { UnitsState } from "@/shared/types";
+import { Metric, MetricUnits, UnitsState } from "@/shared/types";
 import SpeedIcon from "@mui/icons-material/Speed";
 import LandscapeIcon from "@mui/icons-material/Landscape";
 import ThermostatIcon from "@mui/icons-material/Thermostat";
 
-type Action = { type: "TOGGLE_UNIT"; payload: { name: string } };
+export type Action = {
+  type: "TOGGLE_UNIT" | "SET_UNITS";
+  payload: { name: Metric } | Record<MetricUnits, number>;
+};
 
 export const initialState: UnitsState = {
   speedUnits: {
@@ -29,7 +32,7 @@ export const initialState: UnitsState = {
 export function unitsReducer(state: UnitsState, action: Action): UnitsState {
   switch (action.type) {
     case "TOGGLE_UNIT": {
-      const { name } = action.payload;
+      const { name } = action.payload as { name: Metric };
 
       if (name === "Speed") {
         const current = state.speedUnits.currentValue;
@@ -64,6 +67,24 @@ export function unitsReducer(state: UnitsState, action: Action): UnitsState {
       }
       return state;
     }
+    case "SET_UNITS":
+      return {
+        speedUnits: {
+          ...state.speedUnits,
+          currentValue:
+            (action.payload as Record<MetricUnits, number>).speedUnits ?? 0,
+        },
+        heightUnits: {
+          ...state.heightUnits,
+          currentValue:
+            (action.payload as Record<MetricUnits, number>).heightUnits ?? 0,
+        },
+        tempUnits: {
+          ...state.tempUnits,
+          currentValue:
+            (action.payload as Record<MetricUnits, number>).tempUnits ?? 0,
+        },
+      };
     default:
       return state;
   }

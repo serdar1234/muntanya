@@ -1,22 +1,23 @@
 "use client";
 
-import { useReducer } from "react";
 import Box from "@mui/material/Box";
 import SpeedDial from "@mui/material/SpeedDial";
 import SpeedDialIcon from "@mui/material/SpeedDialIcon";
 import SpeedDialAction from "@mui/material/SpeedDialAction";
 import SettingsInputSvideoIcon from "@mui/icons-material/SettingsInputSvideo";
-import style from "./SpeedDial.module.scss";
+import style from "./UnitSetter.module.scss";
 import Tooltip from "@mui/material/Tooltip";
 import { ToggleButton, ToggleButtonGroup } from "@mui/material";
-import { initialState, unitsReducer } from "./unitsReducer";
+import { useContext } from "react";
+import { UnitsContext } from "@/app/providers/UnitsProvider";
+import { Metric } from "@/shared/types";
 
 export default function UnitsSpeedDial() {
-  const [state, dispatch] = useReducer(unitsReducer, initialState);
+  const { units, dispatch } = useContext(UnitsContext);
 
-  const actions = [state.speedUnits, state.heightUnits, state.tempUnits];
+  const actions = [units.speedUnits, units.heightUnits, units.tempUnits];
 
-  const handleActionChange = (actionName: string) => {
+  const handleActionChange = (actionName: Metric) => {
     dispatch({
       type: "TOGGLE_UNIT",
       payload: { name: actionName },
@@ -27,7 +28,7 @@ export default function UnitsSpeedDial() {
     <Box sx={{ height: "4rem", transform: "translateZ(0px)", flexGrow: 1 }}>
       <SpeedDial
         ariaLabel="Change Units SpeedDial"
-        className={style["speed-dial__button"]}
+        className={style["unit-setter__button"]}
         icon={
           <SpeedDialIcon
             icon={
