@@ -1,3 +1,5 @@
+"use client";
+
 import { TimeOfDay } from "@/shared/types";
 import style from "./WeatherForecast.module.scss";
 import {
@@ -13,8 +15,12 @@ import WaterDropIcon from "@mui/icons-material/WaterDrop";
 import WindPowerIcon from "@mui/icons-material/WindPower";
 import NavigationIcon from "@mui/icons-material/Navigation";
 import { transformWindDirection } from "./transformWeather";
+import { useContext } from "react";
+import { UnitsContext } from "@/app/providers/UnitsProvider";
 
 export default function ForecastTable({ forecast }: { forecast: TimeOfDay }) {
+  const { units } = useContext(UnitsContext);
+
   return (
     <Table size="small" className={style["forecast-table"]}>
       <TableHead>
@@ -26,7 +32,9 @@ export default function ForecastTable({ forecast }: { forecast: TimeOfDay }) {
                 verticalAlign: "middle",
               }}
             />
-            <Box component="span">(°C)</Box>
+            <Box component="span">
+              (°{units.tempUnits.value[units.tempUnits.currentValue]})
+            </Box>
           </TableCell>
           <TableCell>
             <WaterDropIcon
@@ -39,12 +47,14 @@ export default function ForecastTable({ forecast }: { forecast: TimeOfDay }) {
           </TableCell>
           <TableCell>
             <WindPowerIcon
-              titleAccess="Wind speed in m/sec"
+              titleAccess={`Wind speed in ${units.speedUnits.value[units.speedUnits.currentValue]}`}
               sx={{
                 verticalAlign: "middle",
               }}
             />
-            <Box component="span">(m/s)</Box>
+            <Box component="span" sx={{ textWrap: "nowrap" }}>
+              ({units.speedUnits.value[units.speedUnits.currentValue]})
+            </Box>
           </TableCell>
           <TableCell>
             <NavigationIcon

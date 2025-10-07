@@ -22,4 +22,12 @@ const convertMetersToFeet = (value: number, isImperial = false): string => {
   return value + " m";
 };
 
-export { onRenderCallback, convertMetersToFeet };
+const convertC2F = (value: number, isImperial = false): string => {
+  if (isImperial) {
+    return ((value * 9) / 5 + 32).toFixed(0) + " °F";
+  } else {
+    return value + " °C";
+  }
+};
+
+export { onRenderCallback, convertMetersToFeet, convertC2F };

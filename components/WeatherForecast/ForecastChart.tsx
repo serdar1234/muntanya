@@ -7,41 +7,13 @@ import { ChartData, Pressure } from "@/shared/types";
 import { transformToChartData } from "./transformWeather";
 import { useContext } from "react";
 import { UnitsContext } from "@/app/providers/UnitsProvider";
-import { convertMetersToFeet } from "@/shared/utils";
 
 const valueLabels = {
-  temperature: "Temperature (°C)",
+  temperature: "Temperature",
   humidity: "Humidity (%)",
-  windSpeed: "Wind speed (m/s)",
+  windSpeed: "Wind speed",
   altitude: "Altitude",
 };
-
-const series = [
-  {
-    dataKey: "temperature",
-    label: valueLabels.temperature,
-    area: true,
-    stack: "total",
-    showMark: false,
-    color: "#FF6384",
-  },
-  {
-    dataKey: "windSpeed",
-    label: valueLabels.windSpeed,
-    area: true,
-    stack: "none",
-    showMark: false,
-    color: "#FFCE56",
-  },
-  {
-    dataKey: "humidity",
-    label: valueLabels.humidity,
-    area: true,
-    stack: "total",
-    showMark: false,
-    color: "#36A2EB",
-  },
-] as const;
 
 export default function ForecastChart({
   atmospheric,
@@ -49,7 +21,47 @@ export default function ForecastChart({
   atmospheric: Record<string, Pressure>;
 }) {
   const { units } = useContext(UnitsContext);
-  const chartData: ChartData[] = transformToChartData(atmospheric);
+
+  const series = [
+    {
+      dataKey: "temperature",
+      label:
+        valueLabels.temperature +
+        " (°" +
+        units.tempUnits.value[units.tempUnits.currentValue] +
+        ")",
+      area: true,
+      stack: "total",
+      showMark: false,
+      color: "#FF6384",
+    },
+    {
+      dataKey: "windSpeed",
+      label:
+        valueLabels.windSpeed +
+        " (" +
+        units.speedUnits.value[units.speedUnits.currentValue] +
+        ")",
+      area: true,
+      stack: "none",
+      showMark: false,
+      color: "#FFCE56",
+    },
+    {
+      dataKey: "humidity",
+      label: valueLabels.humidity,
+      area: true,
+      stack: "total",
+      showMark: false,
+      color: "#36A2EB",
+    },
+  ] as const;
+
+  const chartData: ChartData[] = transformToChartData(
+    atmospheric,
+    units.tempUnits.currentValue === 1,
+    units.speedUnits.value[units.speedUnits.currentValue],
+  );
   return (
     <LineChart
       series={series}

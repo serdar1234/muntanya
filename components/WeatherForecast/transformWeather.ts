@@ -4,6 +4,7 @@ import {
   TimeOfDay,
   ChartData,
   transWeatherResult,
+  AllUnits,
 } from "@/shared/types";
 
 function convertDate(dateStr: string) {
@@ -44,12 +45,28 @@ export function transformWeather(
 
 export function transformToChartData(
   data: Record<string, Pressure>,
+  isFahrenheit = false,
+  speedUnits: AllUnits,
 ): ChartData[] {
   const obj = Object.values(data);
+
+  const convertSpeed = (speed: number, unit: AllUnits) => {
+    switch (unit) {
+      case "mph":
+        return Math.round(speed * 2.23694);
+      case "km/h":
+        return Math.round(speed * 3.6);
+      default:
+        return speed;
+    }
+  };
+
   const chartData: ChartData[] = obj.map((item) => ({
     altitude: item.altitude_m,
-    temperature: item.temperature,
-    windSpeed: item.wind_speed,
+    temperature: isFahrenheit
+      ? Number((item.temperature * 1.8).toFixed(1)) + 32
+      : item.temperature,
+    windSpeed: convertSpeed(item.wind_speed, speedUnits),
     humidity: item.relative_humidity,
   }));
 

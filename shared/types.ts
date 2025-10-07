@@ -219,11 +219,12 @@ export type Bounds = Record<string, LatLngLiteral>;
 
 export type Metric = "Speed" | "Height" | "Temperature";
 export type MetricUnits = "speedUnits" | "heightUnits" | "tempUnits";
+export type AllUnits = "m/s" | "mph" | "km/h" | "m" | "ft" | "C" | "F";
 
 export interface UnitAction {
   icon: React.ReactElement;
   name: Metric;
-  value: string[];
+  value: AllUnits[];
   currentValue: number;
 }
 
