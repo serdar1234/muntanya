@@ -27,7 +27,8 @@ export default function UnitsSpeedDial() {
   return (
     <Box sx={{ height: "4rem", transform: "translateZ(0px)", flexGrow: 1 }}>
       <SpeedDial
-        ariaLabel="Change Units SpeedDial"
+        ariaLabel="Units toggle"
+        aria-description="Use arrow keys to select, and Space or Enter keys to change units"
         className={style["unit-setter__button"]}
         icon={
           <SpeedDialIcon
@@ -44,6 +45,7 @@ export default function UnitsSpeedDial() {
           <SpeedDialAction
             key={action.name}
             aria-label={`Switch ${action.name.toLowerCase()} units`}
+            tabIndex={1}
             icon={action.icon}
             onClick={() => handleActionChange(action.name)}
             slotProps={{

@@ -6,18 +6,20 @@ import {
   TextField,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
+import { useId } from "react";
 
-const renderSearchInput = (
+const CustomSearchInput = (
   params: AutocompleteRenderInputParams,
   loading: boolean,
   handleSearchClick: () => void,
 ) => {
+  const newID = useId();
   params.inputProps["aria-label"] = "Search";
+  params.inputProps.id = newID;
 
   return (
     <TextField
       {...params}
-      aria-label="Search"
       variant="outlined"
       sx={{ pr: 0 }}
       slotProps={{
@@ -46,4 +48,4 @@ const renderSearchInput = (
   );
 };
 
-export default renderSearchInput;
+export default CustomSearchInput;
