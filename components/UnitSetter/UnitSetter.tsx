@@ -43,6 +43,7 @@ export default function UnitsSpeedDial() {
         {actions.map((action) => (
           <SpeedDialAction
             key={action.name}
+            aria-label={`Switch ${action.name.toLowerCase()} units`}
             icon={action.icon}
             onClick={() => handleActionChange(action.name)}
             slotProps={{

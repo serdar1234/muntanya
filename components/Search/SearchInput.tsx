@@ -70,10 +70,10 @@ export default function SearchInput() {
       <Autocomplete
         disableClearable
         size="small"
-        options={options} // тут берутся данные для автозаполнения
+        options={options} // options for autocomplete
         className={styles["search-input"]}
         getOptionLabel={(option) => {
-          // текст в инпуте после выбора из списка
+          // text inside input after it was selected
           if (typeof option === "string") {
             return option;
           }
@@ -81,19 +81,19 @@ export default function SearchInput() {
         }}
         onChange={handleOptionSelect}
         getOptionKey={(option) => {
-          // key для списка
+          // keys for the list items
           if (typeof option === "string") {
             return option;
           }
           return option.slug;
         }}
         onInputChange={(_: SyntheticEvent, newInputValue: string) => {
-          setInputValue(newInputValue); // контроль ввода
+          setInputValue(newInputValue);
         }}
         onKeyDown={handleKeyDown}
         freeSolo
         renderOption={(props, option) => {
-          // как выглядят элементы списка
+          // how to render list items
           const { key, ...otherProps } = props;
           return (
             <li key={key} {...otherProps}>
@@ -108,7 +108,6 @@ export default function SearchInput() {
             </li>
           );
         }}
-        // внешний вид поля инпут
         renderInput={(params) =>
           renderSearchInput(params, loading, handleSearchClick)
         }
