@@ -1,3 +1,5 @@
+"use client";
+
 import {
   AutocompleteRenderInputParams,
   CircularProgress,
@@ -6,16 +8,13 @@ import {
   TextField,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import { useId } from "react";
 
 const CustomSearchInput = (
   params: AutocompleteRenderInputParams,
   loading: boolean,
   handleSearchClick: () => void,
 ) => {
-  const newID = useId();
   params.inputProps["aria-label"] = "Search";
-  params.inputProps.id = newID;
 
   return (
     <TextField
