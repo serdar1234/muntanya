@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
 import { ThemeProvider } from "@mui/material/styles";
-import { MapProvider } from "./providers/MapProvider";
 import { SnackbarProvider } from "./providers/SnackbarProvider";
 import theme from "@/shared/theme";
 import "./globals.scss";
@@ -28,18 +27,16 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body>
         <AppRouterCacheProvider options={{ key: "css" }}>
-          <MapProvider>
-            <UnitsProvider>
-              <ThemeProvider theme={theme}>
-                <>
-                  {children}
-                  <Suspense>
-                    <SnackbarProvider />
-                  </Suspense>
-                </>
-              </ThemeProvider>
-            </UnitsProvider>
-          </MapProvider>
+          <UnitsProvider>
+            <ThemeProvider theme={theme}>
+              <>
+                {children}
+                <Suspense>
+                  <SnackbarProvider />
+                </Suspense>
+              </>
+            </ThemeProvider>
+          </UnitsProvider>
         </AppRouterCacheProvider>
       </body>
     </html>
