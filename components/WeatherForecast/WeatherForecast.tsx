@@ -9,7 +9,8 @@ import {
   Typography,
   Chip,
 } from "@mui/material";
-import SunnySnowingIcon from "@mui/icons-material/SunnySnowing";
+import Brightness7Icon from "@mui/icons-material/Brightness7";
+import WbTwilightIcon from "@mui/icons-material/WbTwilight";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { getWeather } from "@/shared/api";
 import { transWeatherResult, Weather } from "@/shared/types";
@@ -21,6 +22,7 @@ import ForecastChart from "./ForecastChart";
 export default function WeatherForecast({ peakID = 497159 }) {
   const [expanded, setExpanded] = useState<string | null>(null);
   const [weather, setWeather] = useState<Weather | null>(null);
+  const [isSunrise, setIsSunrise] = useState<boolean>(true);
 
   const handleChange =
     (panel: string) => (event: React.SyntheticEvent, newExpanded: boolean) => {
@@ -38,8 +40,8 @@ export default function WeatherForecast({ peakID = 497159 }) {
     fetchData();
   }, [peakID]);
 
+  const handleChipClick = () => setIsSunrise((prev) => !prev);
   const transformedWeather = transformWeather(weather?.forecast);
-  console.log(transformedWeather);
 
   return (
     <>
@@ -49,31 +51,42 @@ export default function WeatherForecast({ peakID = 497159 }) {
             key={day.dayAndDate}
             expanded={expanded === day.dayAndDate}
             onChange={handleChange(day.dayAndDate)}
+            disableGutters
           >
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
               <Typography variant="subtitle1">{day.dayAndDate}</Typography>
             </AccordionSummary>
             <AccordionDetails>
-              {/* times of day start */}
               <Box className={styles.chipbox}>
                 <Chip
-                  label={"Sunrise at " + transformToLocalDateTime(day.sunrise)}
-                  color="error"
-                  icon={<SunnySnowingIcon />}
+                  label={
+                    isSunrise
+                      ? `Sunrise ${transformToLocalDateTime(day.sunrise)}`
+                      : transformToLocalDateTime(day.sunrise)
+                  }
+                  color={isSunrise ? "error" : "warning"}
+                  onClick={handleChipClick}
+                  icon={<Brightness7Icon />}
                   variant="outlined"
                 />
                 <Chip
-                  label={"Sunset at " + transformToLocalDateTime(day.sunset)}
-                  color="warning"
-                  icon={<SunnySnowingIcon />}
+                  label={
+                    isSunrise
+                      ? transformToLocalDateTime(day.sunset)
+                      : `Sunset ${transformToLocalDateTime(day.sunset)}`
+                  }
+                  color={isSunrise ? "warning" : "error"}
+                  onClick={handleChipClick}
+                  icon={<WbTwilightIcon />}
                   variant="outlined"
                 />
-                <Typography variant="caption">
+                <Typography variant="caption" component={"div"}>
                   All times are displayed in your device&apos;s local timezone
                 </Typography>
               </Box>
               {day.forecast.map((forecast) => (
                 <Accordion
+                  disableGutters
                   key={forecast.id}
                   slotProps={{ transition: { unmountOnExit: true } }} // for unmounting accrodion's content
                 >
@@ -88,7 +101,6 @@ export default function WeatherForecast({ peakID = 497159 }) {
                   </AccordionDetails>
                 </Accordion>
               ))}
-              {/* times of day end */}
             </AccordionDetails>
           </Accordion>
         ))}

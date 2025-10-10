@@ -78,22 +78,12 @@ export function transformToLocalDateTime(apiString: string) {
   const dateObject = new Date(utcIsoString);
 
   const options: Intl.DateTimeFormatOptions = {
-    // year: "numeric",
-    // month: "long",
-    // day: "numeric",
     hour: "2-digit",
     minute: "2-digit",
-    // second: "2-digit",
-    // The default 'timeZone' is 'default', which uses the user's local timezone.
-    // timeZoneName: "short",
+    hour12: false,
   };
 
-  const localDateTimeString = dateObject.toLocaleString(
-    navigator.language,
-    options,
-  );
-
-  return localDateTimeString;
+  return dateObject.toLocaleString(undefined, options);
 }
 
 export function transformWindDirection(degrees: number) {

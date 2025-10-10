@@ -6,7 +6,7 @@ import { Autocomplete, Stack } from "@mui/material";
 import { getAutocompleteSuggestions } from "@/shared/api";
 import { AutocompletePeak } from "@/shared/types";
 import styles from "./SearchInput.module.scss";
-import CustomSearchInput from "./CustomSearchInput";
+import RenderInput from "./RenderInput";
 
 export default function SearchInput() {
   const router = useRouter();
@@ -109,7 +109,7 @@ export default function SearchInput() {
           );
         }}
         renderInput={(params) =>
-          CustomSearchInput(params, loading, handleSearchClick)
+          RenderInput(params, loading, handleSearchClick)
         }
       />
     </Stack>

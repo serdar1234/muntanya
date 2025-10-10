@@ -2,21 +2,11 @@
 
 import { useEffect, useContext, useState } from "react";
 import { MapContext } from "@/app/providers/MapProvider";
-import {
-  MapContainer,
-  TileLayer,
-  Marker,
-  Popup,
-  Tooltip,
-  ScaleControl,
-} from "react-leaflet";
+import { MapContainer, TileLayer, ScaleControl } from "react-leaflet";
 
 import { LatLngTuple } from "leaflet";
-import customDivIcon from "@/shared/customDivIcon";
 import { MarkerData } from "@/shared/types";
 import { getDefaultPosition } from "@/shared/api";
-
-import PopupContent from "../PopupContent/";
 
 import * as L from "leaflet";
 import { GestureHandling } from "leaflet-gesture-handling";
@@ -24,7 +14,6 @@ import { GestureHandling } from "leaflet-gesture-handling";
 import styles from "./Map.module.scss";
 import "leaflet/dist/leaflet.css";
 import "leaflet-gesture-handling/dist/leaflet-gesture-handling.css";
-import TooltipContent from "../Tooltip/Tooltip";
 import HomeControl from "../MapControls/HomeControl";
 import { CircularProgress } from "@mui/material";
 import {
@@ -33,6 +22,7 @@ import {
   MapBoundsListener,
   ChangeViewWithOffset,
 } from "./utils";
+import GeoMarker from "../GeoMarker";
 
 const ZOOM = 13;
 const OFFSET_PERCENTAGE = 17.5;
@@ -77,10 +67,6 @@ export default function Map({
     setMarkersArray(markers);
   }, [markers]);
 
-  // useEffect(() => {
-  //   console.log("markersArray", markersArray);
-  // }, [markersArray]);
-
   const centralPosition = geoCoordinates || defaultPosition;
   if (!centralPosition) {
     return (
@@ -97,7 +83,6 @@ export default function Map({
     );
   }
 
-  // console.log("centralMapMarker", centralMapMarker);
   return (
     <MapContainer
       center={centralPosition}
@@ -113,10 +98,6 @@ export default function Map({
       }}
       className={styles["map-container"]}
     >
-      {/* <TileLayer
-          attribution='&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
-          url="https://jura.snow-forecast.com/osm_tiles/{z}/{x}/{y}.png"
-        /> PIZDING */}
       {style === "1" && (
         <TileLayer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -136,37 +117,12 @@ export default function Map({
       <MapUpdater newPosition={centralPosition} />
 
       {centralMapMarker && (
-        <Marker
-          key={centralMapMarker?.slug}
-          position={centralPosition}
-          zIndexOffset={1000}
-          icon={customDivIcon(centralMapMarker.name, true)}
-        >
-          <Popup offset={[0, -10]} className={styles["popup-content"]}>
-            <PopupContent marker={centralMapMarker} />
-          </Popup>
-          <Tooltip sticky>
-            <TooltipContent marker={centralMapMarker} />
-          </Tooltip>
-        </Marker>
+        <GeoMarker key={centralMapMarker.slug} m={centralMapMarker} isCentral />
       )}
       {markersArray.length > 0 &&
         markersArray.map((m) => {
           if (centralMapMarker?.slug === m.slug) return null;
-          return (
-            <Marker
-              key={m.slug}
-              position={m.coords}
-              icon={customDivIcon(m.name)}
-            >
-              <Popup offset={[0, -10]} className={styles["popup-content"]}>
-                <PopupContent marker={m} />
-              </Popup>
-              <Tooltip sticky>
-                <TooltipContent marker={m} />
-              </Tooltip>
-            </Marker>
-          );
+          return <GeoMarker key={m.slug} m={m} />;
         })}
       <ChangeViewWithOffset
         center={centralPosition}

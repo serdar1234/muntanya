@@ -8,16 +8,16 @@ interface TooltipContentProps {
 const TooltipContent: React.FC<TooltipContentProps> = ({ marker }) => {
   return (
     <Stack spacing={0.5}>
-      <Typography variant="h6" fontWeight="bold" mb={0.5}>
+      <Typography variant="subtitle1" sx={{ textAlign: "center" }} mb={0.5}>
         {marker.name}
       </Typography>
-
-      <Typography variant="body2">
-        <Box component="span" fontWeight="bold">
-          Coordinates:
-        </Box>{" "}
-        {marker.coords[0]}, {marker.coords[1]}
-      </Typography>
+      <Box component="span">
+        Coordinates:
+        <Stack spacing={0} mt={0.25}>
+          <Typography variant="caption">{marker.coords[0]}</Typography>
+          <Typography variant="caption">{marker.coords[1]}</Typography>
+        </Stack>
+      </Box>
     </Stack>
   );
 };

@@ -81,7 +81,7 @@ export default function ForecastChart({
           },
         },
       ]}
-      height={350}
+      height={300}
       className={style["forecast-line-chart"]}
     >
       <LinePlot />

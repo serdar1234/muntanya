@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 
-const CustomSearchInput = (
+const RenderInput = (
   params: AutocompleteRenderInputParams,
   loading: boolean,
   handleSearchClick: () => void,
@@ -47,4 +47,4 @@ const CustomSearchInput = (
   );
 };
 
-export default CustomSearchInput;
+export default RenderInput;

@@ -89,14 +89,14 @@ export async function getAutocompleteSuggestions(
   try {
     const response = await fetch(url);
     if (!response.ok) {
-      console.log(`Ошибка API: ${response.statusText}`);
+      console.log(`Error in AutocompleteAPI: ${response.statusText}`);
       return [];
     }
 
     const data: AutocompleteResponse = await response.json();
     return data.data.peaks;
   } catch (error) {
-    console.log("Не удалось получить данные для автокомплита:", error);
+    console.log("Could not find data about the mountain:", error);
     return [];
   }
 }

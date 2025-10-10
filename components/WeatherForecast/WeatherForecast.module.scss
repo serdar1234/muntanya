@@ -1,13 +1,23 @@
 .chipbox {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
-  gap: 0.25rem;
-  padding: 0.25rem;
+  justify-content: left;
+  gap: 0.5rem;
   @media (max-width: 800px) {
-    justify-content: right;
-    gap: 1rem;
+    padding: 0.25rem;
+    justify-content: left;
+    gap: 0.5rem;
     padding: 1rem;
+  }
+}
+
+.chipbox div:last-child {
+  display: flex;
+  flex-grow: 1;
+  align-items: center;
+  justify-content: center;
+  @media (min-width: 800px) {
+    padding-bottom: 1rem;
   }
 }
 
@@ -25,4 +35,7 @@
 
 svg.forecast-line-chart {
   transform: translateX(-1rem);
+  @media (min-width: 800px) and (max-width: 900px) {
+    width: 130%;
+  }
 }
