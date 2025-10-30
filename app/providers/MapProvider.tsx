@@ -12,15 +12,18 @@ export const MapContext = createContext<MapContextType | undefined>(undefined);
 export const MapProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  const [style, setStyle] = useState("1");
-  useEffect(() => {
-    if (typeof window === "undefined") return;
+  const [style, setStyle] = useState(() => {
+    if (typeof window === "undefined") return "1";
+    return localStorage.getItem("mapStyle") || "1";
+  });
+  // useEffect(() => {
+  //   if (typeof window === "undefined") return;
 
-    const savedStyle = localStorage.getItem("mapStyle");
-    if (savedStyle) {
-      setStyle(savedStyle);
-    }
-  }, []);
+  //   const savedStyle = localStorage.getItem("mapStyle");
+  //   if (savedStyle) {
+  //     queueMicrotask(() => setStyle(savedStyle));
+  //   }
+  // }, []);
 
   useEffect(() => {
     if (typeof window === "undefined") return;

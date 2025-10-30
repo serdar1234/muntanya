@@ -22,10 +22,10 @@ export function MapUpdater({ newPosition }: { newPosition?: LatLngTuple }) {
 }
 
 export function SetViewOnClick() {
-  const map = useMapEvent("click", (e) => {
-    map.setView(e.latlng, map.getZoom(), {
-      animate: true,
-    });
+  const map = useMapEvent("click", () => {});
+
+  useMapEvent("click", (e) => {
+    map.setView(e.latlng, map.getZoom(), { animate: true });
   });
 
   return null;
@@ -47,7 +47,8 @@ export function MapBoundsListener({
     });
   }, DEBOUNCE_DELAY_MS);
 
-  const map = useMapEvent("moveend", () => {
+  const map = useMapEvent("click", () => {});
+  useMapEvent("moveend", () => {
     const currentBounds = map.getBounds();
     const northWest = currentBounds.getNorthWest();
     let southEast = currentBounds.getSouthEast() as unknown as LatLngLiteral;

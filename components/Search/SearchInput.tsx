@@ -15,7 +15,7 @@ export default function SearchInput() {
   const [options, setOptions] = useState<AutocompletePeak[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   useEffect(() => {
-    setLoading(false);
+    queueMicrotask(() => setLoading(false));
   }, [searchParams]);
 
   useEffect(() => {

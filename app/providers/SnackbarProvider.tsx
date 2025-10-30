@@ -10,7 +10,7 @@ export function SnackbarProvider() {
 
   useEffect(() => {
     if (searchParams.get("error") === "not-found") {
-      setOpen(true);
+      queueMicrotask(() => setOpen(true));
     }
   }, [searchParams]);
   return (
